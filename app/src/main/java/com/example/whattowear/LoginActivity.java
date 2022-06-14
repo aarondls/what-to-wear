@@ -25,6 +25,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Automatically move to main activity if logged in
+        if (ParseUser.getCurrentUser() != null) {
+            moveToMainActivity();
+        }
+
         username_edittext = findViewById(R.id.username_edittext);
         password_edittext = findViewById(R.id.password_edittext);
         login_button = findViewById(R.id.login_button);
@@ -55,14 +60,16 @@ public class LoginActivity extends AppCompatActivity {
         ParseUser.logInInBackground(username, password, (user, e) -> {
             if (user != null) {
                 Toast.makeText(this, "Successfully logged in.", Toast.LENGTH_SHORT).show();
-
-                // Move to main activity
-                Intent i = new Intent(this, MainActivity.class);
-                startActivity(i);
-                finish(); // to prevent moving back
+                moveToMainActivity();
             } else {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    void moveToMainActivity() {
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
+        finish(); // to prevent moving back
     }
 }
