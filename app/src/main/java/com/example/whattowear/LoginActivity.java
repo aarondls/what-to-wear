@@ -59,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
                 // Move to main activity
                 Intent i = new Intent(this, MainActivity.class);
                 startActivity(i);
+                finish(); // to prevent moving back
             } else {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
