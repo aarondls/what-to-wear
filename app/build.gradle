@@ -38,4 +38,10 @@ dependencies {
 
     // Parse
     implementation "com.github.parse-community.Parse-SDK-Android:parse:1.25.0"
+
+    // Location services
+    implementation 'com.google.android.gms:play-services-location:20.0.0'
+
+    // For asking permissions
+    implementation 'pub.devrel:easypermissions:3.0.0'
 }
