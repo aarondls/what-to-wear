@@ -7,3 +7,7 @@ plugins {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+def localPropertiesFile = rootProject.file("local.properties")
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(localPropertiesFile))

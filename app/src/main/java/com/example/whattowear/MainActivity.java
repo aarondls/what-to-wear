@@ -13,16 +13,22 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.codepath.asynchttpclient.AsyncHttpClient;
+import com.codepath.asynchttpclient.RequestParams;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.codepath.asynchttpclient.callback.TextHttpResponseHandler;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import org.json.JSONException;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import okhttp3.Headers;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -31,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     public static final int PERMISSIONS_REQUEST_CODE = 1;
 
     private FusedLocationProviderClient fusedLocationClient;
-
+    private Location last_location;
     private TextView location_textview;
 
     @Override
@@ -44,6 +50,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         location_textview = findViewById(R.id.location_textview);
+
+        // set default location as null
+        last_location = null;
     }
 
     @Override
@@ -127,8 +136,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                 Log.i(TAG, Double.toString(location.getLongitude()));
                                 String city_name = getCityName(location);
                                 Log.i(TAG, city_name);
-
                                 location_textview.setText(city_name);
+                                last_location = location;
+                                getWeatherAtLastLocation();
                             } else {
                                 Log.i(TAG, "No location");
                             }
@@ -159,5 +169,46 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         }
 
         return city;
+    }
+
+    /**
+     * Gets the weather from the OpenWeather API at the saved last_location
+     */
+    private void getWeatherAtLastLocation() {
+        if (last_location == null) {
+            Log.i(TAG, "Location is null when requesting weather");
+            return;
+        }
+        Log.i(TAG, last_location.toString());
+
+        double latitude = last_location.getLatitude();
+        double longitude = last_location.getLongitude();
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        String api_url = "https://api.openweathermap.org/data/3.0/onecall?lat=" + latitude + "&lon=" + longitude +"&appid="+BuildConfig.OPENWEATHER_API_KEY;
+        RequestParams params = new RequestParams();
+
+        Log.i(TAG, "Requesting");
+        client.get(api_url, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                // Log entire response
+                Log.i(TAG, json.jsonObject.toString());
+
+                // Check specific response
+                try {
+                    Log.i(TAG, json.jsonObject.getJSONArray("hourly").toString());
+                } catch (JSONException e) {
+                    Log.e(TAG, "Could not get requested field", e);
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Log.i(TAG, "Failed to get weather data");
+                Log.i(TAG, response);
+            }
+        });
     }
 }

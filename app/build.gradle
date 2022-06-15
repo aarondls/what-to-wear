@@ -2,6 +2,10 @@ plugins {
     id 'com.android.application'
 }
 
+def localPropertiesFile = rootProject.file("local.properties")
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(localPropertiesFile))
+
 android {
     compileSdk 32
 
@@ -13,6 +17,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "OPENWEATHER_API_KEY", localProperties['openWeatherApiKey']
     }
 
     buildTypes {
@@ -44,4 +50,7 @@ dependencies {
 
     // For asking permissions
     implementation 'pub.devrel:easypermissions:3.0.0'
+
+    // For REST API client
+    implementation 'com.codepath.libraries:asynchttpclient:2.2.0'
 }
