@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     public static final int PERMISSIONS_REQUEST_CODE = 1;
 
     private FusedLocationProviderClient fusedLocationClient;
-    AsyncHttpClient openweatherClient;
+    private AsyncHttpClient openweatherClient;
     private Location lastLocation;
     private TextView locationTextview;
     private String units;
@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
         // TODO: Fix city being unknown
         // if city still blank, worst case, set to long lat?
-        if (loc_name == "") {
+        if (loc_name.isEmpty()) {
             loc_name = "Lat: " + latitude + "Long: " + longitude;
         }
 
