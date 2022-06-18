@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -14,15 +13,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
-import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
-import com.codepath.asynchttpclient.callback.TextHttpResponseHandler;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.json.JSONException;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.List;
@@ -37,10 +33,10 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     public static final int PERMISSIONS_REQUEST_CODE = 1;
 
     private FusedLocationProviderClient fusedLocationClient;
-    private AsyncHttpClient openweatherClient;
+    private AsyncHttpClient openWeatherClient;
     private Location lastLocation;
     private TextView locationTextview;
-    private String units;
+    private String weatherUnits;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +46,10 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         // initialize fused location client
         // does not need permissions
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        openweatherClient = new AsyncHttpClient();
+        openWeatherClient = new AsyncHttpClient();
 
         // TODO: Change this to get from Parse database
-        units = "imperial";
+        weatherUnits = "imperial";
 
         locationTextview = findViewById(R.id.location_textview);
 
@@ -140,8 +136,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             if (location != null) {
                                 lastLocation = location;
 
-                                String city_name = getLocationName(location);
-                                locationTextview.setText(city_name);
+                                String locationName = getLocationName(location);
+                                locationTextview.setText(locationName);
                                 getWeatherAtLastLocation();
                             } else {
                                 // TODO: Handle no location found
@@ -165,19 +161,19 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
         Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
         StringBuilder builder = new StringBuilder();
-        String loc_name = "";
+        String locationName = "";
         try {
             List<Address> address = geoCoder.getFromLocation(latitude, longitude, 1);
             // set depending on what is known
             if (address.get(0).getLocality() != null) {
-                loc_name = address.get(0).getLocality();
+                locationName = address.get(0).getLocality();
             } else if (address.get(0).getSubAdminArea() != null) {
-                loc_name = address.get(0).getSubAdminArea();
+                locationName = address.get(0).getSubAdminArea();
             } else if (address.get(0).getAdminArea() != null) {
-                loc_name = address.get(0).getAdminArea();
+                locationName = address.get(0).getAdminArea();
             } else if (address.get(0).getCountryName() != null) {
                 // Worst case, try to use country name
-                loc_name = address.get(0).getCountryName();
+                locationName = address.get(0).getCountryName();
             }
         } catch (IOException e) {
             Log.e(TAG, "IOException", e);
@@ -187,11 +183,11 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
         // TODO: Fix city being unknown
         // if city still blank, worst case, set to long lat?
-        if (loc_name.isEmpty()) {
-            loc_name = "Lat: " + latitude + "Long: " + longitude;
+        if (locationName.isEmpty()) {
+            locationName = "Lat: " + latitude + "Long: " + longitude;
         }
 
-        return loc_name;
+        return locationName;
     }
 
     /**
@@ -208,14 +204,14 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         double longitude = lastLocation.getLongitude();
 
         // TODO: Exclude non needed data after detailed weather screen is built
-        String api_url = "https://api.openweathermap.org/data/3.0/onecall?"
+        String apiUrl = "https://api.openweathermap.org/data/3.0/onecall?"
                 + "lat=" + latitude
                 + "&lon=" + longitude
                 + "&lon=" + longitude
-                + "&units=" + units
+                + "&units=" + weatherUnits
                 + "&appid=" + BuildConfig.OPENWEATHER_API_KEY;
 
-        openweatherClient.get(api_url, new JsonHttpResponseHandler() {
+        openWeatherClient.get(apiUrl, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
                 // TODO: Update weather data here
