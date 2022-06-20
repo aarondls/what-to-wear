@@ -2,6 +2,8 @@ package com.example.whattowear;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.location.Address;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.example.whattowear.models.Weather;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,6 +39,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     private AsyncHttpClient openWeatherClient;
     private Location lastLocation;
     private TextView locationTextview;
+    private RecyclerView weatherRecyclerview;
+    private Weather weatherData;
+    private WeatherAdapter adapter;
     private String weatherUnits;
 
     @Override
@@ -52,9 +58,18 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         weatherUnits = "imperial";
 
         locationTextview = findViewById(R.id.location_textview);
+        weatherRecyclerview = findViewById(R.id.weather_info_recycleview);
 
         // set default location as null
         lastLocation = null;
+
+        // initialize weather data and recycle view
+        weatherData = new Weather();
+        adapter = new WeatherAdapter(this, weatherData);
+        // Recycleview setup: layout manager and adapter
+        weatherRecyclerview.setLayoutManager(new LinearLayoutManager(this));
+        weatherRecyclerview.setAdapter(adapter);
+        // Now, the data can be populated. This is done in onStart by updateWeather.
     }
 
     @Override
@@ -62,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         super.onStart();
 
         // request permissions if no permission given (can be moved to a button click or anywhere)
-        // can also use permanently denied
         if (!hasLocationPermissions()) {
             requestLocationPermissions();
         }
@@ -119,10 +133,12 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     }
 
     /**
-     * Updates the weather at the last location
-     * For safety, checks if location permission have been granted before checking last location
+     * Updates weatherData at lastLocation
+     * For safety, checks if location permissions have been granted before checking last location
      */
+    @SuppressLint("MissingPermission") // permission is checked with hasLocationPermissions method
     public void updateWeather() {
+        // first fetch last location
         if (hasLocationPermissions()) {
             Log.i(TAG, "Location permissions granted");
             // needs permissions to get location
@@ -182,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         }
 
         // TODO: Fix city being unknown
-        // if city still blank, worst case, set to long lat?
+        // if city still blank, worst case, it is set to long lat coordinates
         if (locationName.isEmpty()) {
             locationName = "Lat: " + latitude + "Long: " + longitude;
         }
@@ -211,28 +227,30 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 + "&units=" + weatherUnits
                 + "&appid=" + BuildConfig.OPENWEATHER_API_KEY;
 
+        Log.i(TAG, "Requesting weather data");
         openWeatherClient.get(apiUrl, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
                 // TODO: Update weather data here
-                // For now, log response and check if getting specific fields work
-
                 // Log entire response
                 Log.i(TAG, json.jsonObject.toString());
 
-                // Check specific response
+                // Get relevant data
                 try {
-                    Log.i(TAG, json.jsonObject.getJSONArray("hourly").toString());
+                    weatherData.loadFromJson(json.jsonObject);
                 } catch (JSONException e) {
-                    Log.e(TAG, "Could not get requested field", e);
+                    Log.e(TAG, "Failed to convert JSON data into Weather object", e);
                     e.printStackTrace();
                 }
+
+                // notify adapter
+                adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                Log.i(TAG, "Failed to get weather data");
-                Log.i(TAG, response);
+                Log.e(TAG, "Failed to get weather data");
+                Log.e(TAG, response);
             }
         });
     }
