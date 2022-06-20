@@ -20,6 +20,15 @@
         android:theme="@style/Theme.WhatToWear"
         tools:targetApi="31">
         <activity
+            android:name=".DetailedClothingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PreferencesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MenuActivity"
+            android:exported="false" />
+        <activity
             android:name=".DashboardActivity"
             android:exported="false" />
         <activity

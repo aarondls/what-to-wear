@@ -41,6 +41,8 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
     private AsyncHttpClient openWeatherClient;
 
     private Button detailedWeatherButton;
+    private Button detailedClothingButton;
+    private Button menuButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,12 +55,33 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
         openWeatherClient = new AsyncHttpClient();
 
         detailedWeatherButton = findViewById(R.id.detailed_weather_button);
+        detailedClothingButton = findViewById(R.id.detailed_clothing_button);
+
+        menuButton = findViewById(R.id.dashboard_to_menu_button);
 
         detailedWeatherButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Move to detailed weather screen
                 Intent i = new Intent(DashboardActivity.this, DetailedWeatherActivity.class);
+                startActivity(i);
+            }
+        });
+
+        detailedClothingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Move to detailed clothing screen
+                Intent i = new Intent(DashboardActivity.this, DetailedClothingActivity.class);
+                startActivity(i);
+            }
+        });
+
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Move to menu screen
+                Intent i = new Intent(DashboardActivity.this, MenuActivity.class);
                 startActivity(i);
             }
         });
