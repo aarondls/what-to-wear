@@ -7,11 +7,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +43,7 @@ public class DetailedWeatherActivity extends AppCompatActivity implements EasyPe
     private AsyncHttpClient openWeatherClient;
     private Location lastLocation;
     private TextView locationTextview;
+    private Button backToDashboardButton;
     private RecyclerView weatherRecyclerview;
     private Weather weatherData;
     private WeatherAdapter adapter;
@@ -48,7 +52,7 @@ public class DetailedWeatherActivity extends AppCompatActivity implements EasyPe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_detailed_weather);
 
         // initialize fused location client
         // does not need permissions
@@ -59,7 +63,16 @@ public class DetailedWeatherActivity extends AppCompatActivity implements EasyPe
         weatherUnits = "imperial";
 
         locationTextview = findViewById(R.id.location_textview);
+        backToDashboardButton = findViewById(R.id.dw_back_to_dashboard_button);
         weatherRecyclerview = findViewById(R.id.weather_info_recycleview);
+
+        backToDashboardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Move to dashboard screen
+                finish();
+            }
+        });
 
         // set default location as null
         lastLocation = null;
