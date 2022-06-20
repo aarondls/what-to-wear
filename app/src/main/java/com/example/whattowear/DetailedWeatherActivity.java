@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -31,8 +32,8 @@ import okhttp3.Headers;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class MainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
-    public static final String TAG = "MainActivity";
+public class DetailedWeatherActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
+    public static final String TAG = "DetailedWeatherActivity";
     public static final int PERMISSIONS_REQUEST_CODE = 1;
 
     private FusedLocationProviderClient fusedLocationClient;
