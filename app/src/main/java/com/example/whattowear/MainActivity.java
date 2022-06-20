@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -43,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     private RecyclerView weatherRecyclerview;
     private Weather weatherData;
     private WeatherAdapter adapter;
-
     private String weatherUnits;
 
     @Override
