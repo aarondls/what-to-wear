@@ -41,12 +41,10 @@ public class DetailedWeatherActivity extends AppCompatActivity implements EasyPe
 
     private FusedLocationProviderClient fusedLocationClient;
     private AsyncHttpClient openWeatherClient;
-    private Location lastLocation;
     private TextView locationTextview;
     private Button backToDashboardButton;
     private RecyclerView weatherRecyclerview;
     private WeatherAdapter adapter;
-    private String weatherUnits;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +55,6 @@ public class DetailedWeatherActivity extends AppCompatActivity implements EasyPe
         // does not need permissions
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         openWeatherClient = new AsyncHttpClient();
-
-        // TODO: Change this to get from Parse database
-        weatherUnits = "imperial";
 
         locationTextview = findViewById(R.id.location_textview);
         backToDashboardButton = findViewById(R.id.dw_back_to_dashboard_button);
@@ -72,9 +67,6 @@ public class DetailedWeatherActivity extends AppCompatActivity implements EasyPe
                 finish();
             }
         });
-
-        // set default location as null
-        lastLocation = null;
 
         // initialize recycle view
         adapter = new WeatherAdapter(this);
@@ -162,10 +154,12 @@ public class DetailedWeatherActivity extends AppCompatActivity implements EasyPe
                         public void onSuccess(Location location) {
                             // Got last known location. In some rare situations this can be null.
                             if (location != null) {
-                                lastLocation = location;
+                                Weather.setLastLocation(location);
 
                                 String locationName = getLocationName(location);
                                 locationTextview.setText(locationName);
+                                Weather.setLastLocationName(locationName);
+
                                 getWeatherAtLastLocation();
                             } else {
                                 // TODO: Handle no location found
@@ -222,21 +216,21 @@ public class DetailedWeatherActivity extends AppCompatActivity implements EasyPe
      * Gets the weather from the OpenWeather API at the saved last_location
      */
     private void getWeatherAtLastLocation() {
-        if (lastLocation == null) {
+        if (Weather.getLastLocation() == null) {
             // TODO: Handle null last location
             Log.e(TAG, "Location is null when requesting weather");
             return;
         }
 
-        double latitude = lastLocation.getLatitude();
-        double longitude = lastLocation.getLongitude();
+        double latitude = Weather.getLastLocation().getLatitude();
+        double longitude = Weather.getLastLocation().getLongitude();
 
         // TODO: Exclude non needed data after detailed weather screen is built
         String apiUrl = "https://api.openweathermap.org/data/3.0/onecall?"
                 + "lat=" + latitude
                 + "&lon=" + longitude
                 + "&lon=" + longitude
-                + "&units=" + weatherUnits
+                + "&units=" + Weather.getWeatherUnits()
                 + "&appid=" + BuildConfig.OPENWEATHER_API_KEY;
 
         Log.i(TAG, "Requesting weather data");
