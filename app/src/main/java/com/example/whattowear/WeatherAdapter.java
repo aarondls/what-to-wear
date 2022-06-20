@@ -21,12 +21,10 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     public static final String DEG_SIGN = "\u00B0";
 
     Context context;
-    Weather weatherData;
 
     // Pass context and weather info
-    public WeatherAdapter(Context context, Weather weatherData) {
+    public WeatherAdapter(Context context) {
         this.context = context;
-        this.weatherData = weatherData;
     }
 
     // For each row, inflate the correct layout type
@@ -41,7 +39,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Get the forecast at pos
-        Forecast hourlyForecast = weatherData.getHourlyForecast().get(position);
+        Forecast hourlyForecast = Weather.getHourlyForecast().get(position);
 
         // Bind the forecast data
         holder.bind(hourlyForecast);
@@ -51,7 +49,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     public int getItemCount() {
         // TODO: Calculate size from weather_data
         // TODO: Change to size of needed hourly forecast + other types displayed
-        return weatherData.getHourlyForecast().size();
+        return Weather.getHourlyForecast().size();
     }
 
     // Define a viewholder

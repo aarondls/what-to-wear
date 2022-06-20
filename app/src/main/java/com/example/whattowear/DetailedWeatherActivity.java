@@ -45,7 +45,6 @@ public class DetailedWeatherActivity extends AppCompatActivity implements EasyPe
     private TextView locationTextview;
     private Button backToDashboardButton;
     private RecyclerView weatherRecyclerview;
-    private Weather weatherData;
     private WeatherAdapter adapter;
     private String weatherUnits;
 
@@ -77,9 +76,8 @@ public class DetailedWeatherActivity extends AppCompatActivity implements EasyPe
         // set default location as null
         lastLocation = null;
 
-        // initialize weather data and recycle view
-        weatherData = new Weather();
-        adapter = new WeatherAdapter(this, weatherData);
+        // initialize recycle view
+        adapter = new WeatherAdapter(this);
         // Recycleview setup: layout manager and adapter
         weatherRecyclerview.setLayoutManager(new LinearLayoutManager(this));
         weatherRecyclerview.setAdapter(adapter);
@@ -251,7 +249,9 @@ public class DetailedWeatherActivity extends AppCompatActivity implements EasyPe
 
                 // Get relevant data
                 try {
-                    weatherData.loadFromJson(json.jsonObject);
+                    // load the weather data from the received json data
+                    // note that weather is a singleton class, so it can be loaded directly
+                    Weather.loadFromJson(json.jsonObject);
                 } catch (JSONException e) {
                     Log.e(TAG, "Failed to convert JSON data into Weather object", e);
                     e.printStackTrace();

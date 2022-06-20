@@ -9,17 +9,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Weather {
+    // Weather is a singleton class
+
     public static final String TAG = "Weather";
 
-    private List<Forecast> hourlyForecast;
-    private Forecast currentForecast;
-    private Conditions dayConditions;
+    private static Weather weather = new Weather();
 
-    public Weather() {
+    private static List<Forecast> hourlyForecast;
+    private static Forecast currentForecast;
+    private static Conditions dayConditions;
+
+    // private to ensure that only the class can instantiate itself
+    private Weather() {
         hourlyForecast = new ArrayList<>();
     }
 
-    public void loadFromJson(JSONObject jsonObject) throws JSONException {
+    public static void loadFromJson(JSONObject jsonObject) throws JSONException {
         hourlyForecast.clear();
         hourlyForecast.addAll(Forecast.fromJsonArray(jsonObject.getJSONArray("hourly")));
 
@@ -27,7 +32,7 @@ public class Weather {
         // TODO: if not, delete them
     }
 
-    public List<Forecast> getHourlyForecast() {
+    public static List<Forecast> getHourlyForecast() {
         return hourlyForecast;
     }
 }
