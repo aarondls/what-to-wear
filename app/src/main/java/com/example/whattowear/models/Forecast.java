@@ -12,6 +12,7 @@ import java.util.List;
 
 public class Forecast {
     public static final String TAG = "Forecast";
+    public static final String DEG_SIGN = "\u00B0";
 
     // TODO: Remove fields that may not be used once clothing selection logic is completed
     private Date dt;
@@ -68,8 +69,32 @@ public class Forecast {
         return dt;
     }
 
+    /**
+     * Converts Date into hour only AM/PM time
+     * @return  the String representation of the hour of the Date
+     */
+    public String getAMPMTime() {
+        int hours = dt.getHours();
+
+        if (hours == 0) {
+            return "12AM";
+        } else if (hours == 12) {
+            return hours + "PM";
+        } else if (hours < 12) {
+            return hours + "AM";
+        } else {
+            return hours-12 + "PM";
+        }
+    }
+
     public int getTemp() {
         return temp;
+    }
+
+    public String getFormattedTemp() {
+        // TODO: Change specific deg sign based on units
+        // "\u2103" for C and "\u2109" for F
+        return String.valueOf(temp) + DEG_SIGN;
     }
 
     public Conditions getHourCondition() {
