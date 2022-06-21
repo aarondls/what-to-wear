@@ -37,7 +37,13 @@ public class Forecast {
         forecast.uvIndex = jsonObject.getDouble("uvi");
         forecast.clouds = jsonObject.getInt("clouds");
         forecast.windSpeed = jsonObject.getDouble("wind_speed");
-        forecast.probOfPrecipitation = jsonObject.getInt("pop");
+
+        if (jsonObject.has("pop")) {
+            forecast.probOfPrecipitation = jsonObject.getInt("pop");
+        } else {
+            forecast.probOfPrecipitation = -1;
+        }
+
         forecast.hourCondition = Conditions.fromJson(jsonObject.getJSONArray("weather").getJSONObject(0));
 
         if (jsonObject.has("rain")) {
