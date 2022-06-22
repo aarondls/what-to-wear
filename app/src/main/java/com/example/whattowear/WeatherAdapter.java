@@ -18,6 +18,7 @@ import java.util.Date;
 
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHolder> {
     public static final String TAG = "WeatherAdapter";
+    public static final String DEG_SIGN = "\u00B0";
 
     Context context;
 
@@ -67,8 +68,11 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         }
 
         public void bind(Forecast hourly_forecast) {
-            hourly_temp_textview.setText(hourly_forecast.getFormattedTemp());
-            hourly_time_textview.setText(hourly_forecast.getAMPMTime());
+            // TODO: Change specific deg sign based on units
+            // "\u2103" for C and "\u2109" for F
+            String temp_with_deg = String.valueOf(hourly_forecast.getTemp()) + DEG_SIGN;
+            hourly_temp_textview.setText(temp_with_deg);
+            hourly_time_textview.setText(getAMPMTime(hourly_forecast.getDt()));
 
             // TODO: can convert into using local images based on condition ID
             Glide.with(context).load(hourly_forecast.getHourCondition().getConditionIconLink()).into(hourly_weather_imageview);
@@ -76,6 +80,23 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
             // TODO: load all other data here
         }
 
+        /**
+         * Converts Date into hour only AM/PM time
+         * @param dt the Date to be converted
+         * @return  the String representation of the hour of the Date
+         */
+        private String getAMPMTime(Date dt) {
+            int hours = dt.getHours();
 
+            if (hours == 0) {
+                return "12AM";
+            } else if (hours == 12) {
+                return hours + "PM";
+            } else if (hours < 12) {
+                return hours + "AM";
+            } else {
+                return hours-12 + "PM";
+            }
+        }
     }
 }
