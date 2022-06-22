@@ -183,6 +183,8 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
                             }
                         }
                     });
+        } else {
+            // TODO: handle case where location services permission is not granted
         }
     }
 
