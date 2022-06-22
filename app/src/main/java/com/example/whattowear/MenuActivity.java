@@ -7,12 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-/**
- * MenuActivity represents the menu screen, where the user can move towards
- * the preferences screen and the dashboard screen. The menu screen is accessible
- * by the three-line symbol on the dashboard and preferences screen. For the
- * public feed stretch goal, it would also be accessible within this menu screen.
- */
 public class MenuActivity extends AppCompatActivity {
 
     private Button goToDashboardButton;
