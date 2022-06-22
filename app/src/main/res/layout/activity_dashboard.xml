@@ -7,78 +7,109 @@
     android:layout_height="match_parent"
     tools:context=".DashboardActivity">
 
-    <TextView
-        android:id="@+id/dashboard_2hr_time_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/dashboard_3hr_time_textview"
-        android:layout_alignEnd="@+id/dashboard_2hr_weather_icon_imageview"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="1dp"
-        tools:text="11am" />
-
-    <TextView
-        android:id="@+id/dashboard_2hr_temp_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dashboard_2hr_weather_icon_imageview"
-        android:layout_alignEnd="@+id/dashboard_2hr_weather_icon_imageview"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="10dp"
-        tools:text="24" />
-
-    <ImageView
-        android:id="@+id/dashboard_3hr_weather_icon_imageview"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_below="@+id/dashboard_1hr_time_textview"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="21dp"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <TextView
-        android:id="@+id/dashboard_3hr_time_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dashboard_forecast_description_textview"
-        android:layout_alignEnd="@+id/dashboard_3hr_weather_icon_imageview"
-        android:layout_marginTop="97dp"
-        android:layout_marginEnd="2dp"
-        tools:text="12pm" />
-
-    <TextView
-        android:id="@+id/dashboard_3hr_temp_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dashboard_3hr_weather_icon_imageview"
-        android:layout_alignEnd="@+id/dashboard_3hr_weather_icon_imageview"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="10dp"
-        tools:text="25" />
-
-    <ImageView
-        android:id="@+id/dashboard_2hr_weather_icon_imageview"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_below="@+id/dashboard_1hr_time_textview"
-        android:layout_marginTop="9dp"
-        android:layout_marginEnd="36dp"
-        android:layout_toStartOf="@+id/dashboard_3hr_weather_icon_imageview"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <Button
-        android:id="@+id/detailed_weather_button"
-        android:layout_width="208dp"
-        android:layout_height="59dp"
+    <RelativeLayout
+        android:id="@+id/forecast_3hr_relativelayout"
+        android:layout_width="240dp"
+        android:layout_height="100dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="410dp"
-        android:layout_marginEnd="37dp"
-        android:text="detailed weather"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="217dp" />
+        android:layout_marginTop="270dp"
+        android:layout_marginEnd="18dp"
+        android:clickable="true">
+
+        <TextView
+            android:id="@+id/dashboard_1hr_time_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/dashboard_3hr_time_textview"
+            android:layout_alignEnd="@+id/dashboard_1hr_weather_icon_imageview"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="2dp"
+            tools:text="10am" />
+
+        <ImageView
+            android:id="@+id/dashboard_1hr_weather_icon_imageview"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/dashboard_1hr_time_textview"
+            android:layout_marginStart="164dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="38dp"
+            android:layout_toStartOf="@+id/dashboard_2hr_weather_icon_imageview"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/dashboard_1hr_temp_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dashboard_1hr_weather_icon_imageview"
+            android:layout_alignEnd="@+id/dashboard_1hr_weather_icon_imageview"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="10dp"
+            tools:text="23" />
+
+        <TextView
+            android:id="@+id/dashboard_2hr_time_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/dashboard_3hr_time_textview"
+            android:layout_alignEnd="@+id/dashboard_2hr_weather_icon_imageview"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="1dp"
+            tools:text="11am" />
+
+        <TextView
+            android:id="@+id/dashboard_2hr_temp_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dashboard_2hr_weather_icon_imageview"
+            android:layout_alignEnd="@+id/dashboard_2hr_weather_icon_imageview"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="10dp"
+            tools:text="24" />
+
+        <ImageView
+            android:id="@+id/dashboard_2hr_weather_icon_imageview"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/dashboard_1hr_time_textview"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="36dp"
+            android:layout_toStartOf="@+id/dashboard_3hr_weather_icon_imageview"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <ImageView
+            android:id="@+id/dashboard_3hr_weather_icon_imageview"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/dashboard_1hr_time_textview"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="21dp"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/dashboard_3hr_time_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/dashboard_3hr_weather_icon_imageview"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="2dp"
+            tools:text="12pm" />
+
+        <TextView
+            android:id="@+id/dashboard_3hr_temp_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dashboard_3hr_weather_icon_imageview"
+            android:layout_alignEnd="@+id/dashboard_3hr_weather_icon_imageview"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="10dp"
+            tools:text="25" />
+
+    </RelativeLayout>
 
     <Button
         android:id="@+id/dashboard_to_menu_button"
@@ -95,11 +126,11 @@
         android:id="@+id/detailed_clothing_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/detailed_weather_button"
         android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="150dp"
-        android:layout_marginEnd="52dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="27dp"
+        android:layout_marginBottom="48dp"
         android:text="Detailed Clothing" />
 
     <TextView
@@ -145,33 +176,4 @@
         android:textSize="60sp"
         tools:text="22" />
 
-    <TextView
-        android:id="@+id/dashboard_1hr_time_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/dashboard_3hr_time_textview"
-        android:layout_alignEnd="@+id/dashboard_1hr_weather_icon_imageview"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="2dp"
-        tools:text="10am" />
-
-    <ImageView
-        android:id="@+id/dashboard_1hr_weather_icon_imageview"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_below="@+id/dashboard_1hr_time_textview"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="38dp"
-        android:layout_toStartOf="@+id/dashboard_2hr_weather_icon_imageview"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <TextView
-        android:id="@+id/dashboard_1hr_temp_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dashboard_1hr_weather_icon_imageview"
-        android:layout_alignEnd="@+id/dashboard_1hr_weather_icon_imageview"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="10dp"
-        tools:text="23" />
 </RelativeLayout>

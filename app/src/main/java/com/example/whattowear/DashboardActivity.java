@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,9 +60,10 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
     private ImageView forecast3HrWeatherIconImageview;
     private TextView forecast3HrTempTextview;
 
-    private Button detailedWeatherButton;
     private Button detailedClothingButton;
     private Button menuButton;
+
+    private RelativeLayout forecast3HrRelativelayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,18 +90,10 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
         forecast3HrWeatherIconImageview = findViewById(R.id.dashboard_3hr_weather_icon_imageview);
         forecast3HrTempTextview = findViewById(R.id.dashboard_3hr_temp_textview);
 
-        detailedWeatherButton = findViewById(R.id.detailed_weather_button);
         detailedClothingButton = findViewById(R.id.detailed_clothing_button);
         menuButton = findViewById(R.id.dashboard_to_menu_button);
 
-        detailedWeatherButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Move to detailed weather screen
-                Intent i = new Intent(DashboardActivity.this, DetailedWeatherActivity.class);
-                startActivity(i);
-            }
-        });
+        forecast3HrRelativelayout = findViewById(R.id.forecast_3hr_relativelayout);
 
         detailedClothingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,6 +109,15 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
             public void onClick(View v) {
                 // Move to menu screen
                 Intent i = new Intent(DashboardActivity.this, MenuActivity.class);
+                startActivity(i);
+            }
+        });
+
+        forecast3HrRelativelayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Move to detailed weather screen
+                Intent i = new Intent(DashboardActivity.this, DetailedWeatherActivity.class);
                 startActivity(i);
             }
         });
