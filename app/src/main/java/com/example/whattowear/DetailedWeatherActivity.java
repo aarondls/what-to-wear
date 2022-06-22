@@ -11,6 +11,12 @@ import android.widget.TextView;
 
 import com.example.whattowear.models.Weather;
 
+/**
+ * DetailedWeatherActivity represents the screen where
+ * the current weather information is shown in detail
+ * using a RecycleView. This screen is accessible from
+ * the main dashboard screen.
+ */
 public class DetailedWeatherActivity extends AppCompatActivity {
     public static final String TAG = "DetailedWeatherActivity";
 

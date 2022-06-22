@@ -32,6 +32,12 @@ import okhttp3.Headers;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
+/**
+ * DashboardActivity represents the main dashboard, which is the first screen that
+ * the user sees upon logging into the app. From the main dashboard, the user
+ * can see the weather and clothing overview, and navigate towards
+ * the detailed weather/clothing screens, as well as the menu screen.
+ */
 public class DashboardActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
     public static final String TAG = "DashboardActivity";
 
