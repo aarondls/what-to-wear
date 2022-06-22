@@ -179,6 +179,7 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
                             } else {
                                 // TODO: Handle no location found
                                 Log.e(TAG, "No location");
+                                Toast.makeText(DashboardActivity.this, "No location found. No weather or clothing information will be displayed.", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
