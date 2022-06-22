@@ -17,7 +17,7 @@
         android:layout_marginEnd="56dp"
         android:text="detailed weather"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="217dp" />
+        tools:layout_editor_absoluteY="217dp"/>
 
     <Button
         android:id="@+id/dashboard_to_menu_button"
@@ -28,7 +28,7 @@
         android:layout_marginTop="7dp"
         android:layout_marginEnd="15dp"
         app:icon="@drawable/ic_baseline_menu_24"
-        app:iconGravity="top" />
+        app:iconGravity="top"/>
 
     <Button
         android:id="@+id/detailed_clothing_button"
@@ -39,5 +39,5 @@
         android:layout_centerVertical="true"
         android:layout_marginTop="104dp"
         android:layout_marginEnd="52dp"
-        android:text="Detailed Clothing" />
+        android:text="Detailed Clothing"/>
 </RelativeLayout>

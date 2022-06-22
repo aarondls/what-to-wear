@@ -14,7 +14,7 @@
         android:layout_marginTop="16dp"
         android:text="What to Wear"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <Button
         android:id="@+id/menu_select_dashboard_button"
@@ -27,7 +27,7 @@
         android:layout_marginTop="169dp"
         android:text="Dashboard"
         tools:layout_editor_absoluteX="39dp"
-        tools:layout_editor_absoluteY="64dp" />
+        tools:layout_editor_absoluteY="64dp"/>
 
     <Button
         android:id="@+id/menu_select_preferences_button"
@@ -36,5 +36,5 @@
         android:layout_below="@+id/menu_select_dashboard_button"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="149dp"
-        android:text="Preferences" />
+        android:text="Preferences"/>
 </RelativeLayout>
