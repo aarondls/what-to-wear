@@ -77,7 +77,7 @@ public class Forecast {
 
     /**
      * Converts Date into hour only AM/PM time
-     * @return  the String representation of the hour of the Date
+     * @return the String representation of the hour of the Date
      */
     public String getAMPMTime() {
         int hours = dt.getHours();
