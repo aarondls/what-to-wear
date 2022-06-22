@@ -24,7 +24,7 @@ public class DetailedWeatherActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_weather);
 
-        locationTextview = findViewById(R.id.location_textview);
+        locationTextview = findViewById(R.id.detailed_weather_location_textview);
         backToDashboardButton = findViewById(R.id.weather_back_to_dashboard_button);
         weatherRecyclerview = findViewById(R.id.weather_info_recycleview);
 
