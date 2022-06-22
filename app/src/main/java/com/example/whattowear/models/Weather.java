@@ -39,18 +39,12 @@ public class Weather {
         hourlyForecast.clear();
         hourlyForecast.addAll(Forecast.fromJsonArray(jsonObject.getJSONArray("hourly")));
 
-        currentForecast = Forecast.fromJson(jsonObject.getJSONObject("current"));
-
         // TODO: fill up currentForecast and dayConditions, when needed
         // TODO: if not, delete them
     }
 
     public static List<Forecast> getHourlyForecast() {
         return hourlyForecast;
-    }
-
-    public static Forecast getCurrentForecast() {
-        return currentForecast;
     }
 
     public static void setLastLocation(Location lastLocation) {
