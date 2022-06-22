@@ -55,8 +55,7 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        // initialize fused location client
-        // does not need permissions
+        // initialize fused location client, which does not need user location permissions
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         openWeatherClient = new AsyncHttpClient();
 
