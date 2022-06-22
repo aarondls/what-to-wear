@@ -263,6 +263,8 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
                     // note that weather is a singleton class, so it can be loaded directly
                     Weather.loadFromJson(json.jsonObject);
                 } catch (JSONException e) {
+                    // TODO: fix what happens when weather data is not found; perhaps change weather display to show a message that it isn't found
+                    Toast.makeText(DashboardActivity.this, "Unable to parse weather information.", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "Failed to convert JSON data into Weather object", e);
                     e.printStackTrace();
                 }
@@ -272,7 +274,7 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
 
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                // TODO: fix what happens when weather data is not found; perhaps change weather display to show a mnessage that it isn't found
+                // TODO: fix what happens when weather data is not found; perhaps change weather display to show a message that it isn't found
                 // for now, make a toast
                 Toast.makeText(DashboardActivity.this, "Unable to fetch weather information.", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "Failed to get weather data");
