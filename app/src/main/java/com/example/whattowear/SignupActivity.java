@@ -15,31 +15,31 @@ import com.parse.ParseUser;
 public class SignupActivity extends AppCompatActivity {
     public static final String TAG = "SignupActivity";
 
-    private EditText signupNameEdittext;
-    private EditText signupUsernameEdittext;
-    private EditText signupPasswordEdittext;
-    private Button signupButton;
-    private Button goToLoginButton;
+    private EditText signup_name_edittext;
+    private EditText signup_username_edittext;
+    private EditText signup_password_edittext;
+    private Button signup_button;
+    private Button go_to_login_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        signupNameEdittext = findViewById(R.id.signup_name_edittext);
-        signupUsernameEdittext = findViewById(R.id.signup_username_edittext);
-        signupPasswordEdittext = findViewById(R.id.signup_password_edittext);
-        signupButton = findViewById(R.id.signup_button);
-        goToLoginButton = findViewById(R.id.go_to_login_button);
+        signup_name_edittext = findViewById(R.id.signup_name_edittext);
+        signup_username_edittext = findViewById(R.id.signup_username_edittext);
+        signup_password_edittext = findViewById(R.id.signup_password_edittext);
+        signup_button = findViewById(R.id.signup_button);
+        go_to_login_button = findViewById(R.id.go_to_login_button);
 
-        signupButton.setOnClickListener(new View.OnClickListener() {
+        signup_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 createUser();
             }
         });
 
-        goToLoginButton.setOnClickListener(new View.OnClickListener() {
+        go_to_login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Move to login screen
@@ -52,9 +52,9 @@ public class SignupActivity extends AppCompatActivity {
     public void createUser() {
         Log.i(TAG, "Attempting to create new account");
         ParseUser user = new ParseUser();
-        user.setUsername(signupUsernameEdittext.getText().toString());
-        user.setPassword(signupPasswordEdittext.getText().toString());
-        user.put("name", signupNameEdittext.getText().toString());
+        user.setUsername(signup_username_edittext.getText().toString());
+        user.setPassword(signup_password_edittext.getText().toString());
+        user.put("name", signup_name_edittext.getText().toString());
 
         user.signUpInBackground(e -> {
             if (e == null) {

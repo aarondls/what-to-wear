@@ -15,10 +15,10 @@ import com.parse.ParseUser;
 public class LoginActivity extends AppCompatActivity {
     public static final String TAG = "LoginActivity";
 
-    private EditText usernameEdittext;
-    private EditText passwordEdittext;
-    private Button loginButton;
-    private Button goToSignupButton;
+    private EditText username_edittext;
+    private EditText password_edittext;
+    private Button login_button;
+    private Button go_to_signup_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,19 +30,19 @@ public class LoginActivity extends AppCompatActivity {
             moveToDashboard();
         }
 
-        usernameEdittext = findViewById(R.id.username_edittext);
-        passwordEdittext = findViewById(R.id.password_edittext);
-        loginButton = findViewById(R.id.login_button);
-        goToSignupButton = findViewById(R.id.go_to_signup_button);
+        username_edittext = findViewById(R.id.username_edittext);
+        password_edittext = findViewById(R.id.password_edittext);
+        login_button = findViewById(R.id.login_button);
+        go_to_signup_button = findViewById(R.id.go_to_signup_button);
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loginUser();
             }
         });
 
-        goToSignupButton.setOnClickListener(new View.OnClickListener() {
+        go_to_signup_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Move to signup screen
@@ -54,8 +54,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public void loginUser() {
         Log.i(TAG, "Attempting to login user");
-        String username = usernameEdittext.getText().toString();
-        String password = passwordEdittext.getText().toString();
+        String username = username_edittext.getText().toString();
+        String password = password_edittext.getText().toString();
 
         ParseUser.logInInBackground(username, password, (user, e) -> {
             if (user != null) {
