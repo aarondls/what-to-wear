@@ -6,11 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-/** DetailedClothingActivity represents the screen where
- * the user's clothing recommendations are shown in detail
- * using a RecycleView. This is accessible from the main
- * dashboard screen.
- */
 public class DetailedClothingActivity extends AppCompatActivity {
 
     private Button backToDashboardButton;
