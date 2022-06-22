@@ -16,5 +16,5 @@
         android:layout_marginTop="13dp"
         android:layout_marginEnd="17dp"
         app:icon="@drawable/ic_baseline_menu_24"
-        app:iconGravity="top" />
+        app:iconGravity="top"/>
 </RelativeLayout>
