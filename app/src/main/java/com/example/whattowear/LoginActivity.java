@@ -25,9 +25,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Automatically move to main activity if logged in
+        // Automatically move to dashboard activity if logged in
         if (ParseUser.getCurrentUser() != null) {
-            moveToMainActivity();
+            moveToDashboard();
         }
 
         usernameEdittext = findViewById(R.id.username_edittext);
@@ -60,15 +60,15 @@ public class LoginActivity extends AppCompatActivity {
         ParseUser.logInInBackground(username, password, (user, e) -> {
             if (user != null) {
                 Toast.makeText(this, "Successfully logged in.", Toast.LENGTH_SHORT).show();
-                moveToMainActivity();
+                moveToDashboard();
             } else {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    void moveToMainActivity() {
-        Intent i = new Intent(this, MainActivity.class);
+    void moveToDashboard() {
+        Intent i = new Intent(this, DashboardActivity.class);
         startActivity(i);
         finish(); // to prevent moving back
     }

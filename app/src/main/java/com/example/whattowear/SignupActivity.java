@@ -60,8 +60,8 @@ public class SignupActivity extends AppCompatActivity {
             if (e == null) {
                 Toast.makeText(this, "Successfully created new account!", Toast.LENGTH_SHORT).show();
 
-                // Move to main activity
-                Intent i = new Intent(this, MainActivity.class);
+                // Move to dashboard activity
+                Intent i = new Intent(this, DashboardActivity.class);
                 startActivity(i);
                 finish(); // to prevent moving back
             } else {

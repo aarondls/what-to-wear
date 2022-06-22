@@ -2,16 +2,17 @@ package com.example.whattowear;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
@@ -31,45 +32,64 @@ import okhttp3.Headers;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class MainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
-    public static final String TAG = "MainActivity";
+/**
+ * DashboardActivity represents the main dashboard, which is the first screen that
+ * the user sees upon logging into the app. From the main dashboard, the user
+ * can see the weather and clothing overview, and navigate towards
+ * the detailed weather/clothing screens, as well as the menu screen.
+ */
+public class DashboardActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
+    public static final String TAG = "DashboardActivity";
+
     public static final int PERMISSIONS_REQUEST_CODE = 1;
 
     private FusedLocationProviderClient fusedLocationClient;
     private AsyncHttpClient openWeatherClient;
-    private Location lastLocation;
-    private TextView locationTextview;
-    private RecyclerView weatherRecyclerview;
-    private Weather weatherData;
-    private WeatherAdapter adapter;
-    private String weatherUnits;
+
+    private Button detailedWeatherButton;
+    private Button detailedClothingButton;
+    private Button menuButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_dashboard);
 
-        // initialize fused location client
-        // does not need permissions
+        // initialize fused location client, which does not need user location permissions
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         openWeatherClient = new AsyncHttpClient();
 
-        // TODO: Change this to get from Parse database
-        weatherUnits = "imperial";
+        detailedWeatherButton = findViewById(R.id.detailed_weather_button);
+        detailedClothingButton = findViewById(R.id.detailed_clothing_button);
 
-        locationTextview = findViewById(R.id.location_textview);
-        weatherRecyclerview = findViewById(R.id.weather_info_recycleview);
+        menuButton = findViewById(R.id.dashboard_to_menu_button);
 
-        // set default location as null
-        lastLocation = null;
+        detailedWeatherButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Move to detailed weather screen
+                Intent i = new Intent(DashboardActivity.this, DetailedWeatherActivity.class);
+                startActivity(i);
+            }
+        });
 
-        // initialize weather data and recycle view
-        weatherData = new Weather();
-        adapter = new WeatherAdapter(this, weatherData);
-        // Recycleview setup: layout manager and adapter
-        weatherRecyclerview.setLayoutManager(new LinearLayoutManager(this));
-        weatherRecyclerview.setAdapter(adapter);
-        // Now, the data can be populated. This is done in onStart by updateWeather.
+        detailedClothingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Move to detailed clothing screen
+                Intent i = new Intent(DashboardActivity.this, DetailedClothingActivity.class);
+                startActivity(i);
+            }
+        });
+
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Move to menu screen
+                Intent i = new Intent(DashboardActivity.this, MenuActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     @Override
@@ -150,17 +170,21 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         public void onSuccess(Location location) {
                             // Got last known location. In some rare situations this can be null.
                             if (location != null) {
-                                lastLocation = location;
+                                Weather.setLastLocation(location);
 
                                 String locationName = getLocationName(location);
-                                locationTextview.setText(locationName);
+                                Weather.setLastLocationName(locationName);
+
                                 getWeatherAtLastLocation();
                             } else {
                                 // TODO: Handle no location found
                                 Log.e(TAG, "No location");
+                                Toast.makeText(DashboardActivity.this, "No location found. No weather or clothing information will be displayed.", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
+        } else {
+            // TODO: handle case where location services permission is not granted
         }
     }
 
@@ -210,21 +234,21 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
      * Gets the weather from the OpenWeather API at the saved last_location
      */
     private void getWeatherAtLastLocation() {
-        if (lastLocation == null) {
+        if (Weather.getLastLocation() == null) {
             // TODO: Handle null last location
             Log.e(TAG, "Location is null when requesting weather");
             return;
         }
 
-        double latitude = lastLocation.getLatitude();
-        double longitude = lastLocation.getLongitude();
+        double latitude = Weather.getLastLocation().getLatitude();
+        double longitude = Weather.getLastLocation().getLongitude();
 
         // TODO: Exclude non needed data after detailed weather screen is built
         String apiUrl = "https://api.openweathermap.org/data/3.0/onecall?"
                 + "lat=" + latitude
                 + "&lon=" + longitude
                 + "&lon=" + longitude
-                + "&units=" + weatherUnits
+                + "&units=" + Weather.getWeatherUnits()
                 + "&appid=" + BuildConfig.OPENWEATHER_API_KEY;
 
         Log.i(TAG, "Requesting weather data");
@@ -237,18 +261,24 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
                 // Get relevant data
                 try {
-                    weatherData.loadFromJson(json.jsonObject);
+                    // load the weather data from the received json data
+                    // note that weather is a singleton class, so it can be loaded directly
+                    Weather.loadFromJson(json.jsonObject);
                 } catch (JSONException e) {
+                    // TODO: fix what happens when weather data is not found; perhaps change weather display to show a message that it isn't found
+                    Toast.makeText(DashboardActivity.this, "Unable to parse weather information.", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "Failed to convert JSON data into Weather object", e);
                     e.printStackTrace();
                 }
 
-                // notify adapter
-                adapter.notifyDataSetChanged();
+                // TODO: if adding recycle view in this activity, notify adapter here
             }
 
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                // TODO: fix what happens when weather data is not found; perhaps change weather display to show a message that it isn't found
+                // for now, make a toast
+                Toast.makeText(DashboardActivity.this, "Unable to fetch weather information.", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "Failed to get weather data");
                 Log.e(TAG, response);
             }

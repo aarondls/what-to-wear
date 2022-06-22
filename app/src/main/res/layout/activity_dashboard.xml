@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DashboardActivity">
+
+    <Button
+        android:id="@+id/detailed_weather_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="191dp"
+        android:layout_marginEnd="56dp"
+        android:text="detailed weather"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteY="217dp"/>
+
+    <Button
+        android:id="@+id/dashboard_to_menu_button"
+        android:layout_width="43dp"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="15dp"
+        app:icon="@drawable/ic_baseline_menu_24"
+        app:iconGravity="top"/>
+
+    <Button
+        android:id="@+id/detailed_clothing_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/detailed_weather_button"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="104dp"
+        android:layout_marginEnd="52dp"
+        android:text="Detailed Clothing"/>
+</RelativeLayout>

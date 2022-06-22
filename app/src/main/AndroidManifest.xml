@@ -4,11 +4,8 @@
     package="com.example.whattowear">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <!-- For location -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- For precise location -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- For location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- For precise location -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -23,10 +20,22 @@
         android:theme="@style/Theme.WhatToWear"
         tools:targetApi="31">
         <activity
+            android:name=".DetailedClothingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PreferencesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DashboardActivity"
+            android:exported="false" />
+        <activity
             android:name=".SignupActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".DetailedWeatherActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
