@@ -272,6 +272,9 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
 
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                // TODO: fix what happens when weather data is not found; perhaps change weather display to show a mnessage that it isn't found
+                // for now, make a toast
+                Toast.makeText(DashboardActivity.this, "Unable to fetch weather information.", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "Failed to get weather data");
                 Log.e(TAG, response);
             }
