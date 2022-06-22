@@ -23,6 +23,18 @@ public class Conditions {
         return conditions;
     }
 
+    public int getWeatherConditionsID() {
+        return weatherConditionsID;
+    }
+
+    public String getConditionSummary() {
+        return conditionSummary;
+    }
+
+    public String getConditionDescription() {
+        return conditionDescription;
+    }
+
     public String getConditionIconLink() {
         return conditionIconLink;
     }
