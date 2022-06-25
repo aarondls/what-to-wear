@@ -18,16 +18,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.codepath.asynchttpclient.AsyncHttpClient;
-import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
-import com.example.whattowear.models.Forecast;
 import com.example.whattowear.models.Weather;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
-
-import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.List;
@@ -48,57 +43,40 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
 
     public static final int PERMISSIONS_REQUEST_CODE = 1;
 
+    /**
+     * Used to let weather controller know when new location data is available
+     */
+    public interface LocationDataListener {
+        public void onNewLocationDataReady();
+    }
+
     private FusedLocationProviderClient fusedLocationClient;
     private AsyncHttpClient openWeatherClient;
 
-    private TextView locationTextview;
-    private TextView forecastDescriptionTextview;
-    private TextView currentTemperatureTextview;
-    private ImageView weatherIconImageview;
-
-    private TextView forecast1HrTimeTextview;
-    private ImageView forecast1HrWeatherIconImageview;
-    private TextView forecast1HrTempTextview;
-    private TextView forecast2HrTimeTextview;
-    private ImageView forecast2HrWeatherIconImageview;
-    private TextView forecast2HrTempTextview;
-    private TextView forecast3HrTimeTextview;
-    private ImageView forecast3HrWeatherIconImageview;
-    private TextView forecast3HrTempTextview;
+    private DashboardWeatherController dashboardWeatherController;
+    private LocationDataListener locationDataListener;
 
     private Button detailedClothingButton;
     private Button menuButton;
-
-    private RelativeLayout forecast3HrRelativelayout;
+    private RelativeLayout detailedWeatherClickable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        locationDataListener = null;
+
         // initialize fused location client, which does not need user location permissions
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         openWeatherClient = new AsyncHttpClient();
 
-        locationTextview = findViewById(R.id.dashboard_location_textview);
-        forecastDescriptionTextview = findViewById(R.id.dashboard_forecast_description_textview);
-        currentTemperatureTextview = findViewById(R.id.dashboard_current_temp_textview);
-        weatherIconImageview = findViewById(R.id.dashboard_weather_icon_imageview);
-
-        forecast1HrTimeTextview = findViewById(R.id.dashboard_1hr_time_textview);
-        forecast1HrWeatherIconImageview = findViewById(R.id.dashboard_1hr_weather_icon_imageview);
-        forecast1HrTempTextview = findViewById(R.id.dashboard_1hr_temp_textview);
-        forecast2HrTimeTextview = findViewById(R.id.dashboard_2hr_time_textview);
-        forecast2HrWeatherIconImageview = findViewById(R.id.dashboard_2hr_weather_icon_imageview);
-        forecast2HrTempTextview = findViewById(R.id.dashboard_2hr_temp_textview);
-        forecast3HrTimeTextview = findViewById(R.id.dashboard_3hr_time_textview);
-        forecast3HrWeatherIconImageview = findViewById(R.id.dashboard_3hr_weather_icon_imageview);
-        forecast3HrTempTextview = findViewById(R.id.dashboard_3hr_temp_textview);
+        // this handles getting new weather data when location data changes
+        dashboardWeatherController = new DashboardWeatherController(this);
 
         detailedClothingButton = findViewById(R.id.detailed_clothing_button);
         menuButton = findViewById(R.id.dashboard_to_menu_button);
-
-        forecast3HrRelativelayout = findViewById(R.id.forecast_3hr_relativelayout);
+        detailedWeatherClickable = findViewById(R.id.forecast_3hr_relativelayout);
 
         detailedClothingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,7 +96,7 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
             }
         });
 
-        forecast3HrRelativelayout.setOnClickListener(new View.OnClickListener() {
+        detailedWeatherClickable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Move to detailed weather screen
@@ -135,10 +113,10 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
         // request permissions if no permission given (can be moved to a button click or anywhere)
         if (!hasLocationPermissions()) {
             requestLocationPermissions();
+            getUserLocation();
         }
         Log.i(TAG, "Finished asking permissions");
 
-        updateWeather();
     }
 
     @Override
@@ -172,7 +150,7 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
         Toast.makeText(this, "Location services permission granted!", Toast.LENGTH_SHORT).show();
 
-        updateWeather();
+        getUserLocation();
     }
 
     @Override
@@ -189,11 +167,11 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
     }
 
     /**
-     * Updates weatherData at lastLocation
-     * For safety, checks if location permissions have been granted before checking last location
+     * Updates lastLocation to be the user's last location
+     * Notifies the weather controller if location data changes
      */
     @SuppressLint("MissingPermission") // permission is checked with hasLocationPermissions method
-    public void updateWeather() {
+    private void getUserLocation() {
         // first fetch last location
         if (hasLocationPermissions()) {
             Log.i(TAG, "Location permissions granted");
@@ -206,13 +184,16 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
                         public void onSuccess(Location location) {
                             // Got last known location. In some rare situations this can be null.
                             if (location != null) {
-                                Weather.setLastLocation(location);
+                                // give weather new location
+                                Weather.setLastLocationName(getLocationName(location));
+                                Weather.setLastLocationLatitude(location.getLatitude());
+                                Weather.setLastLocationLongitude(location.getLongitude());
 
-                                String locationName = getLocationName(location);
-                                Weather.setLastLocationName(locationName);
-                                locationTextview.setText(locationName);
+                                // let location listener (weather controller) know new location data is available
+                                if (locationDataListener != null) {
+                                    locationDataListener.onNewLocationDataReady();
+                                }
 
-                                getWeatherAtLastLocation();
                             } else {
                                 // TODO: Handle no location found
                                 Log.e(TAG, "No location");
@@ -265,85 +246,5 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
         }
 
         return locationName;
-    }
-
-    /**
-     * Gets the weather from the OpenWeather API at the saved last_location
-     */
-    private void getWeatherAtLastLocation() {
-        if (Weather.getLastLocation() == null) {
-            // TODO: Handle null last location
-            Log.e(TAG, "Location is null when requesting weather");
-            return;
-        }
-
-        double latitude = Weather.getLastLocation().getLatitude();
-        double longitude = Weather.getLastLocation().getLongitude();
-
-        // TODO: Exclude non needed data after detailed weather screen is built
-        String apiUrl = "https://api.openweathermap.org/data/3.0/onecall?"
-                + "lat=" + latitude
-                + "&lon=" + longitude
-                + "&lon=" + longitude
-                + "&units=" + Weather.getWeatherUnits()
-                + "&appid=" + BuildConfig.OPENWEATHER_API_KEY;
-
-        Log.i(TAG, "Requesting weather data");
-        openWeatherClient.get(apiUrl, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Headers headers, JSON json) {
-                // TODO: Update weather data here
-                // Log entire response
-                Log.i(TAG, json.jsonObject.toString());
-
-                // Get relevant data
-                try {
-                    // load the weather data from the received json data
-                    // note that weather is a singleton class, so it can be loaded directly
-                    Weather.loadFromJson(json.jsonObject);
-                } catch (JSONException e) {
-                    // TODO: fix what happens when weather data is not found; perhaps change weather display to show a message that it isn't found
-                    Toast.makeText(DashboardActivity.this, "Unable to parse weather information.", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "Failed to convert JSON data into Weather object", e);
-                    e.printStackTrace();
-                }
-
-                // TODO: if adding recycle view in this activity, notify adapter here
-                // should also set anything after new weather data comes in here
-                forecastDescriptionTextview.setText(Weather.getCurrentForecast().getHourCondition().getConditionDescription());
-                currentTemperatureTextview.setText(Weather.getCurrentForecast().getFormattedTemp());
-
-                // TODO: can convert all image icons below into using local images based on condition ID, when graphics are available
-                List<Forecast> hourlyForecast = Weather.getHourlyForecast();
-                // ensure forecasts exist at projected hour
-                int numForecast = hourlyForecast.size();
-                if (numForecast >= 2) {
-                    forecast1HrTimeTextview.setText(hourlyForecast.get(1).getAMPMTime());
-                    Glide.with(DashboardActivity.this).load(hourlyForecast.get(1).getHourCondition().getConditionIconLink()).into(forecast1HrWeatherIconImageview);
-                    forecast1HrTempTextview.setText(hourlyForecast.get(1).getFormattedTemp());
-                }
-                if (numForecast >= 3) {
-                    forecast2HrTimeTextview.setText(hourlyForecast.get(2).getAMPMTime());
-                    Glide.with(DashboardActivity.this).load(hourlyForecast.get(2).getHourCondition().getConditionIconLink()).into(forecast2HrWeatherIconImageview);
-                    forecast2HrTempTextview.setText(hourlyForecast.get(2).getFormattedTemp());
-                }
-                if (numForecast >= 4) {
-                    forecast3HrTimeTextview.setText(hourlyForecast.get(3).getAMPMTime());
-                    Glide.with(DashboardActivity.this).load(hourlyForecast.get(3).getHourCondition().getConditionIconLink()).into(forecast3HrWeatherIconImageview);
-                    forecast3HrTempTextview.setText(hourlyForecast.get(3).getFormattedTemp());
-                }
-
-                Glide.with(DashboardActivity.this).load(Weather.getCurrentForecast().getHourCondition().getConditionIconLink()).into(weatherIconImageview);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                // TODO: fix what happens when weather data is not found; perhaps change weather display to show a message that it isn't found
-                // for now, make a toast
-                Toast.makeText(DashboardActivity.this, "Unable to fetch weather information.", Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "Failed to get weather data");
-                Log.e(TAG, response);
-            }
-        });
     }
 }
