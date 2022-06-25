@@ -128,9 +128,9 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginEnd="27dp"
-        android:layout_marginBottom="48dp"
-        android:text="Detailed Clothing" />
+        android:layout_marginEnd="19dp"
+        android:layout_marginBottom="25dp"
+        android:text="Detailed Clothing"/>
 
     <TextView
         android:id="@+id/dashboard_location_textview"
@@ -174,4 +174,66 @@
         android:layout_marginTop="48dp"
         android:textSize="60sp"
         tools:text="22" />
+
+    <ImageView
+        android:id="@+id/dashboard_lower_body_garment_imageview"
+        android:layout_width="73dp"
+        android:layout_height="61dp"
+        android:layout_above="@+id/dashboard_footwear_imageview"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="56dp"
+        android:layout_marginBottom="19dp"
+        tools:srcCompat="@tools:sample/avatars"/>
+
+    <ImageView
+        android:id="@+id/dashboard_upper_body_garment_imageview"
+        android:layout_width="73dp"
+        android:layout_height="61dp"
+        android:layout_above="@+id/dashboard_footwear_imageview"
+        android:layout_marginStart="27dp"
+        android:layout_marginBottom="22dp"
+        android:layout_toEndOf="@+id/dashboard_lower_body_garment_imageview"
+        tools:srcCompat="@tools:sample/avatars"/>
+
+    <ImageView
+        android:id="@+id/dashboard_over_body_garment_imageview"
+        android:layout_width="73dp"
+        android:layout_height="61dp"
+        android:layout_above="@+id/dashboard_footwear_imageview"
+        android:layout_marginStart="37dp"
+        android:layout_marginBottom="19dp"
+        android:layout_toEndOf="@+id/dashboard_upper_body_garment_imageview"
+        tools:srcCompat="@tools:sample/avatars"/>
+
+    <ImageView
+        android:id="@+id/dashboard_footwear_imageview"
+        android:layout_width="73dp"
+        android:layout_height="61dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="61dp"
+        android:layout_marginBottom="131dp"
+        tools:srcCompat="@tools:sample/avatars"/>
+
+    <ImageView
+        android:id="@+id/dashboard_accessories_imageview"
+        android:layout_width="73dp"
+        android:layout_height="61dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="130dp"
+        android:layout_toEndOf="@+id/dashboard_footwear_imageview"
+        tools:srcCompat="@tools:sample/avatars"/>
+
+    <TextView
+        android:id="@+id/dashboard_excess_accessories_textview"
+        android:layout_width="98dp"
+        android:layout_height="46dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="29dp"
+        android:layout_marginBottom="136dp"
+        android:layout_toEndOf="@+id/dashboard_accessories_imageview"
+        tools:text="+2 more accessories"/>
+
 </RelativeLayout>
