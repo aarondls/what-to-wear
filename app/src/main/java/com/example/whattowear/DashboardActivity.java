@@ -54,6 +54,8 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
     private AsyncHttpClient openWeatherClient;
 
     private DashboardWeatherController dashboardWeatherController;
+    private DashboardClothingController dashboardClothingController;
+
     private LocationDataListener locationDataListener;
 
     private Button detailedClothingButton;
@@ -73,6 +75,9 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
 
         // this handles getting new weather data when location data changes
         dashboardWeatherController = new DashboardWeatherController(this);
+
+        // this handles calculating new clothing data when weather data changes
+        dashboardClothingController = new DashboardClothingController(this, dashboardWeatherController);
 
         detailedClothingButton = findViewById(R.id.detailed_clothing_button);
         menuButton = findViewById(R.id.dashboard_to_menu_button);
