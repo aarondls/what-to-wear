@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.45555555555555555" />
         <entry key="app/src/main/res/layout/activity_detailed_clothing.xml" value="0.4717948717948718" />
+        <entry key="app/src/main/res/drawable/ic_baseline_warning_24.xml" value="0.139" />
         <entry key="app/src/main/res/layout/activity_detailed_weather.xml" value="0.4740740740740741" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.49045992250795717" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.32192925691771695" />

@@ -236,4 +236,17 @@
         android:layout_toEndOf="@+id/dashboard_accessories_imageview"
         tools:text="+2 more accessories"/>
 
+    <Button
+        android:id="@+id/location_services_denied_warning_button"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="41dp"
+        android:layout_height="37dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="19dp"
+        android:layout_toStartOf="@+id/dashboard_to_menu_button"
+        app:icon="@drawable/ic_baseline_warning_24"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconTint="#FAA110"/>
 </RelativeLayout>

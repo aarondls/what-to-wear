@@ -13,9 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
@@ -23,6 +21,7 @@ import com.example.whattowear.models.Weather;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
 import java.util.List;
@@ -62,6 +61,8 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
     private Button menuButton;
     private RelativeLayout detailedWeatherClickable;
 
+    private Button locationServicesDeniedWarningButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,12 +84,30 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
         menuButton = findViewById(R.id.dashboard_to_menu_button);
         detailedWeatherClickable = findViewById(R.id.forecast_3hr_relativelayout);
 
+        locationServicesDeniedWarningButton = findViewById(R.id.location_services_denied_warning_button);
+        locationServicesDeniedWarningButton.setVisibility(View.GONE);
+
         detailedClothingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Move to detailed clothing screen
                 Intent i = new Intent(DashboardActivity.this, DetailedClothingActivity.class);
                 startActivity(i);
+            }
+        });
+
+        locationServicesDeniedWarningButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Display warning snackbar, and allow user to change if they wish by redirecting to settings app
+                Snackbar.make(v, "Location services is permanently denied and app functionality is reduced.", Snackbar.LENGTH_LONG)
+                        .setAction("Change settings", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // directing user to enable the permission in app settings.
+                                new AppSettingsDialog.Builder(DashboardActivity.this).build().show();
+                            }
+                        }).show();
             }
         });
 
@@ -119,12 +138,18 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
     protected void onStart() {
         super.onStart();
 
-        // request permissions if no permission given (can be moved to a button click or anywhere)
-        if (!hasLocationPermissions()) {
-            requestLocationPermissions();
-            getUserLocation();
+        // prepare app depending on permissions
+        if (hasLocationPermissions()) {
+            handleLocationServicesAccepted();
+        } else {
+            handleLocationServicesDenied();
         }
-        Log.i(TAG, "Finished asking permissions");
+
+            // request permissions if no permission given
+            if (!hasLocationPermissions()) {
+                requestLocationPermissions();
+            }
+            getUserLocation();
 
     }
 
@@ -138,7 +163,7 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
 
     /**
      * Used to check if location permissions have been granted
-     * @return  whether the application has locations services permissions
+     * @return whether the application has locations services permissions
      */
     private boolean hasLocationPermissions() {
         return EasyPermissions.hasPermissions(this, Manifest.permission.ACCESS_FINE_LOCATION);
@@ -148,31 +173,46 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
      * Used to request location permissions
      */
     private void requestLocationPermissions() {
-        EasyPermissions.requestPermissions(
-                this,
-                "This application requires location services to auto detect your location.",
-                PERMISSIONS_REQUEST_CODE,
-                Manifest.permission.ACCESS_FINE_LOCATION);
+        if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+            Log.i(TAG, "permanently denied");
+            // TODO: stretch goal to animate button bouncing to highlight whats wrong
+            handleLocationServicesDenied();
+        } else {
+            EasyPermissions.requestPermissions(
+                    this,
+                    "This application requires location services to auto detect your location.",
+                    PERMISSIONS_REQUEST_CODE,
+                    Manifest.permission.ACCESS_FINE_LOCATION);
+        }
     }
 
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
         Toast.makeText(this, "Location services permission granted!", Toast.LENGTH_SHORT).show();
 
-        getUserLocation();
+        handleLocationServicesAccepted();
     }
 
     @Override
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
         Toast.makeText(this, "Location services permission denied!", Toast.LENGTH_SHORT).show();
 
-        // Check whether the user denied any permissions and checked "NEVER ASK AGAIN."
-        // This will display a dialog directing them to enable the permission in app settings.
-        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
-            new AppSettingsDialog.Builder(this).build().show();
-        } else {
-            requestLocationPermissions();
-        }
+        handleLocationServicesDenied();
+    }
+
+    /**
+     * Prepares app to work with location services granted
+     */
+    private void handleLocationServicesAccepted() {
+        locationServicesDeniedWarningButton.setVisibility(View.GONE);
+    }
+
+    /**
+     * Prepares app to work even without location services so the user can still use certain functionalities
+     * and not get locked out of the app
+     */
+    private void handleLocationServicesDenied() {
+        locationServicesDeniedWarningButton.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -204,14 +244,11 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
                                 }
 
                             } else {
-                                // TODO: Handle no location found
-                                Log.e(TAG, "No location");
-                                Toast.makeText(DashboardActivity.this, "No location found. No weather or clothing information will be displayed.", Toast.LENGTH_SHORT).show();
+                                Log.e(TAG, "No location found");
+                                Toast.makeText(DashboardActivity.this, "No location found. Check your GPS or manually enter in a location.", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
-        } else {
-            // TODO: handle case where location services permission is not granted
         }
     }
 

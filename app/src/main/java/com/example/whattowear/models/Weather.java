@@ -30,6 +30,8 @@ public class Weather {
 
         // set default location to null
         lastLocation = null;
+        // Set last location name to be empty, which can be used to check if there exists a current location
+        lastLocationName = "";
 
         // TODO: Change this to get from Parse database
         weatherUnits = "imperial";
