@@ -13,18 +13,24 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.example.whattowear.models.Weather;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -52,15 +58,20 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
 
     private FusedLocationProviderClient fusedLocationClient;
     private AsyncHttpClient openWeatherClient;
+    private PlacesClient placesClient;
+
+    private AutocompleteSupportFragment autocompleteFragment;
 
     private DashboardWeatherController dashboardWeatherController;
     private DashboardClothingController dashboardClothingController;
-
     private LocationDataListener locationDataListener;
 
     private Button detailedClothingButton;
     private Button menuButton;
     private RelativeLayout detailedWeatherClickable;
+
+    private Button locationServicesDeniedWarningButton;
+    private Button getUserLocationButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +84,20 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         openWeatherClient = new AsyncHttpClient();
 
+        // Initialize the Places SDK
+        Places.initialize(getApplicationContext(), BuildConfig.GOOGLEPLACES_API_KEY);
+        // Create new Places client instance
+        placesClient = Places.createClient(this);
+
+        // Initialize the AutocompleteSupportFragment.
+        autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+        autocompleteFragment.setHint("");
+
+        // Specify the types of place data to return.
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.NAME, Place.Field.LAT_LNG));
+
         // this handles getting new weather data when location data changes
         dashboardWeatherController = new DashboardWeatherController(this);
 
@@ -83,12 +108,43 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
         menuButton = findViewById(R.id.dashboard_to_menu_button);
         detailedWeatherClickable = findViewById(R.id.forecast_3hr_relativelayout);
 
+        getUserLocationButton = findViewById(R.id.get_user_location_button);
+        getUserLocationButton.setVisibility(View.GONE);
+        locationServicesDeniedWarningButton = findViewById(R.id.location_services_denied_warning_button);
+        locationServicesDeniedWarningButton.setVisibility(View.GONE);
+
         detailedClothingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Move to detailed clothing screen
                 Intent i = new Intent(DashboardActivity.this, DetailedClothingActivity.class);
                 startActivity(i);
+            }
+        });
+
+        getUserLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // request permissions if no permission given
+                if (!hasLocationPermissions()) {
+                    requestLocationPermissions();
+                }
+                getUserLocation();
+            }
+        });
+
+        locationServicesDeniedWarningButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Display warning snackbar, and allow user to change if they wish by redirecting to settings app
+                Snackbar.make(v, "Location services is permanently denied and app functionality is reduced.", Snackbar.LENGTH_LONG)
+                        .setAction("Change settings", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // directing user to enable the permission in app settings.
+                                new AppSettingsDialog.Builder(DashboardActivity.this).build().show();
+                            }
+                        }).show();
             }
         });
 
@@ -109,27 +165,88 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
                 startActivity(i);
             }
         });
+
+        // Set up a PlaceSelectionListener to handle the response.
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                // give weather new location
+                Weather.setLastLocationName(place.getName());
+                Weather.setLastLocationLatitude(place.getLatLng().latitude);
+                Weather.setLastLocationLongitude(place.getLatLng().longitude);
+
+                // let location listener (weather controller) know new location data is available
+                if (locationDataListener != null) {
+                    locationDataListener.onNewLocationDataReady();
+                }
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+                Log.i(TAG,status.toString());
+
+                // the error could be either hitting back or something more serious
+                // if it is serious, the status message is not null, so display as a toast
+                if (status.getStatusMessage() != null) {
+                    Toast.makeText(DashboardActivity.this, status.getStatusMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    public void setNewLocationDataListener(LocationDataListener locationDataListener) {
+        this.locationDataListener = locationDataListener;
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        Log.i(TAG, "onstart");
 
-        // request permissions if no permission given (can be moved to a button click or anywhere)
-        if (!hasLocationPermissions()) {
-            requestLocationPermissions();
+        // prepare app depending on permissions
+        if (hasLocationPermissions()) {
+            handleLocationServicesAccepted();
+        } else {
+            handleLocationServicesDenied();
+        }
+
+        // check if new location needs to be updated or not
+        if (Weather.getLastLocationName().isEmpty()) {
+            // need to update with new location
+            Log.i(TAG, "loc is empty");
+            // request permissions if no permission given
+            if (!hasLocationPermissions()) {
+                requestLocationPermissions();
+            }
+            Log.i(TAG, "Finished asking permissions");
             getUserLocation();
         }
-        Log.i(TAG, "Finished asking permissions");
+    }
 
+    @Override
+    protected void onResume() {
+        Log.i(TAG, "onresume");
+        super.onResume();
+
+        autocompleteFragment.setText("");
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        // Forward results to EasyPermissions
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+        if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+            Log.i(TAG, "permanently denied");
+            handleLocationServicesDenied();
+        } else {
+            EasyPermissions.requestPermissions(
+                    this,
+                    "This application requires location services to auto detect your location.",
+                    PERMISSIONS_REQUEST_CODE,
+                    Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+
+        // TODO: see if no need to show request permission denied
     }
 
     /**
@@ -143,32 +260,50 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
     /**
      * Used to request location permissions
      */
+    // TODO: rename func and javadocs to show this requests the user location when granted
     private void requestLocationPermissions() {
-        EasyPermissions.requestPermissions(
-                this,
-                "This application requires location services to auto detect your location.",
-                PERMISSIONS_REQUEST_CODE,
-                Manifest.permission.ACCESS_FINE_LOCATION);
+        if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+            Log.i(TAG, "permanently denied");
+            // TODO: stretch goal to animate button bouncing to highlight whats wrong
+            handleLocationServicesDenied();
+        } else {
+            EasyPermissions.requestPermissions(
+                    this,
+                    "This application requires location services to auto detect your location.",
+                    PERMISSIONS_REQUEST_CODE,
+                    Manifest.permission.ACCESS_FINE_LOCATION);
+        }
     }
 
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
         Toast.makeText(this, "Location services permission granted!", Toast.LENGTH_SHORT).show();
 
-        getUserLocation();
+        handleLocationServicesAccepted();
     }
 
     @Override
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
         Toast.makeText(this, "Location services permission denied!", Toast.LENGTH_SHORT).show();
 
-        // Check whether the user denied any permissions and checked "NEVER ASK AGAIN."
-        // This will display a dialog directing them to enable the permission in app settings.
-        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
-            new AppSettingsDialog.Builder(this).build().show();
-        } else {
-            requestLocationPermissions();
-        }
+        handleLocationServicesDenied();
+    }
+
+    /**
+     * Prepares app to work with location services granted
+     */
+    private void handleLocationServicesAccepted() {
+        locationServicesDeniedWarningButton.setVisibility(View.GONE);
+        getUserLocationButton.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Prepares app to work even without location services so the user can still use certain functionalities
+     * and not get locked out of the app
+     */
+    private void handleLocationServicesDenied() {
+        locationServicesDeniedWarningButton.setVisibility(View.VISIBLE);
+        getUserLocationButton.setVisibility(View.GONE);
     }
 
     /**
@@ -200,14 +335,11 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
                                 }
 
                             } else {
-                                // TODO: Handle no location found
-                                Log.e(TAG, "No location");
-                                Toast.makeText(DashboardActivity.this, "No location found. No weather or clothing information will be displayed.", Toast.LENGTH_SHORT).show();
+                                Log.e(TAG, "No location found");
+                                Toast.makeText(DashboardActivity.this, "No location found. Check your GPS or manually enter in a location.", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
-        } else {
-            // TODO: handle case where location services permission is not granted
         }
     }
 

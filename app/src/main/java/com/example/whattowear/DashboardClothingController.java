@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.whattowear.models.Clothing;
+import com.example.whattowear.models.Weather;
 
 import java.util.List;
 
@@ -30,6 +31,12 @@ public class DashboardClothingController {
         footwearImageview = activity.findViewById(R.id.dashboard_footwear_imageview);
         accessoriesImageview = activity.findViewById(R.id.dashboard_accessories_imageview);
         excessAccessoriesTextview = activity.findViewById(R.id.dashboard_excess_accessories_textview);
+
+        // Check if there is data to be displayed
+        if (!Weather.getLastLocationName().isEmpty()) {
+            // TODO: add checks for when loc name is not empty but clothing calculation is not done
+            updateDashboardDisplay();
+        }
 
         dashboardWeatherController.setNewWeatherDataListener(new DashboardWeatherController.WeatherDataListener() {
             @Override

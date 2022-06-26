@@ -83,6 +83,13 @@ public class DashboardWeatherController {
         forecast3HrWeatherIconImageview = activity.findViewById(R.id.dashboard_3hr_weather_icon_imageview);
         forecast3HrTempTextview = activity.findViewById(R.id.dashboard_3hr_temp_textview);
 
+        // Check if there is data to be displayed
+        if (!Weather.getLastLocationName().isEmpty() && Weather.getLastLocationName().equals(Weather.getLoadedWeatherLastLocationName())) {
+            Log.i(TAG, "Loading preexisting weather data");
+            // TODO: add checks for when loc name is not empty but entire json data is not loaded
+            updateDashboardDisplay();
+        }
+
         activity.setNewLocationDataListener(new DashboardActivity.LocationDataListener() {
             @Override
             public void onNewLocationDataReady() {
@@ -167,6 +174,9 @@ public class DashboardWeatherController {
             Log.i(TAG, "calling listener");
             listener.onNewWeatherDataReady();
         }
+
+        // set this again so updateDashboardDisplay can be called by itself when loading preexisting weather data
+        locationTextview.setText(Weather.getLastLocationName());
 
         // should set anything to be displayed after new weather data comes in here
         forecastDescriptionTextview.setText(Weather.getCurrentForecast().getHourCondition().getConditionDescription());

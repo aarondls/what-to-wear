@@ -2,6 +2,8 @@ package com.example.whattowear.models;
 
 import static java.lang.Math.min;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,6 +30,7 @@ public class Forecast {
     private Conditions hourCondition;
 
     public static Forecast fromJson(JSONObject jsonObject) throws JSONException {
+        Log.i("test", "inside forecast loading");
         Forecast forecast = new Forecast();
 
         forecast.dt = new Date(Long.parseLong(jsonObject.getString("dt")) * 1000);
@@ -62,6 +65,7 @@ public class Forecast {
     }
 
     public static List<Forecast> fromJsonArray(JSONArray jsonArray) throws JSONException {
+        Log.i("test", "inside hourly forecast loading");
         List<Forecast> forecasts = new ArrayList<>();
         // Limit hours to display at most only a day from current hour
         int num_hours_limit = min(jsonArray.length(), 24);

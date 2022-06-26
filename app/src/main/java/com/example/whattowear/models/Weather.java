@@ -16,8 +16,10 @@ public class Weather {
 
     private static Weather weather = new Weather();
 
-    private static Location lastLocation;
+    private static double lastLocationLatitude;
+    private static double lastLocationLongitude;
     private static String lastLocationName;
+    private static String loadedWeatherLastLocationName;
     private static String weatherUnits;
 
     private static List<Forecast> hourlyForecast;
@@ -28,8 +30,8 @@ public class Weather {
     private Weather() {
         hourlyForecast = new ArrayList<>();
 
-        // set default location to null
-        lastLocation = null;
+        // Set last location name to be empty, which can be used to check if there exists a current location
+        lastLocationName = "";
 
         // TODO: Change this to get from Parse database
         weatherUnits = "imperial";
@@ -40,6 +42,8 @@ public class Weather {
         hourlyForecast.addAll(Forecast.fromJsonArray(jsonObject.getJSONArray("hourly")));
 
         currentForecast = Forecast.fromJson(jsonObject.getJSONObject("current"));
+
+        loadedWeatherLastLocationName = lastLocationName;
 
         // TODO: fill up currentForecast and dayConditions, when needed
         // TODO: if not, delete them
@@ -53,16 +57,24 @@ public class Weather {
         return currentForecast;
     }
 
-    public static void setLastLocation(Location lastLocation) {
-        Weather.lastLocation = lastLocation;
+    public static void setLastLocationLatitude(double lastLocationLatitude) {
+        Weather.lastLocationLatitude = lastLocationLatitude;
+    }
+
+    public static void setLastLocationLongitude(double lastLocationLongitude) {
+        Weather.lastLocationLongitude = lastLocationLongitude;
     }
 
     public static void setLastLocationName(String lastLocationName) {
         Weather.lastLocationName = lastLocationName;
     }
 
-    public static Location getLastLocation() {
-        return lastLocation;
+    public static double getLastLocationLatitude() {
+        return lastLocationLatitude;
+    }
+
+    public static double getLastLocationLongitude() {
+        return lastLocationLongitude;
     }
 
     public static String getLastLocationName() {
@@ -71,6 +83,10 @@ public class Weather {
 
     public static String getWeatherUnits() {
         return weatherUnits;
+    }
+
+    public static String getLoadedWeatherLastLocationName() {
+        return loadedWeatherLastLocationName;
     }
 }
 
