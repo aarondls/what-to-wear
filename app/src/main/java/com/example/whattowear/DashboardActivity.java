@@ -62,6 +62,7 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
     private RelativeLayout detailedWeatherClickable;
 
     private Button locationServicesDeniedWarningButton;
+    private Button getUserLocationButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +85,8 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
         menuButton = findViewById(R.id.dashboard_to_menu_button);
         detailedWeatherClickable = findViewById(R.id.forecast_3hr_relativelayout);
 
+        getUserLocationButton = findViewById(R.id.get_user_location_button);
+        getUserLocationButton.setVisibility(View.GONE);
         locationServicesDeniedWarningButton = findViewById(R.id.location_services_denied_warning_button);
         locationServicesDeniedWarningButton.setVisibility(View.GONE);
 
@@ -93,6 +96,14 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
                 // Move to detailed clothing screen
                 Intent i = new Intent(DashboardActivity.this, DetailedClothingActivity.class);
                 startActivity(i);
+            }
+        });
+
+        getUserLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // user permissions is available if this button is displayed
+                getUserLocation();
             }
         });
 
@@ -205,6 +216,7 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
      */
     private void handleLocationServicesAccepted() {
         locationServicesDeniedWarningButton.setVisibility(View.GONE);
+        getUserLocationButton.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -213,6 +225,7 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
      */
     private void handleLocationServicesDenied() {
         locationServicesDeniedWarningButton.setVisibility(View.VISIBLE);
+        getUserLocationButton.setVisibility(View.GONE);
     }
 
     /**
