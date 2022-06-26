@@ -111,6 +111,10 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
         });
     }
 
+    public void setNewLocationDataListener(LocationDataListener locationDataListener) {
+        this.locationDataListener = locationDataListener;
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
