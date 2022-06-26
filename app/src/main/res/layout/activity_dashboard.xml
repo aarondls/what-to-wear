@@ -136,12 +136,12 @@
         android:id="@+id/dashboard_location_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="23dp"
-        android:layout_marginTop="21dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="18dp"
+        android:layout_toEndOf="@+id/autocomplete_fragment"
         android:textSize="16sp"
-        tools:text="Menlo Park" />
+        tools:text="Menlo Park"/>
 
     <TextView
         android:id="@+id/dashboard_forecast_description_textview"
@@ -263,4 +263,14 @@
         app:iconGravity="textStart"
         app:iconPadding="0dp"
         app:iconTint="#689EF6"/>
+
+    <fragment
+        android:id="@+id/autocomplete_fragment"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="0dp"/>
 </RelativeLayout>

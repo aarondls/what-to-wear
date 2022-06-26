@@ -16,7 +16,8 @@ public class Weather {
 
     private static Weather weather = new Weather();
 
-    private static Location lastLocation;
+    private static double lastLocationLatitude;
+    private static double lastLocationLongitude;
     private static String lastLocationName;
     private static String weatherUnits;
 
@@ -28,8 +29,6 @@ public class Weather {
     private Weather() {
         hourlyForecast = new ArrayList<>();
 
-        // set default location to null
-        lastLocation = null;
         // Set last location name to be empty, which can be used to check if there exists a current location
         lastLocationName = "";
 
@@ -55,16 +54,24 @@ public class Weather {
         return currentForecast;
     }
 
-    public static void setLastLocation(Location lastLocation) {
-        Weather.lastLocation = lastLocation;
+    public static void setLastLocationLatitude(double lastLocationLatitude) {
+        Weather.lastLocationLatitude = lastLocationLatitude;
+    }
+
+    public static void setLastLocationLongitude(double lastLocationLongitude) {
+        Weather.lastLocationLongitude = lastLocationLongitude;
     }
 
     public static void setLastLocationName(String lastLocationName) {
         Weather.lastLocationName = lastLocationName;
     }
 
-    public static Location getLastLocation() {
-        return lastLocation;
+    public static double getLastLocationLatitude() {
+        return lastLocationLatitude;
+    }
+
+    public static double getLastLocationLongitude() {
+        return lastLocationLongitude;
     }
 
     public static String getLastLocationName() {

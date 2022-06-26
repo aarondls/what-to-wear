@@ -19,6 +19,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "OPENWEATHER_API_KEY", localProperties['openWeatherApiKey']
+        buildConfigField "String", "GOOGLEPLACES_API_KEY", localProperties['googlePlacesApiKey']
     }
 
     buildTypes {
@@ -61,4 +62,7 @@ dependencies {
 
     // For snackbar
     implementation "com.google.android.material:material:1.6.1"
+
+    // For Google Places
+    implementation 'com.google.android.libraries.places:places:2.6.0'
 }

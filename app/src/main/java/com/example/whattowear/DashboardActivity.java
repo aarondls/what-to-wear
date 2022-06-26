@@ -18,12 +18,19 @@ import android.widget.Toast;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.example.whattowear.models.Weather;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -51,10 +58,12 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
 
     private FusedLocationProviderClient fusedLocationClient;
     private AsyncHttpClient openWeatherClient;
+    private PlacesClient placesClient;
+
+    private AutocompleteSupportFragment autocompleteFragment;
 
     private DashboardWeatherController dashboardWeatherController;
     private DashboardClothingController dashboardClothingController;
-
     private LocationDataListener locationDataListener;
 
     private Button detailedClothingButton;
@@ -74,6 +83,20 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
         // initialize fused location client, which does not need user location permissions
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         openWeatherClient = new AsyncHttpClient();
+
+        // Initialize the Places SDK
+        Places.initialize(getApplicationContext(), BuildConfig.GOOGLEPLACES_API_KEY);
+        // Create new Places client instance
+        placesClient = Places.createClient(this);
+
+        // Initialize the AutocompleteSupportFragment.
+        autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+        autocompleteFragment.setHint("");
+
+        // Specify the types of place data to return.
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.NAME, Place.Field.LAT_LNG));
 
         // this handles getting new weather data when location data changes
         dashboardWeatherController = new DashboardWeatherController(this);
@@ -139,6 +162,33 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
                 startActivity(i);
             }
         });
+
+        // Set up a PlaceSelectionListener to handle the response.
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                // give weather new location
+                Weather.setLastLocationName(place.getName());
+                Weather.setLastLocationLatitude(place.getLatLng().latitude);
+                Weather.setLastLocationLongitude(place.getLatLng().longitude);
+
+                // let location listener (weather controller) know new location data is available
+                if (locationDataListener != null) {
+                    locationDataListener.onNewLocationDataReady();
+                }
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+                Log.i(TAG,status.toString());
+
+                // the error could be either hitting back or something more serious
+                // if it is serious, the status message is not null, so display as a toast
+                if (status.getStatusMessage() != null) {
+                    Toast.makeText(DashboardActivity.this, status.getStatusMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     public void setNewLocationDataListener(LocationDataListener locationDataListener) {
@@ -161,7 +211,14 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
                 requestLocationPermissions();
             }
             getUserLocation();
+    }
 
+    @Override
+    protected void onResume() {
+        Log.i(TAG, "onresume");
+        super.onResume();
+
+        autocompleteFragment.setText("");
     }
 
     @Override
