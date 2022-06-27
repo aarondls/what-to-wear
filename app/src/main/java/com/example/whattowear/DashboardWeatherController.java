@@ -21,8 +21,10 @@ import com.example.whattowear.models.Forecast;
 import com.example.whattowear.models.Weather;
 
 import org.json.JSONException;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -50,15 +52,9 @@ public class DashboardWeatherController {
     private TextView currentTemperatureTextview;
     private ImageView weatherIconImageview;
 
-    private TextView forecast1HrTimeTextview;
-    private ImageView forecast1HrWeatherIconImageview;
-    private TextView forecast1HrTempTextview;
-    private TextView forecast2HrTimeTextview;
-    private ImageView forecast2HrWeatherIconImageview;
-    private TextView forecast2HrTempTextview;
-    private TextView forecast3HrTimeTextview;
-    private ImageView forecast3HrWeatherIconImageview;
-    private TextView forecast3HrTempTextview;
+    private List<TextView> forecastHoursTimeTextviews;
+    private List<ImageView> forecastHoursWeatherIconImageviews;
+    private List<TextView> forecastHoursTempTextviews;
 
 
     // need activity to access elements
@@ -74,15 +70,21 @@ public class DashboardWeatherController {
         currentTemperatureTextview = activity.findViewById(R.id.dashboard_current_temp_textview);
         weatherIconImageview = activity.findViewById(R.id.dashboard_weather_icon_imageview);
 
-        forecast1HrTimeTextview = activity.findViewById(R.id.dashboard_1hr_time_textview);
-        forecast1HrWeatherIconImageview = activity.findViewById(R.id.dashboard_1hr_weather_icon_imageview);
-        forecast1HrTempTextview = activity.findViewById(R.id.dashboard_1hr_temp_textview);
-        forecast2HrTimeTextview = activity.findViewById(R.id.dashboard_2hr_time_textview);
-        forecast2HrWeatherIconImageview = activity.findViewById(R.id.dashboard_2hr_weather_icon_imageview);
-        forecast2HrTempTextview = activity.findViewById(R.id.dashboard_2hr_temp_textview);
-        forecast3HrTimeTextview = activity.findViewById(R.id.dashboard_3hr_time_textview);
-        forecast3HrWeatherIconImageview = activity.findViewById(R.id.dashboard_3hr_weather_icon_imageview);
-        forecast3HrTempTextview = activity.findViewById(R.id.dashboard_3hr_temp_textview);
+        forecastHoursTimeTextviews = new ArrayList<>(3);
+        forecastHoursWeatherIconImageviews = new ArrayList<>(3);
+        forecastHoursTempTextviews = new ArrayList<>(3);
+
+        forecastHoursTimeTextviews.add(activity.findViewById(R.id.dashboard_1hr_time_textview));
+        forecastHoursWeatherIconImageviews.add(activity.findViewById(R.id.dashboard_1hr_weather_icon_imageview));
+        forecastHoursTempTextviews.add(activity.findViewById(R.id.dashboard_1hr_temp_textview));
+
+        forecastHoursTimeTextviews.add(activity.findViewById(R.id.dashboard_2hr_time_textview));
+        forecastHoursWeatherIconImageviews.add(activity.findViewById(R.id.dashboard_2hr_weather_icon_imageview));
+        forecastHoursTempTextviews.add(activity.findViewById(R.id.dashboard_2hr_temp_textview));
+
+        forecastHoursTimeTextviews.add(activity.findViewById(R.id.dashboard_3hr_time_textview));
+        forecastHoursWeatherIconImageviews.add(activity.findViewById(R.id.dashboard_3hr_weather_icon_imageview));
+        forecastHoursTempTextviews.add(activity.findViewById(R.id.dashboard_3hr_temp_textview));
 
         // Check if there is data to be displayed
         if (Weather.hasPreloadedDataToDisplay()) {
@@ -191,23 +193,16 @@ public class DashboardWeatherController {
         currentTemperatureTextview.setText(Weather.getCurrentForecast().getFormattedTemp());
 
         // TODO: can convert all image icons below into using local images based on condition ID, when graphics are available
-        List<Forecast> hourlyForecast = Weather.getHourlyForecast();
-        // ensure forecasts exist at projected hour
-        int numForecast = hourlyForecast.size();
-        if (numForecast >= 2) {
-            forecast1HrTimeTextview.setText(hourlyForecast.get(1).getAMPMTime());
-            Glide.with(activity).load(hourlyForecast.get(1).getHourCondition().getConditionIconLink()).into(forecast1HrWeatherIconImageview);
-            forecast1HrTempTextview.setText(hourlyForecast.get(1).getFormattedTemp());
-        }
-        if (numForecast >= 3) {
-            forecast2HrTimeTextview.setText(hourlyForecast.get(2).getAMPMTime());
-            Glide.with(activity).load(hourlyForecast.get(2).getHourCondition().getConditionIconLink()).into(forecast2HrWeatherIconImageview);
-            forecast2HrTempTextview.setText(hourlyForecast.get(2).getFormattedTemp());
-        }
-        if (numForecast >= 4) {
-            forecast3HrTimeTextview.setText(hourlyForecast.get(3).getAMPMTime());
-            Glide.with(activity).load(hourlyForecast.get(3).getHourCondition().getConditionIconLink()).into(forecast3HrWeatherIconImageview);
-            forecast3HrTempTextview.setText(hourlyForecast.get(3).getFormattedTemp());
+
+        // Clear the existing forecast display
+        clear3HrForecastDisplay();
+
+        List<Forecast> hourlyForecasts = Weather.getHourlyForecast();
+        for (int i=0; i<hourlyForecasts.size() && i<3; i++) {
+            Forecast hourlyForecast = hourlyForecasts.get(i);
+            forecastHoursTimeTextviews.get(i).setText(hourlyForecast.getAMPMTime());
+            Glide.with(activity).load(hourlyForecast.getHourCondition().getConditionIconLink()).into(forecastHoursWeatherIconImageviews.get(i));
+            forecastHoursTempTextviews.get(i).setText(hourlyForecast.getFormattedTemp());
         }
 
         Glide.with(activity).load(Weather.getCurrentForecast().getHourCondition().getConditionIconLink()).into(weatherIconImageview);
@@ -222,18 +217,17 @@ public class DashboardWeatherController {
         forecastDescriptionTextview.setText("");
         currentTemperatureTextview.setText("--" + DEG_SIGN);
 
-        forecast1HrTimeTextview.setText("");
-        forecast1HrWeatherIconImageview.setImageDrawable(null);
-        forecast1HrTempTextview.setText("");
+        clear3HrForecastDisplay();
+    }
 
-        forecast2HrTimeTextview.setText("");
-        forecast2HrWeatherIconImageview.setImageDrawable(null);
-        forecast2HrTempTextview.setText("");
-
-        forecast3HrTimeTextview.setText("");
-        forecast3HrWeatherIconImageview.setImageDrawable(null);
-        forecast3HrTempTextview.setText("");
-
-        weatherIconImageview.setImageDrawable(null);
+    /**
+     * Clears the 3 hour forecast elements in the screen
+     */
+    private void clear3HrForecastDisplay() {
+        for (int i=0; i<3; i++) {
+            forecastHoursTimeTextviews.get(i).setText("");
+            forecastHoursWeatherIconImageviews.get(i).setImageDrawable(null);
+            forecastHoursTempTextviews.get(i).setText("");
+        }
     }
 }
