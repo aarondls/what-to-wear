@@ -8,7 +8,7 @@
         <entry key="app/src/main/res/drawable/ic_baseline_warning_24.xml" value="0.139" />
         <entry key="app/src/main/res/drawable/transparent_background_with_border.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/transparent_with_border_button_bg.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.7007400512695313" />
+        <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.303363037109375" />
         <entry key="app/src/main/res/layout/activity_detailed_clothing.xml" value="0.2842094225761218" />
         <entry key="app/src/main/res/layout/activity_detailed_weather.xml" value="0.4740740740740741" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.49045992250795717" />

@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class Weather {
@@ -19,6 +20,7 @@ public class Weather {
     private static double lastLocationLatitude;
     private static double lastLocationLongitude;
     private static String lastLocationName;
+    private static String loadedDataLocationName;
     private static String weatherUnits;
 
     private static List<Forecast> hourlyForecast;
@@ -46,6 +48,25 @@ public class Weather {
         // TODO: if not, delete them
     }
 
+    /**
+     * Does not account if data is out of date, and only tells if there is existing valid weather data at the set last location
+     * @return whether there is existing weather data at the last location
+     */
+    public static boolean hasPreloadedDataToDisplay() {
+        return !lastLocationName.isEmpty() && lastLocationName.equals(loadedDataLocationName);
+    }
+
+    /**
+     * Assumes that there is preloaded data to display
+     * @return whether the preloaded data is within 30 minutes of current time
+     */
+    public static boolean isPreloadedDataOutOfDate() {
+        final int secondsFactor = 1000;
+        final int minutesFactor = 60;
+        long minuteDiff = (Calendar.getInstance().getTime().getTime() - currentForecast.getDt().getTime())/(secondsFactor*minutesFactor);
+        return minuteDiff > 30;
+    }
+
     public static List<Forecast> getHourlyForecast() {
         return hourlyForecast;
     }
@@ -66,6 +87,10 @@ public class Weather {
         Weather.lastLocationName = lastLocationName;
     }
 
+    public static void setLoadedDataLocationName(String loadedDataLocationName) {
+        Weather.loadedDataLocationName = loadedDataLocationName;
+    }
+
     public static double getLastLocationLatitude() {
         return lastLocationLatitude;
     }
@@ -80,6 +105,10 @@ public class Weather {
 
     public static String getWeatherUnits() {
         return weatherUnits;
+    }
+
+    public static String getLoadedDataLocationName() {
+        return loadedDataLocationName;
     }
 }
 

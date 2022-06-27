@@ -30,6 +30,7 @@ import okhttp3.Headers;
 
 public class DashboardWeatherController {
     public static final String TAG = "DashboardWeatherController";
+    public static final String DEG_SIGN = "\u00B0";
 
     /**
      * Used to let clothing controller know when new weather data is available
@@ -83,6 +84,18 @@ public class DashboardWeatherController {
         forecast3HrWeatherIconImageview = activity.findViewById(R.id.dashboard_3hr_weather_icon_imageview);
         forecast3HrTempTextview = activity.findViewById(R.id.dashboard_3hr_temp_textview);
 
+        // Check if there is data to be displayed
+        if (Weather.hasPreloadedDataToDisplay()) {
+            updateDashboardDisplay();
+            // if out of date, then refresh weather info
+            if (Weather.isPreloadedDataOutOfDate()) {
+                getWeatherAtLastLocation();
+            }
+        } else {
+            // Show placeholder when no data
+            displayPlaceholderOnDashboard();
+        }
+
         activity.setNewLocationDataListener(new DashboardActivity.LocationDataListener() {
             @Override
             public void onNewLocationDataReady() {
@@ -103,7 +116,6 @@ public class DashboardWeatherController {
     public void onDataSetChanged() {
         // set location name
         String locationName = Weather.getLastLocationName();
-        Weather.setLastLocationName(locationName);
         locationTextview.setText(locationName);
 
         getWeatherAtLastLocation();
@@ -136,6 +148,9 @@ public class DashboardWeatherController {
                     // load the weather data from the received json data
                     // note that weather is a singleton class, so it can be loaded directly
                     Weather.loadFromJson(json.jsonObject);
+
+                    // on success, set loaded data location name
+                    Weather.setLoadedDataLocationName(Weather.getLastLocationName());
                 } catch (JSONException e) {
                     // TODO: fix what happens when weather data is not found; perhaps change weather display to show a message that it isn't found
                     Toast.makeText(activity, "Unable to parse weather information.", Toast.LENGTH_SHORT).show();
@@ -168,6 +183,9 @@ public class DashboardWeatherController {
             listener.onNewWeatherDataReady();
         }
 
+        // set this again so updateDashboardDisplay can be called by itself when loading preexisting weather data
+        locationTextview.setText(Weather.getLastLocationName());
+
         // should set anything to be displayed after new weather data comes in here
         forecastDescriptionTextview.setText(Weather.getCurrentForecast().getHourCondition().getConditionDescription());
         currentTemperatureTextview.setText(Weather.getCurrentForecast().getFormattedTemp());
@@ -193,5 +211,29 @@ public class DashboardWeatherController {
         }
 
         Glide.with(activity).load(Weather.getCurrentForecast().getHourCondition().getConditionIconLink()).into(weatherIconImageview);
+    }
+
+    /**
+     * Displays placeholder weather information to visually signal that there is no weather data yet
+     */
+    private void displayPlaceholderOnDashboard() {
+        locationTextview.setHint("No location");
+
+        forecastDescriptionTextview.setText("");
+        currentTemperatureTextview.setText("--" + DEG_SIGN);
+
+        forecast1HrTimeTextview.setText("");
+        forecast1HrWeatherIconImageview.setImageDrawable(null);
+        forecast1HrTempTextview.setText("");
+
+        forecast2HrTimeTextview.setText("");
+        forecast2HrWeatherIconImageview.setImageDrawable(null);
+        forecast2HrTempTextview.setText("");
+
+        forecast3HrTimeTextview.setText("");
+        forecast3HrWeatherIconImageview.setImageDrawable(null);
+        forecast3HrTempTextview.setText("");
+
+        weatherIconImageview.setImageDrawable(null);
     }
 }
