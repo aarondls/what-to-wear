@@ -206,11 +206,17 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
             handleLocationServicesDenied();
         }
 
-            // request permissions if no permission given
+        // check if new location needs to be updated or not
+        if (Weather.getLastLocationName().isEmpty()) {
+            // need to update with new location
+            Log.i(TAG, "loc is empty");
+            // request permission to get user location if no permission given
             if (!hasLocationPermissions()) {
-                requestLocationPermissions();
+                requestUserLocation();
+            } else {
+                getUserLocation();
             }
-            getUserLocation();
+        }
     }
 
     @Override
@@ -238,9 +244,11 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
     }
 
     /**
-     * Used to request location permissions
+     * Used to request user location if location permissions haven't been given
+     * Asks the user for permissions and gets user location if location services
+     * is either given always or once
      */
-    private void requestLocationPermissions() {
+    private void requestUserLocation() {
         if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
             Log.i(TAG, "permanently denied");
             // TODO: stretch goal to animate button bouncing to highlight whats wrong
@@ -258,6 +266,9 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
         Toast.makeText(this, "Location services permission granted!", Toast.LENGTH_SHORT).show();
 
+        // immediately get current location
+        getUserLocation();
+        
         handleLocationServicesAccepted();
     }
 
