@@ -5,6 +5,8 @@ import com.example.whattowear.ClothingInterface;
 public class Clothing {
     // Clothing is a singleton class
 
+    private static Clothing clothing = new Clothing();
+
     private static UpperBodyGarment upperBodyGarment;
     private static LowerBodyGarment lowerBodyGarment;
     private static OverBodyGarment overBodyGarment;
@@ -14,6 +16,7 @@ public class Clothing {
     private static String loadedDataLocationName;
 
     private Clothing () {
+        loadedDataLocationName = "";
     }
 
     /**
