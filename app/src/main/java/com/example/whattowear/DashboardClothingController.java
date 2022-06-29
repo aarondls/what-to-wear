@@ -48,7 +48,7 @@ public class DashboardClothingController {
             displayPlaceholderOnDashboard();
         }
 
-        dashboardWeatherController.setNewWeatherDataListener(new DashboardWeatherController.WeatherDataListener() {
+        dashboardWeatherController.addNewWeatherDataListener(new DashboardWeatherController.WeatherDataListener() {
             @Override
             public void onNewWeatherDataReady() {
                 Log.i(TAG, "Weather data is ready from clothing controller");

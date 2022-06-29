@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +16,7 @@ import android.widget.Toast;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.example.whattowear.models.Weather;
+import com.example.whattowear.weatheranimation.DashboardWeatherAnimationController;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -29,12 +28,9 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
-import okhttp3.Headers;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -64,6 +60,7 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
 
     private DashboardWeatherController dashboardWeatherController;
     private DashboardClothingController dashboardClothingController;
+    private DashboardWeatherAnimationController dashboardWeatherAnimationController;
     private LocationDataListener locationDataListener;
 
     private Button detailedClothingButton;
@@ -103,6 +100,9 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
 
         // this handles calculating new clothing data when weather data changes
         dashboardClothingController = new DashboardClothingController(this, dashboardWeatherController);
+
+        // this handles the weather animation in the background
+        dashboardWeatherAnimationController = new DashboardWeatherAnimationController(findViewById(R.id.dashboard_weather_animation_view), dashboardWeatherController);
 
         detailedClothingButton = findViewById(R.id.detailed_clothing_button);
         menuButton = findViewById(R.id.dashboard_to_menu_button);
@@ -214,6 +214,9 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
         super.onResume();
 
         autocompleteFragment.setText("");
+
+        // resume the weather animation if it exists
+        dashboardWeatherAnimationController.onDashboardActivityResume();
     }
 
     @Override
