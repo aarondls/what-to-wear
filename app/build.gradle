@@ -65,4 +65,7 @@ dependencies {
 
     // For Google Places
     implementation 'com.google.android.libraries.places:places:2.6.0'
+
+    // For a particle system
+    implementation 'com.github.jinatonic.confetti:confetti:1.1.2'
 }
