@@ -197,8 +197,11 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
     protected void onStart() {
         super.onStart();
 
-        // prepare app depending on permissions
-        if (hasLocationPermissions()) {
+        if (Weather.getLastLocationName().isEmpty()) { // check if new location needs to be updated or not
+            // need to update with new location
+            Log.i(TAG, "loc is empty");
+            requestUserLocation();
+        } else if (hasLocationPermissions()) { // prepare app depending on permissions
             handleLocationServicesAccepted();
         } else {
             handleLocationServicesDenied();
