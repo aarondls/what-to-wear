@@ -209,14 +209,20 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i(TAG, "onrestart");
+
+        // restart the weather animation if it exists
+        dashboardWeatherAnimationController.onDashboardActivityRestart();
+    }
+
+    @Override
     protected void onResume() {
         Log.i(TAG, "onresume");
         super.onResume();
 
         autocompleteFragment.setText("");
-
-        // resume the weather animation if it exists
-        dashboardWeatherAnimationController.onDashboardActivityResume();
     }
 
     @Override

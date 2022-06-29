@@ -14,11 +14,13 @@ public class DashboardWeatherAnimationController {
     private static final String TAG = "DashboardWeatherAnimation";
 
     private ViewGroup viewGroup;
+    private ConfettiManager confettiManager;
 
     public DashboardWeatherAnimationController(ViewGroup viewGroup, DashboardWeatherController dashboardWeatherController) {
         this.viewGroup = viewGroup;
 
         // Check if there is data to be displayed
+        // this first check of Weather.hasPreloadedDataToDisplay is needed in case WeatherAnimation has yet to calculate the correct animation
         if (Weather.hasPreloadedDataToDisplay()) {
             // note that if this data is out of date, then the weather controller updates the weather info and triggers the listener onNewWeatherDataReady
             // check if weather animation data is valid based on weather data, and update if necessary
@@ -42,13 +44,13 @@ public class DashboardWeatherAnimationController {
     }
 
     /**
-     * Called when the dashboard activity resumes
-     * Checks if an animation exists and draws it
+     * Called when the dashboard activity restart
+     * Checks if a dynamic animation exists and restarts it
      */
-    public void onDashboardActivityResume() {
-        // only need to check if weather animation has valid data, since this comes from dashboard activity resume
-        if (WeatherAnimation.hasPreloadedDataToDisplay()) {
-            startExistingWeatherAnimation();
+    public void onDashboardActivityRestart() {
+        // only need to check if weather animation has valid data, since this comes from dashboard activity restart
+        if (WeatherAnimation.hasPreloadedDataToDisplay() && confettiManager != null && weatherRequiresDynamicAnimation()) {
+            handleDynamicWeatherAnimation();
         }
     }
 
@@ -60,7 +62,8 @@ public class DashboardWeatherAnimationController {
         viewGroup.post(new Runnable() {
             @Override
             public void run() {
-                ConfettiManager confettiManager = WeatherAnimation.startNewAnimationFromWeatherData(viewGroup);
+                clearVisibleWeatherAnimation();
+                confettiManager = WeatherAnimation.startNewAnimationFromWeatherData(viewGroup);
 
                 // TODO: check for when dynamic weather animation (changing conditions) is needed
                 handleDynamicWeatherAnimation(confettiManager);
@@ -76,7 +79,9 @@ public class DashboardWeatherAnimationController {
         viewGroup.post(new Runnable() {
             @Override
             public void run() {
-                ConfettiManager confettiManager = WeatherAnimation.startExistingAnimation(viewGroup);
+                clearVisibleWeatherAnimation();
+
+                confettiManager = WeatherAnimation.startExistingAnimation(viewGroup);
 
                 handleDynamicWeatherAnimation(confettiManager);
             }
@@ -84,15 +89,25 @@ public class DashboardWeatherAnimationController {
     }
 
     /**
-     * Handles changing weather conditions, eg thunderstorms with changing wind conditions
-     * @param confettiManager the confettiManager of the desired weather animation to control
+     * Ends the currently playing weather animation on the dashboard, if there is one
      */
-    private void handleDynamicWeatherAnimation(ConfettiManager confettiManager) {
-        // TODO: change type of response based on weather data
-        moveToNextDelayedResponse(confettiManager, 2000);
+    private void clearVisibleWeatherAnimation() {
+        // cancel existing animation, if there is one
+        if (confettiManager != null) {
+            Log.i(TAG, "Cancelling other animation");
+            confettiManager.setEmissionDuration(0);
+        }
     }
 
-    private void moveToNextDelayedResponse(ConfettiManager confettiManager, float emissionRate) {
+    /**
+     * Handles changing weather conditions, eg thunderstorms with changing wind conditions
+     */
+    private void handleDynamicWeatherAnimation() {
+        // TODO: change type of response based on weather data
+        moveToNextDelayedResponse(2000);
+    }
+
+    private void moveToNextDelayedResponse(float emissionRate) {
         new Handler().postDelayed(new Runnable() {
             @Override public void run() {
                 // stop if view no longer in view
@@ -102,12 +117,12 @@ public class DashboardWeatherAnimationController {
                 Log.i(TAG, "delay kicking in with emission rate " + emissionRate);
                 if (emissionRate == 2000) {
                     confettiManager.setEmissionRate(2000);
-                    moveToNextDelayedResponse(confettiManager, 100);
+                    moveToNextDelayedResponse(100);
                 } else {
                     confettiManager.setEmissionRate(10);
-                    moveToNextDelayedResponse(confettiManager, 2000);
+                    moveToNextDelayedResponse(2000);
                 }
             }
-        }, 3000);
+        }, 500);
     }
 }

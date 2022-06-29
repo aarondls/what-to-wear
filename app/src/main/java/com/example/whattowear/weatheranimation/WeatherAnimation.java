@@ -30,7 +30,7 @@ public class WeatherAnimation {
     private static float rotationalVelocityDeviation;
 
 
-    public WeatherAnimation() {
+    private WeatherAnimation() {
         confettoGenerator = null;
         loadedDataLocationName = "";
     }
