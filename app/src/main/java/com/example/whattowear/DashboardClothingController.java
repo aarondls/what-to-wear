@@ -80,6 +80,8 @@ public class DashboardClothingController {
     public void updateDashboardDisplay() {
         if (Clothing.getOverBodyGarment().getOverBodyGarmentImage() != null) {
             overBodyGarmentImageview.setImageResource(Clothing.getOverBodyGarment().getOverBodyGarmentImage());
+        } else {
+            overBodyGarmentImageview.setImageDrawable(null);
         }
         upperBodyGarmentImageview.setImageResource(Clothing.getUpperBodyGarment().getUpperBodyGarmentImage());
         lowerBodyGarmentImageview.setImageResource(Clothing.getLowerBodyGarment().getLowerBodyGarmentImage());
@@ -98,6 +100,8 @@ public class DashboardClothingController {
                 }
                 excessAccessoriesTextview.setText(excessAccessoryCount);
             }
+        } else {
+            accessoriesImageview.setImageDrawable(null);
         }
     }
 
@@ -105,12 +109,6 @@ public class DashboardClothingController {
      * Displays placeholder clothing information to visually signal that there is no clothing data yet
      */
     public void displayPlaceholderOnDashboard() {
-        overBodyGarmentImageview.setImageDrawable(null);
-        upperBodyGarmentImageview.setImageDrawable(null);
-        lowerBodyGarmentImageview.setImageDrawable(null);
-        footwearImageview.setImageDrawable(null);
-
-        accessoriesImageview.setImageDrawable(null);
-        excessAccessoriesTextview.setText("");
+        excessAccessoriesTextview.setText("No clothing information.");
     }
 }
