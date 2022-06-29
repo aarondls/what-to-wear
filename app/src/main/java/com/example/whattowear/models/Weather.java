@@ -23,6 +23,9 @@ public class Weather {
 
     public static final String TAG = "Weather";
 
+    private final static int SECONDS_FACTOR = 1000;
+    private final static int MINUTES_FACTOR = 60;
+
     private static Weather weather = new Weather();
 
     private static double lastLocationLatitude;
@@ -70,9 +73,7 @@ public class Weather {
      * @return whether the preloaded data is within 30 minutes of current time
      */
     public static boolean isPreloadedDataOutOfDate() {
-        final int secondsFactor = 1000;
-        final int minutesFactor = 60;
-        long minuteDiff = (Calendar.getInstance().getTime().getTime() - currentForecast.getDt().getTime())/(secondsFactor*minutesFactor);
+        long minuteDiff = (Calendar.getInstance().getTime().getTime() - currentForecast.getDt().getTime())/(SECONDS_FACTOR*MINUTES_FACTOR);
         return minuteDiff > 30;
     }
 
