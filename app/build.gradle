@@ -19,6 +19,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "OPENWEATHER_API_KEY", localProperties['openWeatherApiKey']
+        buildConfigField "String", "GOOGLEPLACES_API_KEY", localProperties['googlePlacesApiKey']
     }
 
     buildTypes {
@@ -58,4 +59,10 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     // Glide v4 uses this new annotation processor -- see https://bumptech.github.io/glide/doc/generatedapi.html
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+
+    // For snackbar
+    implementation "com.google.android.material:material:1.6.1"
+
+    // For Google Places
+    implementation 'com.google.android.libraries.places:places:2.6.0'
 }
