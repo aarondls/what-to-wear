@@ -1,5 +1,11 @@
 package com.example.whattowear.weatheranimation;
 
+import static com.example.whattowear.weatheranimation.WeatherAnimationParameters.SHOWER_DELAY;
+import static com.example.whattowear.weatheranimation.WeatherAnimationParameters.SHOWER_DELAY_VARIANCE_BOUND;
+import static com.example.whattowear.weatheranimation.WeatherAnimationParameters.THUNDERSTORM_DELAY_FACTOR;
+import static com.example.whattowear.weatheranimation.WeatherAnimationParameters.THUNDERSTORM_DELAY_MIN;
+import static com.example.whattowear.weatheranimation.WeatherAnimationParameters.THUNDERSTORM_XVELOCITY;
+
 import android.util.Log;
 import android.view.ViewGroup;
 
@@ -9,15 +15,25 @@ import com.github.jinatonic.confetti.ConfettiManager;
 
 import android.os.Handler;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class DashboardWeatherAnimationController {
     private static final String TAG = "DashboardWeatherAnimation";
 
     private ViewGroup viewGroup;
-    private ConfettiManager confettiManager;
+    private List<ConfettiManager> confettiManagers;
+
+    private float conditionsEmissionRate;
+    private float alternateConditionsEmissionRate;
+
+    private Random random;
 
     public DashboardWeatherAnimationController(ViewGroup viewGroup, DashboardWeatherController dashboardWeatherController) {
         this.viewGroup = viewGroup;
+
+        confettiManagers = new ArrayList<>();
 
         // Check if there is data to be displayed
         // this first check of Weather.hasPreloadedDataToDisplay is needed in case WeatherAnimation has yet to calculate the correct animation
@@ -49,13 +65,13 @@ public class DashboardWeatherAnimationController {
      */
     public void onDashboardActivityRestart() {
         // only need to check if weather animation has valid data, since this comes from dashboard activity restart
-        if (WeatherAnimation.hasPreloadedDataToDisplay() && confettiManager != null && weatherRequiresDynamicAnimation()) {
+        if (WeatherAnimation.hasPreloadedDataToDisplay() && !confettiManagers.isEmpty() && weatherRequiresDynamicAnimation()) {
             handleDynamicWeatherAnimation();
         }
     }
 
     /**
-     * Starts new weather animation based on new weather data
+     * Starts new weather animation on the dashboard based on new weather data
      */
     private void startNewWeatherAnimation() {
         Log.i(TAG, "Making new weather animation");
@@ -63,16 +79,17 @@ public class DashboardWeatherAnimationController {
             @Override
             public void run() {
                 clearVisibleWeatherAnimation();
-                confettiManager = WeatherAnimation.startNewAnimationFromWeatherData(viewGroup);
+                confettiManagers = WeatherAnimation.startNewAnimationFromWeatherData(viewGroup);
 
-                // TODO: check for when dynamic weather animation (changing conditions) is needed
-                handleDynamicWeatherAnimation(confettiManager);
+                if (weatherRequiresDynamicAnimation()) {
+                    handleDynamicWeatherAnimation();
+                }
             }
         });
     }
 
     /**
-     * Starts weather animation based on existing weather animation data
+     * Starts weather animation on the dashboard based on existing weather animation data
      */
     private void startExistingWeatherAnimation() {
         Log.i(TAG, "Loading preloaded weather animation");
@@ -81,9 +98,11 @@ public class DashboardWeatherAnimationController {
             public void run() {
                 clearVisibleWeatherAnimation();
 
-                confettiManager = WeatherAnimation.startExistingAnimation(viewGroup);
+                confettiManagers = WeatherAnimation.startExistingAnimation(viewGroup);
 
-                handleDynamicWeatherAnimation(confettiManager);
+                if (weatherRequiresDynamicAnimation()) {
+                    handleDynamicWeatherAnimation();
+                }
             }
         });
     }
@@ -92,22 +111,55 @@ public class DashboardWeatherAnimationController {
      * Ends the currently playing weather animation on the dashboard, if there is one
      */
     private void clearVisibleWeatherAnimation() {
-        // cancel existing animation, if there is one
-        if (confettiManager != null) {
-            Log.i(TAG, "Cancelling other animation");
-            confettiManager.setEmissionDuration(0);
+        // cancel existing animations, if there are one
+        if (!confettiManagers.isEmpty()) {
+            Log.i(TAG, "Cancelling other animations");
+            for (ConfettiManager confettiManager : confettiManagers) {
+                confettiManager.setEmissionDuration(0);
+            }
         }
     }
 
     /**
-     * Handles changing weather conditions, eg thunderstorms with changing wind conditions
+     * @return whether the current weather animation requires dynamic control
      */
-    private void handleDynamicWeatherAnimation() {
-        // TODO: change type of response based on weather data
-        moveToNextDelayedResponse(2000);
+    private boolean weatherRequiresDynamicAnimation() {
+        return !WeatherAnimation.getConditionsModifiers().isEmpty();
     }
 
-    private void moveToNextDelayedResponse(float emissionRate) {
+    /**
+     * Handles dynamic changing weather conditions, eg thunderstorms with changing wind conditions
+     */
+    private void handleDynamicWeatherAnimation() {
+        // get the condition modifiers (dynamic condition types) of the weather animation
+        List<WeatherAnimation.ConditionsModifier> conditionsModifiers = WeatherAnimation.getConditionsModifiers();
+
+        // initialize randomizer
+        random = new Random();
+
+        // conditions modifiers affects all conditions
+        for (WeatherAnimation.ConditionsModifier conditionsModifier : conditionsModifiers) {
+            if (conditionsModifier == WeatherAnimation.ConditionsModifier.SHOWER) {
+                // set emission and alternate emission rates
+                conditionsEmissionRate = WeatherAnimationParameters.getEmissionRatesFromConditionIntensity(WeatherAnimation.getConditionsIntensity());
+                alternateConditionsEmissionRate = WeatherAnimationParameters.getEmissionRatesFromConditionIntensity(WeatherAnimation.getAlternateConditionsIntensity());
+
+                showerDynamicAnimation(alternateConditionsEmissionRate);
+            } else if (conditionsModifier == WeatherAnimation.ConditionsModifier.THUNDERSTORM) {
+                // TODO: can increase y deviation, if animation looks better with it
+                thunderstormDynamicAnimation(0);
+            }
+        }
+    }
+
+    /**
+     * Handles the shower dynamic animation, which varies the emission rate of whatever ConditionsType (ie drizzle/rain/sleet/snow)
+     * is on the screen by switching between the conditionsIntensity and alternateConditionsIntensity as calculated in WeatherAnimations.
+     * The delay between switching is randomly centered around SHOWER_DELAY.
+     * This method calls itself and continues, until the viewgroup displaying the animation is no longer in view.
+     * @param emissionRate the emission rate that the animations will be changed to
+     */
+    private void showerDynamicAnimation(float emissionRate) {
         new Handler().postDelayed(new Runnable() {
             @Override public void run() {
                 // stop if view no longer in view
@@ -115,14 +167,62 @@ public class DashboardWeatherAnimationController {
                     return;
                 }
                 Log.i(TAG, "delay kicking in with emission rate " + emissionRate);
-                if (emissionRate == 2000) {
-                    confettiManager.setEmissionRate(2000);
-                    moveToNextDelayedResponse(100);
+                // switch between the default and alternate conditons emission rate
+                if (emissionRate == conditionsEmissionRate) {
+                    for (ConfettiManager confettiManager : confettiManagers) {
+                        confettiManager.setEmissionRate(conditionsEmissionRate);
+                    }
+                    showerDynamicAnimation(alternateConditionsEmissionRate);
                 } else {
-                    confettiManager.setEmissionRate(10);
-                    moveToNextDelayedResponse(2000);
+                    for (ConfettiManager confettiManager : confettiManagers) {
+                        confettiManager.setEmissionRate(alternateConditionsEmissionRate);
+                    }
+                    showerDynamicAnimation(conditionsEmissionRate);
                 }
             }
-        }, 500);
+        }, SHOWER_DELAY+ random.nextInt()%SHOWER_DELAY_VARIANCE_BOUND); // vary the delay between changes randomly
     }
+
+    /**
+     * Handles the thunderstorm dynamic animation, which varies the xVelocity of whatever ConditionsType (ie drizzle/rain/sleet/snow)
+     * is on the screen to simulate changing wind conditions by randomly generating the change in xVelocity.
+     * To make the animation more natural, the wind speed is not randomly generated but rather the change in wind speed is. If
+     * the change in wind speed causes the wind to change directions (ie, switch signs of xVelocity), then the wind speed is set to 0.
+     * This makes the animation more natural as it is very smooth with no abrupt changes in direction.
+     * The delay between changing wind speeds is determined as a factor of the current wind speed (xVelocity), as it is not natural
+     * to see an immediate shift in wind speed when blowing strongly at a specific direction.
+     * This method calls itself and continues, until the viewgroup displaying the animation is no longer in view.
+     * @param xVelocity the xVelocity that the animations will be changed to
+     */
+    private void thunderstormDynamicAnimation(float xVelocity) {
+        new Handler().postDelayed(new Runnable() {
+            @Override public void run() {
+                // stop if view no longer in view
+                if (!viewGroup.isShown()) {
+                    return;
+                }
+                Log.i(TAG, "delay kicking in with x velocity " + xVelocity);
+                for (ConfettiManager confettiManager : confettiManagers) {
+                    confettiManager.setVelocityX(xVelocity, 0.1f*xVelocity);
+                }
+
+                // generate new change of wind direction
+                // use random number to change current wind speed, then bound at maximum
+                // this is more realistic than simply changing wind direction directly
+                // if the change results in sign of x velocity changing, put x velocity to 0 first to avoid abrupt change
+
+                float nextXVelocity = xVelocity + random.nextInt()%WeatherAnimationParameters.MAX_DELTA_X;
+                if (nextXVelocity > THUNDERSTORM_XVELOCITY) {
+                    nextXVelocity = THUNDERSTORM_XVELOCITY;
+                } else if (nextXVelocity < -THUNDERSTORM_XVELOCITY) {
+                    nextXVelocity = -THUNDERSTORM_XVELOCITY;
+                } else if (xVelocity*nextXVelocity < 0) { // will not overflow since wind x velocities are low enough
+                    // opposite signs
+                    nextXVelocity = 0;
+                }
+                thunderstormDynamicAnimation(nextXVelocity);
+            }
+        }, (long) (xVelocity*THUNDERSTORM_DELAY_FACTOR+THUNDERSTORM_DELAY_MIN)); // have delay a factor of how much wind changed
+    }
+
 }

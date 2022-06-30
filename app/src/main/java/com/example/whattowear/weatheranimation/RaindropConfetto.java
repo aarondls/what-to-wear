@@ -11,6 +11,9 @@ import com.github.jinatonic.confetti.confetto.Confetto;
 public class RaindropConfetto extends Confetto {
     private static final float RAINDROP_LENGTH_FACTOR = 10;
 
+    public static final float DRIZZLE_RAINDROP_THICKNESS = 0.3f;
+    public static final float RAIN_RAINDROP_THICKNESS = 0.6f;
+
     private float raindropThickness;
     private int raindropColor;
 
