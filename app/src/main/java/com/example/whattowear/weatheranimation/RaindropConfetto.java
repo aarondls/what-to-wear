@@ -33,6 +33,16 @@ public class RaindropConfetto extends Confetto {
         return 0;
     }
 
+    /**
+     * Handles drawing a single raindrop onto the given canvas at the coordinates x and y using the given matrix and paint.
+     * @param canvas the canvas where the raindrop is drawn
+     * @param matrix matrix to help with drawing (can be used, for example, with rotation manipulation)
+     * @param paint paint to help with drawing on the canvas
+     * @param x the x coordinate of the center of the raindrop
+     * @param y the y coordinate of the center of the raindrop
+     * @param rotation the rotation angle in degrees of the current raindrop
+     * @param percentAnimated the percentage of animation progress for this raindrop
+     */
     @Override
     protected void drawInternal(Canvas canvas, Matrix matrix, Paint paint, float x, float y, float rotation, float percentAnimated) {
         // Draw single raindrop centered at x, y
