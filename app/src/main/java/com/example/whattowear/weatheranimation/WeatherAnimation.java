@@ -126,24 +126,22 @@ public class WeatherAnimation {
                     });
                     break;
                 case SLEET:
-                    // TODO: change to snow confetto
                     weatherAnimationParameters.add(WeatherAnimationParameters.sleetParameters(conditionsIntensity));
 
                     confettoGenerators.add(new ConfettoGenerator() {
                         @Override
                         public Confetto generateConfetto(Random random) {
-                            return new RaindropConfetto(0.6f, Color.BLACK);
+                            return new SnowflakeConfetto(SnowflakeConfetto.SLEET_RADIUS, SnowflakeConfetto.SLEET_COLOR, SnowflakeConfetto.SLEET_ALPHA);
                         }
                     });
                     break;
                 case SNOW:
-                    // TODO: change to snow confetto
                     weatherAnimationParameters.add(WeatherAnimationParameters.snowParameters(conditionsIntensity));
 
                     confettoGenerators.add(new ConfettoGenerator() {
                         @Override
                         public Confetto generateConfetto(Random random) {
-                            return new RaindropConfetto(0.7f, Color.BLACK);
+                            return new SnowflakeConfetto(SnowflakeConfetto.SNOWFLAKE_RADIUS, SnowflakeConfetto.SNOWFLAKE_COLOR, SnowflakeConfetto.SNOWFLAKE_ALPHA);
                         }
                     });
                     break;
