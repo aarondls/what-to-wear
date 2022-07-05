@@ -278,7 +278,7 @@ public class WeatherAnimation {
                     conditionsTypes.add(ConditionsType.SNOW);
                     conditionsIntensity = ConditionsIntensity.LIGHT;
                     alternateConditionsIntensity = ConditionsIntensity.NONE;
-                } else if (conditionsIDLastDigit == 5) {
+                } else if (conditionsIDLastDigit == 6) {
                     // type is rain and snow
                     conditionsTypes.add(ConditionsType.RAIN);
                     conditionsTypes.add(ConditionsType.SNOW);
