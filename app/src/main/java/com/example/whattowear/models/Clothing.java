@@ -5,13 +5,18 @@ import com.example.whattowear.ClothingInterface;
 public class Clothing {
     // Clothing is a singleton class
 
+    private static Clothing clothing = new Clothing();
+
     private static UpperBodyGarment upperBodyGarment;
     private static LowerBodyGarment lowerBodyGarment;
     private static OverBodyGarment overBodyGarment;
     private static Footwear footwear;
     private static Accessories accessories;
 
+    private static String loadedDataLocationName;
+
     private Clothing () {
+        loadedDataLocationName = "";
     }
 
     /**
@@ -24,8 +29,21 @@ public class Clothing {
         footwear = Footwear.getOptimalFootwear();
         accessories = Accessories.getOptimalAccessories();
 
+        loadedDataLocationName = Weather.getLoadedDataLocationName();
+
         // Call callback since done
         clothingInterface.onFinish();
+    }
+
+    /**
+     * @return whether there is valid clothing data at the location Weather.lastLocationName
+     */
+    public static boolean hasPreloadedDataToDisplay() {
+       return Weather.hasPreloadedDataToDisplay() && loadedDataLocationName.equals(Weather.getLoadedDataLocationName());
+    }
+
+    public static void setLoadedDataLocationName(String loadedDataLocationName) {
+        Clothing.loadedDataLocationName = loadedDataLocationName;
     }
 
     public static UpperBodyGarment getUpperBodyGarment() {
@@ -46,5 +64,9 @@ public class Clothing {
 
     public static Accessories getAccessories() {
         return accessories;
+    }
+
+    public static String getLoadedDataLocationName() {
+        return loadedDataLocationName;
     }
 }

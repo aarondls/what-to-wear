@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.whattowear.models.Clothing;
+import com.example.whattowear.models.Weather;
 
 import java.util.List;
 
@@ -31,6 +32,22 @@ public class DashboardClothingController {
         accessoriesImageview = activity.findViewById(R.id.dashboard_accessories_imageview);
         excessAccessoriesTextview = activity.findViewById(R.id.dashboard_excess_accessories_textview);
 
+        // Check if there is data to be displayed
+        if (Weather.hasPreloadedDataToDisplay()) {
+            // note that if this data is out of date, then the weather controller updates the weather info and triggers the listener onNewWeatherDataReady
+            // check if clothing data is valid based on weather data, and update if necessary
+            if (Clothing.hasPreloadedDataToDisplay()) {
+                // display existing clothing data
+                updateDashboardDisplay();
+            } else {
+                // recalculate clothing data
+                onDataSetChanged();
+            }
+        } else {
+            // show placeholder when no data
+            displayPlaceholderOnDashboard();
+        }
+
         dashboardWeatherController.setNewWeatherDataListener(new DashboardWeatherController.WeatherDataListener() {
             @Override
             public void onNewWeatherDataReady() {
@@ -51,6 +68,7 @@ public class DashboardClothingController {
             public void onFinish() {
                 // load clothing images here
                 Log.i(TAG, "Finished calculating all clothing info");
+                Clothing.setLoadedDataLocationName(Weather.getLoadedDataLocationName());
                 updateDashboardDisplay();
             }
         });
@@ -81,5 +99,18 @@ public class DashboardClothingController {
                 excessAccessoriesTextview.setText(excessAccessoryCount);
             }
         }
+    }
+
+    /**
+     * Displays placeholder clothing information to visually signal that there is no clothing data yet
+     */
+    public void displayPlaceholderOnDashboard() {
+        overBodyGarmentImageview.setImageDrawable(null);
+        upperBodyGarmentImageview.setImageDrawable(null);
+        lowerBodyGarmentImageview.setImageDrawable(null);
+        footwearImageview.setImageDrawable(null);
+
+        accessoriesImageview.setImageDrawable(null);
+        excessAccessoriesTextview.setText("");
     }
 }

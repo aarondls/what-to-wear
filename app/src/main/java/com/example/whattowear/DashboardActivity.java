@@ -168,9 +168,7 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 // give weather new location
-                Weather.setLastLocationName(place.getName());
-                Weather.setLastLocationLatitude(place.getLatLng().latitude);
-                Weather.setLastLocationLongitude(place.getLatLng().longitude);
+                Weather.setLastLocation(place);
 
                 // let location listener (weather controller) know new location data is available
                 if (locationDataListener != null) {
@@ -205,18 +203,6 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
         } else {
             handleLocationServicesDenied();
         }
-
-        // check if new location needs to be updated or not
-        if (Weather.getLastLocationName().isEmpty()) {
-            // need to update with new location
-            Log.i(TAG, "loc is empty");
-            // request permission to get user location if no permission given
-            if (!hasLocationPermissions()) {
-                requestUserLocation();
-            } else {
-                getUserLocation();
-            }
-        }
     }
 
     @Override
@@ -245,11 +231,16 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
 
     /**
      * Used to request user location if location permissions haven't been given
-     * Asks the user for permissions and gets user location if location services
-     * is either given always or once
+     * Asks the user for permissions and gets user location if the user provides
+     * permission to access location always/once
+     * If permission is already given when this is called, then the user location
+     * is immediately queried without asking for permission
      */
     private void requestUserLocation() {
-        if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+        if (hasLocationPermissions()) {
+            getUserLocation();
+            handleLocationServicesAccepted();
+        } else if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
             Log.i(TAG, "permanently denied");
             // TODO: stretch goal to animate button bouncing to highlight whats wrong
             handleLocationServicesDenied();
@@ -315,9 +306,7 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
                             // Got last known location. In some rare situations this can be null.
                             if (location != null) {
                                 // give weather new location
-                                Weather.setLastLocationName(getLocationName(location));
-                                Weather.setLastLocationLatitude(location.getLatitude());
-                                Weather.setLastLocationLongitude(location.getLongitude());
+                                Weather.setLastLocation(location, DashboardActivity.this);
 
                                 // let location listener (weather controller) know new location data is available
                                 if (locationDataListener != null) {
@@ -331,47 +320,5 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
                         }
                     });
         }
-    }
-
-    /**
-     * Used to get the city name from a Location
-     * @param location  the Location of the city
-     * @return  the name of the passed Location
-     * the name could be, in order of which exists first:
-     * locality, sub admin area, admin area, country name, long/lat coordinates
-     */
-    private String getLocationName(Location location) {
-        double latitude = location.getLatitude();
-        double longitude = location.getLongitude();
-
-        Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
-        StringBuilder builder = new StringBuilder();
-        String locationName = "";
-        try {
-            List<Address> address = geoCoder.getFromLocation(latitude, longitude, 1);
-            // set depending on what is known
-            if (address.get(0).getLocality() != null) {
-                locationName = address.get(0).getLocality();
-            } else if (address.get(0).getSubAdminArea() != null) {
-                locationName = address.get(0).getSubAdminArea();
-            } else if (address.get(0).getAdminArea() != null) {
-                locationName = address.get(0).getAdminArea();
-            } else if (address.get(0).getCountryName() != null) {
-                // Worst case, try to use country name
-                locationName = address.get(0).getCountryName();
-            }
-        } catch (IOException e) {
-            Log.e(TAG, "IOException", e);
-        } catch (NullPointerException e) {
-            Log.e(TAG, "NullPointerException", e);
-        }
-
-        // TODO: Fix city being unknown
-        // if city still blank, worst case, it is set to long lat coordinates
-        if (locationName.isEmpty()) {
-            locationName = "Lat: " + latitude + "Long: " + longitude;
-        }
-
-        return locationName;
     }
 }
