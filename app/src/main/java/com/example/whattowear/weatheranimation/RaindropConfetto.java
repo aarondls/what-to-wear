@@ -13,6 +13,7 @@ public class RaindropConfetto extends Confetto {
 
     public static final float DRIZZLE_RAINDROP_THICKNESS = 0.3f;
     public static final float RAIN_RAINDROP_THICKNESS = 0.6f;
+    public static final int RAINDROP_COLOR = Color.WHITE;
 
     private float raindropThickness;
     private int raindropColor;

@@ -111,7 +111,7 @@ public class WeatherAnimation {
                     confettoGenerators.add(new ConfettoGenerator() {
                         @Override
                         public Confetto generateConfetto(Random random) {
-                            return new RaindropConfetto(RaindropConfetto.DRIZZLE_RAINDROP_THICKNESS, Color.BLACK);
+                            return new RaindropConfetto(RaindropConfetto.DRIZZLE_RAINDROP_THICKNESS, RaindropConfetto.RAINDROP_COLOR);
                         }
                     });
                     break;
@@ -121,7 +121,7 @@ public class WeatherAnimation {
                     confettoGenerators.add(new ConfettoGenerator() {
                         @Override
                         public Confetto generateConfetto(Random random) {
-                            return new RaindropConfetto(RaindropConfetto.RAIN_RAINDROP_THICKNESS, Color.BLACK);
+                            return new RaindropConfetto(RaindropConfetto.RAIN_RAINDROP_THICKNESS, RaindropConfetto.RAINDROP_COLOR);
                         }
                     });
                     break;
@@ -154,7 +154,7 @@ public class WeatherAnimation {
                     confettoGenerators.add(new ConfettoGenerator() {
                         @Override
                         public Confetto generateConfetto(Random random) {
-                            return new RaindropConfetto(0.5f, Color.BLACK);
+                            return new RaindropConfetto(RaindropConfetto.RAIN_RAINDROP_THICKNESS, RaindropConfetto.RAINDROP_COLOR);
                         }
                     });
                     break;

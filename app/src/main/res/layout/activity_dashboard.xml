@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dashboard_relativelayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/morning_gradient"
     tools:context=".DashboardActivity">
 
     <RelativeLayout
@@ -25,7 +26,8 @@
             android:layout_alignEnd="@+id/dashboard_1hr_weather_icon_imageview"
             android:layout_marginTop="0dp"
             android:layout_marginEnd="2dp"
-            tools:text="10am" />
+            android:textColor="@color/white"
+            tools:text="10am"/>
 
         <ImageView
             android:id="@+id/dashboard_1hr_weather_icon_imageview"
@@ -36,7 +38,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="38dp"
             android:layout_toStartOf="@+id/dashboard_2hr_weather_icon_imageview"
-            tools:srcCompat="@tools:sample/avatars" />
+            tools:srcCompat="@tools:sample/avatars"/>
 
         <TextView
             android:id="@+id/dashboard_1hr_temp_textview"
@@ -46,7 +48,8 @@
             android:layout_alignEnd="@+id/dashboard_1hr_weather_icon_imageview"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="10dp"
-            tools:text="23" />
+            android:textColor="@color/white"
+            tools:text="23"/>
 
         <TextView
             android:id="@+id/dashboard_2hr_time_textview"
@@ -56,7 +59,8 @@
             android:layout_alignEnd="@+id/dashboard_2hr_weather_icon_imageview"
             android:layout_marginTop="0dp"
             android:layout_marginEnd="1dp"
-            tools:text="11am" />
+            android:textColor="@color/white"
+            tools:text="11am"/>
 
         <TextView
             android:id="@+id/dashboard_2hr_temp_textview"
@@ -66,7 +70,8 @@
             android:layout_alignEnd="@+id/dashboard_2hr_weather_icon_imageview"
             android:layout_marginTop="6dp"
             android:layout_marginEnd="10dp"
-            tools:text="24" />
+            android:textColor="@color/white"
+            tools:text="24"/>
 
         <ImageView
             android:id="@+id/dashboard_2hr_weather_icon_imageview"
@@ -76,7 +81,7 @@
             android:layout_marginTop="9dp"
             android:layout_marginEnd="36dp"
             android:layout_toStartOf="@+id/dashboard_3hr_weather_icon_imageview"
-            tools:srcCompat="@tools:sample/avatars" />
+            tools:srcCompat="@tools:sample/avatars"/>
 
         <ImageView
             android:id="@+id/dashboard_3hr_weather_icon_imageview"
@@ -86,7 +91,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="21dp"
-            tools:srcCompat="@tools:sample/avatars" />
+            tools:srcCompat="@tools:sample/avatars"/>
 
         <TextView
             android:id="@+id/dashboard_3hr_time_textview"
@@ -96,7 +101,8 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="2dp"
             android:layout_marginEnd="2dp"
-            tools:text="12pm" />
+            android:textColor="@color/white"
+            tools:text="12pm"/>
 
         <TextView
             android:id="@+id/dashboard_3hr_temp_textview"
@@ -107,7 +113,8 @@
             android:layout_centerVertical="true"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="10dp"
-            tools:text="25" />
+            android:textColor="@color/white"
+            tools:text="25"/>
     </RelativeLayout>
 
     <Button
@@ -116,7 +123,7 @@
         android:layout_height="40dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="15dp"
         app:icon="@drawable/ic_baseline_menu_24"
         app:iconGravity="top"/>
@@ -138,8 +145,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="35dp"
         android:layout_toEndOf="@+id/autocomplete_fragment"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
         android:textSize="16sp"
         tools:text="Menlo Park"/>
 
@@ -149,10 +158,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
+        android:layout_marginStart="37dp"
         android:layout_marginTop="127dp"
         android:layout_marginEnd="29dp"
+        android:layout_toEndOf="@+id/dashboard_weather_icon_imageview"
+        android:textColor="@color/white"
         android:textSize="34sp"
-        tools:text="clear sky" />
+        tools:text="clear sky"/>
 
     <ImageView
         android:id="@+id/dashboard_weather_icon_imageview"
@@ -162,7 +174,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="63dp"
         android:layout_marginTop="36dp"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars"/>
 
     <TextView
         android:id="@+id/dashboard_current_temp_textview"
@@ -172,8 +184,9 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="43dp"
         android:layout_marginTop="48dp"
+        android:textColor="@color/white"
         android:textSize="60sp"
-        tools:text="22" />
+        tools:text="22"/>
 
     <ImageView
         android:id="@+id/dashboard_lower_body_garment_imageview"
@@ -234,6 +247,7 @@
         android:layout_marginStart="29dp"
         android:layout_marginBottom="136dp"
         android:layout_toEndOf="@+id/dashboard_accessories_imageview"
+        android:textColor="@color/white"
         tools:text="+2 more accessories"/>
 
     <Button
@@ -242,7 +256,7 @@
         android:layout_width="41dp"
         android:layout_height="37dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="11dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="19dp"
         android:layout_toStartOf="@+id/dashboard_to_menu_button"
         app:icon="@drawable/ic_baseline_warning_24"
@@ -256,7 +270,7 @@
         android:layout_width="41dp"
         android:layout_height="37dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="11dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="19dp"
         android:layout_toStartOf="@+id/dashboard_to_menu_button"
         app:icon="@drawable/ic_baseline_my_location_24"
@@ -272,7 +286,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="3dp"
-        android:layout_marginTop="0dp"/>
+        android:layout_marginTop="15dp"/>
 
     <FrameLayout
         android:id="@+id/dashboard_weather_animation_view"
@@ -285,6 +299,7 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
-        android:layout_marginBottom="0dp"/>
+        android:layout_marginBottom="0dp"
+        android:elevation="-10dp"/>
 
 </RelativeLayout>

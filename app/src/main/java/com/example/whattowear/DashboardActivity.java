@@ -2,6 +2,7 @@ package com.example.whattowear;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -10,7 +11,10 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -112,6 +116,19 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
         getUserLocationButton.setVisibility(View.GONE);
         locationServicesDeniedWarningButton = findViewById(R.id.location_services_denied_warning_button);
         locationServicesDeniedWarningButton.setVisibility(View.GONE);
+
+        // TODO: create diff gradient for morning/afternoon/night
+        // Put gradient as background
+        // for now, use morning
+        View dashboardView = findViewById(R.id.dashboard_relativelayout);
+        dashboardView.setBackground(AppCompatResources.getDrawable(this, R.drawable.morning_gradient));
+
+        // have layout be full screen to hide both the top and bottom bars
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
+        // Change places search icon to white drawable icon
+        ImageView searchIcon = (ImageView)((LinearLayout)autocompleteFragment.getView()).getChildAt(0);
+        searchIcon.setImageResource(R.drawable.ic_baseline_search_24);
 
         detailedClothingButton.setOnClickListener(new View.OnClickListener() {
             @Override
