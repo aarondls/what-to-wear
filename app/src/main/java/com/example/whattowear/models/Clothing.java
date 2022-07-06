@@ -13,10 +13,14 @@ public class Clothing {
     private static Footwear footwear;
     private static Accessories accessories;
 
+    private static ActivityType selectedActivityType;
+    private static int selectedActivityTypeIndex;
     private static String loadedDataLocationName;
 
     private Clothing () {
         loadedDataLocationName = "";
+        selectedActivityType = null;
+        selectedActivityTypeIndex = 0;
     }
 
     /**
@@ -46,6 +50,17 @@ public class Clothing {
         Clothing.loadedDataLocationName = loadedDataLocationName;
     }
 
+    /**
+     * Given that the user has selected an activity, sets the provided selectedActivityType and selectedActivityTypeIndex
+     * @param selectedActivityType the chosen activity type
+     * @param selectedActivityTypeIndex the index of the chosen activity type in the generated list by the getActivityTypes method
+     */
+    public static void setSelectedActivity(ActivityType selectedActivityType, int selectedActivityTypeIndex) {
+        Clothing.selectedActivityType = selectedActivityType;
+        Clothing.selectedActivityTypeIndex = selectedActivityTypeIndex;
+
+    }
+
     public static UpperBodyGarment getUpperBodyGarment() {
         return upperBodyGarment;
     }
@@ -68,5 +83,18 @@ public class Clothing {
 
     public static String getLoadedDataLocationName() {
         return loadedDataLocationName;
+    }
+
+    public static ActivityType getSelectedActivityType() {
+        return selectedActivityType;
+    }
+
+    /**
+     * @return the index of the selected activity type in the generated list by the getActivityTypes method
+     * If no activity was selected, this returns 0 to choose the first element of the list. The list
+     * is guaranteed to be non-empty by the getActivityTypes method.
+     */
+    public static int getSelectedActivityTypeIndex() {
+        return selectedActivityTypeIndex;
     }
 }

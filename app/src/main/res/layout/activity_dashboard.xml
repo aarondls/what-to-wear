@@ -8,6 +8,22 @@
     android:background="@drawable/morning_gradient"
     tools:context=".DashboardActivity">
 
+    <Spinner
+        android:id="@+id/activity_selector_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/forecast_3hr_relativelayout"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/activity_spinner_background"
+        android:clickable="true"
+        android:dropDownVerticalOffset="40dp"
+        android:longClickable="true"
+        android:popupBackground="@drawable/activity_spinner_background"/>
+
     <RelativeLayout
         android:id="@+id/forecast_3hr_relativelayout"
         android:layout_width="240dp"
