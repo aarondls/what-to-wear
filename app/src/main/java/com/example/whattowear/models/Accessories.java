@@ -16,6 +16,14 @@ public class Accessories {
         UMBRELLA, HAT, SUNGLASSES
     }
 
+    // Indexing of this is based on the order declaration of the enum
+    private static ClothingRanker umbrellaRanker;
+    private static ClothingRanker hatRanker;
+    private static ClothingRanker sunglassesRanker;
+
+    // number of accessory rankers as defined above
+    public static final int ACCESSORIES_RANKERS_COUNT = 3;
+
     /**
      * Calculates the optimal accessories based on weather,
      * activity, and preferences, then returns it
@@ -52,4 +60,31 @@ public class Accessories {
 
     }
 
+    /**
+     * Initializes all the accessory rankers
+     */
+    public static void initializeAccessoriesRankers() {
+        // TODO: fix icons
+        // TODO: get from parse
+        umbrellaRanker = new ClothingRanker("Umbrella", R.drawable.sunglasses);
+        hatRanker = new ClothingRanker("Hat", R.drawable.sunglasses);
+        sunglassesRanker = new ClothingRanker("Sunglasses", R.drawable.sunglasses);
+    }
+
+    /**
+     * @param position the index of the desired accessory ranker, which is based on its declaration within the enum AccessoryType
+     * @return the accessory ranker at the index position
+     */
+    public static ClothingRanker getAccessoriesRankerAtPosition(int position) {
+        switch(position) {
+            case 0:
+                return umbrellaRanker;
+            case 1:
+                return hatRanker;
+            case 2:
+                return sunglassesRanker;
+            default:
+                return null;
+        }
+    }
 }
