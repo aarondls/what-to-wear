@@ -40,7 +40,18 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Move to preferences screen
                 Intent i = new Intent(MenuActivity.this, PreferencesActivity.class);
+                i.putExtra(PreferencesActivity.IS_ADVANCED_SETTINGS_KEY, false);
                 startActivity(i);
+            }
+        });
+
+        goToPreferencesButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Intent i = new Intent(MenuActivity.this, PreferencesActivity.class);
+                i.putExtra(PreferencesActivity.IS_ADVANCED_SETTINGS_KEY, true);
+                startActivity(i);
+                return true;
             }
         });
     }

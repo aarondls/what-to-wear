@@ -7,11 +7,12 @@ public class ClothingRanker {
     private String clothingTypeName;
     private int clothingTypeIconID;
 
+    private int preferenceFactor; // how much the user likes this piece of clothing
+
+    // Temperature factors
+    private int temperatureImportance; // how sensitive this clothing is to the temp range
     private int temperatureUpperRange;
     private int temperatureLowerRange;
-    private static final int temperatureImportance = 100; // how sensitive this clothing is to the temp range
-
-    private int preferenceFactor; // how much the user likes this piece of clothing
 
     // Activity factors
     private int activityImportance; // how relevant this clothing is to the activity
@@ -24,10 +25,11 @@ public class ClothingRanker {
         this.clothingTypeIconID = clothingTypeIconID;
 
         // TODO: Get these from parse
+        temperatureImportance = 50;
         temperatureUpperRange = 10;
         temperatureLowerRange = 50;
         preferenceFactor = 10;
-        activityImportance = 10;
+        activityImportance = 50;
         workActivityFactor = 10;
         sportsActivityFactor = 10;
         casualActivityFactor = 10;
@@ -89,6 +91,10 @@ public class ClothingRanker {
         return clothingTypeIconID;
     }
 
+    public int getTemperatureImportance() {
+        return temperatureImportance;
+    }
+
     public int getTemperatureUpperRange() {
         return temperatureUpperRange;
     }
@@ -119,6 +125,10 @@ public class ClothingRanker {
 
     public void setActivityImportance(int activityImportance) {
         this.activityImportance = activityImportance;
+    }
+
+    public void setTemperatureImportance(int temperatureImportance) {
+        this.temperatureImportance = temperatureImportance;
     }
 
     public void setTemperatureUpperRange(int temperatureUpperRange) {

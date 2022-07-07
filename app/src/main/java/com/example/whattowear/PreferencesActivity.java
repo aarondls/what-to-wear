@@ -15,6 +15,7 @@ import com.google.android.material.button.MaterialButtonToggleGroup;
 import static com.example.whattowear.models.Clothing.ClothingType;
 
 public class PreferencesActivity extends AppCompatActivity {
+    public static final String IS_ADVANCED_SETTINGS_KEY = "isAdvancedSettings";
     private Button menuButton;
 
     private RecyclerView preferencesReyclerview;
@@ -38,8 +39,7 @@ public class PreferencesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Move to menu screen
-                Intent i = new Intent(PreferencesActivity.this, MenuActivity.class);
-                startActivity(i);
+                finish();
             }
         });
 
@@ -63,7 +63,8 @@ public class PreferencesActivity extends AppCompatActivity {
         });
 
         // set up recycler view with adapter
-        preferencesAdapter = new PreferencesAdapter(this, ClothingType.OVER_BODY_GARMENT); // starts with over body
+        // pass in whether advanced settings need to be displayed
+        preferencesAdapter = new PreferencesAdapter(this, ClothingType.OVER_BODY_GARMENT, getIntent().getExtras().getBoolean(IS_ADVANCED_SETTINGS_KEY)); // starts with over body
         preferencesReyclerview.setLayoutManager(new LinearLayoutManager(this));
         preferencesReyclerview.setAdapter(preferencesAdapter);
 

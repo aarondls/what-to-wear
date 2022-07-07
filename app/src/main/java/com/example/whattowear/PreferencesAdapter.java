@@ -25,10 +25,12 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesAdapter.
     private static final String TAG = "PreferencesAdapter";
     private Context context;
     private ClothingType clothingType;
+    private Boolean isAdvancedSettings;
 
-    public PreferencesAdapter(Context context, ClothingType clothingType) {
+    public PreferencesAdapter(Context context, ClothingType clothingType, Boolean isAdvancedSettings) {
         this.context = context;
         this.clothingType = clothingType;
+        this.isAdvancedSettings = isAdvancedSettings;
     }
 
     @NonNull
@@ -75,12 +77,20 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesAdapter.
         public TextView preferenceClothingTypeTextview;
         public ImageView clothingIcon;
 
-        public RangeSlider temperatureRangeslider;
+        public TextView activityImportanceTextview;
+        public TextView workFactorTextview;
+        public TextView sportsFactorTextview;
+        public TextView casualFactorTextview;
+        public TextView temperatureImportanceTextview;
+        public TextView temperatureRangeTextview;
+
+        public Slider preferenceFactorSlider;
         public Slider activityImportanceSlider;
         public Slider workActivityFactorSlider;
         public Slider sportsActivityFactorSlider;
         public Slider casualActivityFactorSlider;
-        public Slider preferenceFactorSlider;
+        public Slider temperatureImportanceSlider;
+        public RangeSlider temperatureRangeslider;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -88,65 +98,103 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesAdapter.
             preferenceClothingTypeTextview = itemView.findViewById(R.id.preference_clothing_type_textview);
             clothingIcon = itemView.findViewById(R.id.preferences_clothing_icon_imageview);
 
-            temperatureRangeslider = itemView.findViewById(R.id.temperature_rangeslider);
+            activityImportanceTextview = itemView.findViewById(R.id.preferences_activity_importance_textview);
+            workFactorTextview = itemView.findViewById(R.id.preferences_work_factor_textview);
+            sportsFactorTextview = itemView.findViewById(R.id.preferences_sports_factor_textview);
+            casualFactorTextview = itemView.findViewById(R.id.preferences_casual_factor_textview);
+            temperatureImportanceTextview = itemView.findViewById(R.id.preferences_temperature_importance_textview);
+            temperatureRangeTextview = itemView.findViewById(R.id.preferences_temperature_range_textview);
+
+            preferenceFactorSlider = itemView.findViewById(R.id.preferences_factor_slider);
             activityImportanceSlider = itemView.findViewById(R.id.activity_importance_slider);
             workActivityFactorSlider = itemView.findViewById(R.id.activity_work_factor_slider);
             sportsActivityFactorSlider = itemView.findViewById(R.id.activity_sports_factor_slider);
             casualActivityFactorSlider = itemView.findViewById(R.id.activity_casual_factor_slider);
-            preferenceFactorSlider = itemView.findViewById(R.id.preferences_factor_slider);
+            temperatureImportanceSlider = itemView.findViewById(R.id.temperature_importance_slider);
+            temperatureRangeslider = itemView.findViewById(R.id.temperature_rangeslider);
 
-            temperatureRangeslider.addOnChangeListener(new RangeSlider.OnChangeListener() {
-                @Override
-                public void onValueChange(@NonNull RangeSlider slider, float value, boolean fromUser) {
-                    // check which change
-                    List<Float> endpointValues = slider.getValues();
-                    // TODO: change the temp factor of the associated clothing ranker
-                    if (endpointValues.get(0) == value) {
-                        // change is the first end point
-                        clothingRanker.setTemperatureLowerRange(Math.round(value));
-                    } else {
-                        // change is the last end point
-                        clothingRanker.setTemperatureUpperRange(Math.round(value));
-                    }
-
-                }
-            });
-
-            activityImportanceSlider.addOnChangeListener(new Slider.OnChangeListener() {
-                @Override
-                public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
-                    Log.i(TAG, "Activity importance slider changed to " + value);
-                    clothingRanker.setActivityImportance(Math.round(value));
-                }
-            });
-
-            workActivityFactorSlider.addOnChangeListener(new Slider.OnChangeListener() {
-                @Override
-                public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
-                    clothingRanker.setWorkActivityFactor(Math.round(value));
-                }
-            });
-
-            sportsActivityFactorSlider.addOnChangeListener(new Slider.OnChangeListener() {
-                @Override
-                public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
-                    clothingRanker.setSportsActivityFactor(Math.round(value));
-                }
-            });
-
-            casualActivityFactorSlider.addOnChangeListener(new Slider.OnChangeListener() {
-                @Override
-                public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
-                    clothingRanker.setCasualActivityFactor(Math.round(value));
-                }
-            });
-
+            // Set up the basic preferences first
             preferenceFactorSlider.addOnChangeListener(new Slider.OnChangeListener() {
                 @Override
                 public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
                     clothingRanker.setPreferenceFactor(Math.round(value));
                 }
             });
+
+            // Set up the advanced preferences, if user requested for it
+            if (isAdvancedSettings) {
+                // set up advanced settings
+                activityImportanceSlider.addOnChangeListener(new Slider.OnChangeListener() {
+                    @Override
+                    public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+                        Log.i(TAG, "Activity importance slider changed to " + value);
+                        clothingRanker.setActivityImportance(Math.round(value));
+                    }
+                });
+
+                workActivityFactorSlider.addOnChangeListener(new Slider.OnChangeListener() {
+                    @Override
+                    public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+                        clothingRanker.setWorkActivityFactor(Math.round(value));
+                    }
+                });
+
+                sportsActivityFactorSlider.addOnChangeListener(new Slider.OnChangeListener() {
+                    @Override
+                    public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+                        clothingRanker.setSportsActivityFactor(Math.round(value));
+                    }
+                });
+
+                casualActivityFactorSlider.addOnChangeListener(new Slider.OnChangeListener() {
+                    @Override
+                    public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+                        clothingRanker.setCasualActivityFactor(Math.round(value));
+                    }
+                });
+
+                temperatureImportanceSlider.addOnChangeListener(new Slider.OnChangeListener() {
+                    @Override
+                    public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+                        clothingRanker.setTemperatureImportance(Math.round(value));
+                    }
+                });
+
+                temperatureRangeslider.addOnChangeListener(new RangeSlider.OnChangeListener() {
+                    @Override
+                    public void onValueChange(@NonNull RangeSlider slider, float value, boolean fromUser) {
+                        // check which change
+                        List<Float> endpointValues = slider.getValues();
+                        // TODO: change the temp factor of the associated clothing ranker
+                        if (endpointValues.get(0) == value) {
+                            // change is the first end point
+                            Log.i(TAG, "Temp lower range changed to " + value);
+                            clothingRanker.setTemperatureLowerRange(Math.round(value));
+                        } else {
+                            // change is the last end point
+                            Log.i(TAG, "Temp upper range changed to " + value);
+                            clothingRanker.setTemperatureUpperRange(Math.round(value));
+                        }
+
+                    }
+                });
+            } else {
+                // hide advanced settings
+                activityImportanceSlider.setVisibility(View.GONE);
+                workActivityFactorSlider.setVisibility(View.GONE);
+                sportsActivityFactorSlider.setVisibility(View.GONE);
+                casualActivityFactorSlider.setVisibility(View.GONE);
+                temperatureImportanceSlider.setVisibility(View.GONE);
+                temperatureRangeslider.setVisibility(View.GONE);
+
+                activityImportanceTextview.setVisibility(View.GONE);
+                workFactorTextview.setVisibility(View.GONE);
+                sportsFactorTextview.setVisibility(View.GONE);
+                casualFactorTextview.setVisibility(View.GONE);
+                temperatureImportanceTextview.setVisibility(View.GONE);
+                temperatureRangeTextview.setVisibility(View.GONE);
+            }
+
         }
 
         public void bind(ClothingRanker clothingRanker) {
@@ -157,16 +205,22 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesAdapter.
 
             clothingIcon.setImageResource(clothingRanker.getClothingTypeIconID());
 
-            List<Float> tempRange = new ArrayList<>();
-            tempRange.add((float) clothingRanker.getTemperatureLowerRange());
-            tempRange.add((float) clothingRanker.getTemperatureUpperRange());
-            temperatureRangeslider.setValues(tempRange);
 
-            activityImportanceSlider.setValue(clothingRanker.getActivityImportance());
-            workActivityFactorSlider.setValue(clothingRanker.getWorkActivityFactor());
-            sportsActivityFactorSlider.setValue(clothingRanker.getSportsActivityFactor());
-            casualActivityFactorSlider.setValue(clothingRanker.getCasualActivityFactor());
             preferenceFactorSlider.setValue(clothingRanker.getPreferenceFactor());
+
+            // Check if advanced settings need to be set
+            if (isAdvancedSettings) {
+                activityImportanceSlider.setValue(clothingRanker.getActivityImportance());
+                workActivityFactorSlider.setValue(clothingRanker.getWorkActivityFactor());
+                sportsActivityFactorSlider.setValue(clothingRanker.getSportsActivityFactor());
+                casualActivityFactorSlider.setValue(clothingRanker.getCasualActivityFactor());
+                temperatureImportanceSlider.setValue(clothingRanker.getTemperatureImportance());
+
+                List<Float> tempRange = new ArrayList<>();
+                tempRange.add((float) clothingRanker.getTemperatureLowerRange());
+                tempRange.add((float) clothingRanker.getTemperatureUpperRange());
+                temperatureRangeslider.setValues(tempRange);
+            }
         }
     }
 }
