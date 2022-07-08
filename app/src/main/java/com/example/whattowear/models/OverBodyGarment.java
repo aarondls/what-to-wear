@@ -2,6 +2,9 @@ package com.example.whattowear.models;
 
 import com.example.whattowear.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class OverBodyGarment {
     private OverBodyGarmentType overBodyGarmentType;
 
@@ -9,13 +12,8 @@ public class OverBodyGarment {
         ATHLETIC_JACKET, RAIN_JACKET, WINTER_COAT, NONE
     }
 
-    // Indexing of this is based on the order declaration of the enum
-    private static ClothingRanker athleticJacketRanker;
-    private static ClothingRanker rainJacketRanker;
-    private static ClothingRanker winterCoatRanker;
-
-    // number of over body garment rankers as defined above
-    public static final int OVER_BODY_GARMENT_RANKERS_COUNT = 3;
+    // Indexing of this is based on the order declaration of the enum, excluding none
+    private static List<ClothingRanker> overBodyGarmentRankers;
 
     /**
      * Calculates the optimal over body garment based on weather,
@@ -51,27 +49,51 @@ public class OverBodyGarment {
     public static void initializeOverBodyGarmentRankers() {
         // TODO: fix icons
         // TODO: get from parse
-        athleticJacketRanker = new ClothingRanker("Athletic jacket", R.drawable.hoodie);
-        rainJacketRanker = new ClothingRanker("Rain jacket", R.drawable.hoodie);
-        winterCoatRanker = new ClothingRanker("Winter coat", R.drawable.hoodie);
+        ClothingRanker athleticJacketRanker  = new ClothingRanker("Athletic jacket", R.drawable.hoodie);
+        ClothingRanker rainJacketRanker  = new ClothingRanker("Rain jacket", R.drawable.hoodie);
+        ClothingRanker winterCoatRanker  = new ClothingRanker("Winter coat", R.drawable.hoodie);
+
+        // For testing only
+        athleticJacketRanker.setTemperatureLowerRange(60);
+        athleticJacketRanker.setTemperatureUpperRange(90);
+        rainJacketRanker.setTemperatureLowerRange(60);
+        rainJacketRanker.setTemperatureUpperRange(90);
+        winterCoatRanker.setTemperatureLowerRange(60);
+        winterCoatRanker.setTemperatureUpperRange(90);
+
+        // add everything to the list
+        overBodyGarmentRankers = new ArrayList<>();
+        overBodyGarmentRankers.add(athleticJacketRanker);
+        overBodyGarmentRankers.add(rainJacketRanker);
+        overBodyGarmentRankers.add(winterCoatRanker);
     }
 
     /**
-     * @param position the index of the desired over body garment ranker, which is based on its declaration within the enum OverBodyGarmentType
-     * @return the over body garment ranker at the index position
+     * @return the list of clothing rankers for over body garments, in the order of which their type is declared within the OverBodyGarmentType enum
      */
-    public static ClothingRanker getOverBodyGarmentRankerAtPosition(int position) {
+    public static List<ClothingRanker> getOverBodyGarmentRankers() {
+        return overBodyGarmentRankers;
+    }
+
+    /**
+     * @param position the index of the over body garment within the list overBodyGarmentRankers
+     * @return the OverBodyGarmentType of the ClothingRanker at the index position within the list overBodyGarmentRankers
+     */
+    public static OverBodyGarmentType getOverBodyGarmentTypeAtPosition(int position) {
         switch(position) {
             case 0:
-                return athleticJacketRanker;
+                return OverBodyGarmentType.ATHLETIC_JACKET;
             case 1:
-                return rainJacketRanker;
+                return OverBodyGarmentType.RAIN_JACKET;
             case 2:
-                return winterCoatRanker;
+                return OverBodyGarmentType.WINTER_COAT;
             default:
-                // Initialization inside Clothing will ensure this will not be null
                 // Improper use of this function will return null
                 return null;
         }
+    }
+
+    public OverBodyGarmentType getOverBodyGarmentType() {
+        return overBodyGarmentType;
     }
 }

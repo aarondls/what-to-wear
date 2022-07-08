@@ -24,13 +24,14 @@ import static com.example.whattowear.models.Clothing.ClothingType;
 public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesAdapter.ViewHolder> {
     private static final String TAG = "PreferencesAdapter";
     private Context context;
-    private ClothingType clothingType;
     private Boolean isAdvancedSettings;
+    private List<ClothingRanker> selectedClothingRankers;
 
     public PreferencesAdapter(Context context, ClothingType clothingType, Boolean isAdvancedSettings) {
         this.context = context;
-        this.clothingType = clothingType;
         this.isAdvancedSettings = isAdvancedSettings;
+        selectedClothingRankers = Clothing.getRankersWithType(clothingType);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -46,8 +47,7 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // get correct item based on position
-        Log.i(TAG, "On bind with position " + position + " and type " + clothingType.toString());
-        ClothingRanker clothingRanker = Clothing.getRankerWithTypeAtPosition(clothingType, position);
+        ClothingRanker clothingRanker = selectedClothingRankers.get(position);
         // the above can return null, if position is out of bounds of if the clothing type is not recognized
         // this will not happen due to the way clothing type is set up and the way the number of rankers are found from Clothing
 
@@ -57,7 +57,7 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesAdapter.
 
     @Override
     public int getItemCount() {
-        return Clothing.getRankersSize(clothingType);
+        return selectedClothingRankers.size();
     }
 
     /**
@@ -66,9 +66,8 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesAdapter.
      * @param clothingType the desired clothing type preferences to display
      */
     public void onNewClothingType(ClothingType clothingType) {
-        this.clothingType = clothingType;
+        selectedClothingRankers = Clothing.getRankersWithType(clothingType);
         notifyDataSetChanged();
-
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

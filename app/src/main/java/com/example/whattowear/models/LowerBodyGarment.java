@@ -2,6 +2,9 @@ package com.example.whattowear.models;
 
 import com.example.whattowear.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class LowerBodyGarment {
     private LowerBodyGarmentType lowerBodyGarmentType;
 
@@ -10,13 +13,7 @@ public class LowerBodyGarment {
     }
 
     // Indexing of this is based on the order declaration of the enum
-    private static ClothingRanker pantsRanker;
-    private static ClothingRanker shortsRanker;
-    private static ClothingRanker skirtRanker;
-    private static ClothingRanker sweatsRanker;
-
-    // number of lower body garment rankers as defined above
-    public static final int LOWER_BODY_GARMENT_RANKERS_COUNT = 4;
+    private static List<ClothingRanker> lowerBodyGarmentRankers;
 
     /**
      * Calculates the optimal lower body garment based on weather,
@@ -48,26 +45,39 @@ public class LowerBodyGarment {
     public static void initializeLowerBodyGarmentRankers() {
         // TODO: fix icons
         // TODO: get from parse
-        pantsRanker = new ClothingRanker("Pants", R.drawable.sweats);
-        shortsRanker = new ClothingRanker("Shorts", R.drawable.sweats);
-        skirtRanker = new ClothingRanker("Skirt", R.drawable.sweats);
-        sweatsRanker = new ClothingRanker("Sweats", R.drawable.sweats);
+        ClothingRanker pantsRanker = new ClothingRanker("Pants", R.drawable.sweats);
+        ClothingRanker shortsRanker = new ClothingRanker("Shorts", R.drawable.sweats);
+        ClothingRanker skirtRanker = new ClothingRanker("Skirt", R.drawable.sweats);
+        ClothingRanker sweatsRanker = new ClothingRanker("Sweats", R.drawable.sweats);
+
+        lowerBodyGarmentRankers = new ArrayList<>();
+        lowerBodyGarmentRankers.add(pantsRanker);
+        lowerBodyGarmentRankers.add(shortsRanker);
+        lowerBodyGarmentRankers.add(skirtRanker);
+        lowerBodyGarmentRankers.add(sweatsRanker);
     }
 
     /**
-     * @param position the index of the desired lower body garment ranker, which is based on its declaration within the enum LowerBodyGarmentType
-     * @return the lower body garment ranker at the index position
+     * @return the list of clothing rankers for lower body garments, in the order of which their type is declared within the lowerBodyGarmentType enum
      */
-    public static ClothingRanker getLowerBodyGarmentRankerAtPosition(int position) {
+    public static List<ClothingRanker> getLowerBodyGarmentRankers() {
+        return lowerBodyGarmentRankers;
+    }
+
+    /**
+     * @param position the index of the lower body garment within the list lowerBodyGarmentRankers
+     * @return the LowerBodyGarmentType of the ClothingRanker at the index position within the list lowerBodyGarmentRankers
+     */
+    public static LowerBodyGarmentType getLowerBodyGarmentTypeAtPosition(int position) {
         switch(position) {
             case 0:
-                return pantsRanker;
+                return LowerBodyGarmentType.PANTS;
             case 1:
-                return shortsRanker;
+                return LowerBodyGarmentType.SHORTS;
             case 2:
-                return skirtRanker;
+                return LowerBodyGarmentType.SKIRT;
             case 3:
-                return sweatsRanker;
+                return LowerBodyGarmentType.SWEATS;
             default:
                 return null;
         }

@@ -2,6 +2,9 @@ package com.example.whattowear.models;
 
 import com.example.whattowear.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UpperBodyGarment {
     private UpperBodyGarmentType upperBodyGarmentType;
 
@@ -10,13 +13,7 @@ public class UpperBodyGarment {
     }
 
     // Indexing of this is based on the order declaration of the enum
-    private static ClothingRanker tShirtRanker;
-    private static ClothingRanker poloShirtRanker;
-    private static ClothingRanker dressShirtRanker;
-    private static ClothingRanker blouseRanker;
-
-    // number of upper body garment rankers as defined above
-    public static final int UPPER_BODY_GARMENT_RANKERS_COUNT = 4;
+    private static List<ClothingRanker> upperBodyGarmentRankers;
 
     /**
      * Calculates the optimal upper body garment based on weather,
@@ -49,26 +46,39 @@ public class UpperBodyGarment {
     public static void initializeUpperBodyGarmentRankers() {
         // TODO: fix icons
         // TODO: get from parse
-        tShirtRanker = new ClothingRanker("T shirt", R.drawable.t_shirt);
-        poloShirtRanker = new ClothingRanker("Polo shirt", R.drawable.t_shirt);
-        dressShirtRanker = new ClothingRanker("Dress shirt", R.drawable.t_shirt);
-        blouseRanker = new ClothingRanker("Blouse", R.drawable.t_shirt);
+        ClothingRanker tShirtRanker = new ClothingRanker("T shirt", R.drawable.t_shirt);
+        ClothingRanker poloShirtRanker = new ClothingRanker("Polo shirt", R.drawable.t_shirt);
+        ClothingRanker dressShirtRanker = new ClothingRanker("Dress shirt", R.drawable.t_shirt);
+        ClothingRanker blouseRanker = new ClothingRanker("Blouse", R.drawable.t_shirt);
+
+        upperBodyGarmentRankers = new ArrayList<>();
+        upperBodyGarmentRankers.add(tShirtRanker);
+        upperBodyGarmentRankers.add(poloShirtRanker);
+        upperBodyGarmentRankers.add(dressShirtRanker);
+        upperBodyGarmentRankers.add(blouseRanker);
     }
 
     /**
-     * @param position the index of the desired upper body garment ranker, which is based on its declaration within the enum UpperBodyGarmentType
-     * @return the upper body garment ranker at the index position
+     * @return the list of clothing rankers for upper body garments, in the order of which their type is declared within the UpperBodyGarmentType enum
      */
-    public static ClothingRanker getUpperBodyGarmentRankerAtPosition(int position) {
+    public static List<ClothingRanker> getUpperBodyGarmentRankers() {
+        return upperBodyGarmentRankers;
+    }
+
+    /**
+     * @param position the index of the upper body garment within the list upperBodyGarmentRankers
+     * @return the UpperBodyGarmentType of the ClothingRanker at the index position within the list upperBodyGarmentRankers
+     */
+    public static UpperBodyGarmentType getUpperBodyGarmentTypeAtPosition(int position) {
         switch(position) {
             case 0:
-                return tShirtRanker;
+                return UpperBodyGarmentType.T_SHIRT;
             case 1:
-                return poloShirtRanker;
+                return UpperBodyGarmentType.POLO_SHIRT;
             case 2:
-                return dressShirtRanker;
+                return UpperBodyGarmentType.DRESS_SHIRT;
             case 3:
-                return blouseRanker;
+                return UpperBodyGarmentType.BLOUSE;
             default:
                 return null;
         }

@@ -67,8 +67,5 @@ public class PreferencesActivity extends AppCompatActivity {
         preferencesAdapter = new PreferencesAdapter(this, ClothingType.OVER_BODY_GARMENT, getIntent().getExtras().getBoolean(IS_ADVANCED_SETTINGS_KEY)); // starts with over body
         preferencesReyclerview.setLayoutManager(new LinearLayoutManager(this));
         preferencesReyclerview.setAdapter(preferencesAdapter);
-
-        // notify new data is ready
-        preferencesAdapter.notifyDataSetChanged();
     }
 }

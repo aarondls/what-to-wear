@@ -2,6 +2,8 @@ package com.example.whattowear.models;
 
 import com.example.whattowear.ClothingInterface;
 
+import java.util.List;
+
 public class Clothing {
     // Clothing is a singleton class
 
@@ -109,38 +111,22 @@ public class Clothing {
         return selectedActivityTypeIndex;
     }
 
-    public static int getRankersSize(ClothingType clothingType) {
-        // TODO: calculate total size from all ranker lists
+    /**
+     * @param clothingType the clothingType of the desired rankers to get
+     * @return a list of ClothingRankers containing all rankers of the given ClothingType
+     */
+    public static List<ClothingRanker> getRankersWithType(ClothingType clothingType) {
         switch (clothingType) {
             case OVER_BODY_GARMENT:
-                return OverBodyGarment.OVER_BODY_GARMENT_RANKERS_COUNT;
+                return OverBodyGarment.getOverBodyGarmentRankers();
             case UPPER_BODY_GARMENT:
-                return UpperBodyGarment.UPPER_BODY_GARMENT_RANKERS_COUNT;
+                return UpperBodyGarment.getUpperBodyGarmentRankers();
             case LOWER_BODY_GARMENT:
-                return LowerBodyGarment.LOWER_BODY_GARMENT_RANKERS_COUNT;
+                return LowerBodyGarment.getLowerBodyGarmentRankers();
             case FOOTWEAR:
-                return Footwear.FOOTWEAR_RANKERS_COUNT;
+                return Footwear.getFootwearRankers();
             case ACCESSORIES:
-                return Accessories.ACCESSORIES_RANKERS_COUNT;
-            default:
-                // if unrecognized type, have "list" size recognized as empty
-                return 0;
-        }
-    }
-
-    public static ClothingRanker getRankerWithTypeAtPosition(ClothingType clothingType, int position) {
-        // TODO: calculate proper indices from clothing type and known ranker counts
-        switch (clothingType) {
-            case OVER_BODY_GARMENT:
-                return OverBodyGarment.getOverBodyGarmentRankerAtPosition(position);
-            case UPPER_BODY_GARMENT:
-                return UpperBodyGarment.getUpperBodyGarmentRankerAtPosition(position);
-            case LOWER_BODY_GARMENT:
-                return LowerBodyGarment.getLowerBodyGarmentRankerAtPosition(position);
-            case FOOTWEAR:
-                return Footwear.getFootwearRankerAtPosition(position);
-            case ACCESSORIES:
-                return Accessories.getAccessoriesRankerAtPosition(position);
+                return Accessories.getAccessoriesRankers();
             default:
                 // if unrecognized type, return null
                 return null;
