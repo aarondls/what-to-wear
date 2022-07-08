@@ -37,6 +37,11 @@ public class Weather {
     private static List<Forecast> hourlyForecast;
     private static Forecast currentForecast;
     private static Conditions dayConditions;
+    private static int dayConditionsID;
+    private static int dayMinTemperature;
+    private static int dayMaxTemperature;
+    private static int dayMeanTemperature;
+    private static float dayMaxUVIndex;
 
     // private to ensure that only the class can instantiate itself
     private Weather() {
@@ -55,6 +60,14 @@ public class Weather {
         hourlyForecast.addAll(Forecast.fromJsonArray(jsonObject.getJSONArray("hourly")));
 
         currentForecast = Forecast.fromJson(jsonObject.getJSONObject("current"));
+
+        JSONObject dayWeatherData = jsonObject.getJSONArray("daily").getJSONObject(0);
+        dayConditionsID = dayWeatherData.getJSONArray("weather").getJSONObject(0).getInt("id");
+        JSONObject dayTemperatureData = dayWeatherData.getJSONObject("temp");
+        dayMinTemperature = dayTemperatureData.getInt("min");
+        dayMaxTemperature = dayTemperatureData.getInt("max");
+        dayMeanTemperature = (dayMinTemperature+dayMaxTemperature)/2; // round down to int
+        dayMaxUVIndex = (float) dayWeatherData.getDouble("uvi");
 
         // TODO: fill up currentForecast and dayConditions, when needed
         // TODO: if not, delete them
@@ -170,6 +183,26 @@ public class Weather {
         }
 
         return locationName;
+    }
+
+    public static int getDayConditionsID() {
+        return dayConditionsID;
+    }
+
+    public static int getDayMinTemperature() {
+        return dayMinTemperature;
+    }
+
+    public static int getDayMaxTemperature() {
+        return dayMaxTemperature;
+    }
+
+    public static int getDayMeanTemperature() {
+        return dayMeanTemperature;
+    }
+
+    public static float getDayMaxUVIndex() {
+        return dayMaxUVIndex;
     }
 }
 
