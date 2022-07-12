@@ -3,6 +3,7 @@ package com.example.whattowear.models;
 import android.util.Log;
 
 import com.example.whattowear.R;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,19 +57,26 @@ public class Accessories {
     }
 
     /**
-     * Initializes all the accessory rankers
+     * Initializes all the accessory rankers with default factors
+     * @param user the ParseUser owning the accessory
+     * @return the list of initialized clothing rankers for accessory with default factors
      */
-    public static void initializeAccessoriesRankers() {
+    public static List<ClothingRanker> initializeAccessoriesRankers(ParseUser user) {
         // TODO: fix icons
         // TODO: get from parse
-        ClothingRanker umbrellaRanker = new ClothingRanker("Umbrella", R.drawable.sunglasses);
-        ClothingRanker hatRanker = new ClothingRanker("Hat", R.drawable.sunglasses);
-        ClothingRanker sunglassesRanker = new ClothingRanker("Sunglasses", R.drawable.sunglasses);
+        ClothingRanker umbrellaRanker = new ClothingRanker();
+        umbrellaRanker.initializeFactorsToDefault("Umbrella", R.drawable.sunglasses, user);
+        ClothingRanker hatRanker = new ClothingRanker();
+        hatRanker.initializeFactorsToDefault("Hat", R.drawable.sunglasses, user);
+        ClothingRanker sunglassesRanker = new ClothingRanker();
+        sunglassesRanker.initializeFactorsToDefault("Sunglasses", R.drawable.sunglasses, user);
 
         accessoriesRankers = new ArrayList<>();
         accessoriesRankers.add(umbrellaRanker);
         accessoriesRankers.add(hatRanker);
         accessoriesRankers.add(sunglassesRanker);
+
+        return accessoriesRankers;
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.example.whattowear.models;
 
 import com.example.whattowear.R;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,28 +45,26 @@ public class OverBodyGarment {
     }
 
     /**
-     * Initializes all the over body garment rankers
+     * Initializes all the over body garment rankers with default factors
+     * @param user the ParseUser owning the over body garments
+     * @return the list of initialized clothing rankers for over body garments with default factors
      */
-    public static void initializeOverBodyGarmentRankers() {
+    public static List<ClothingRanker> initializeOverBodyGarmentRankers(ParseUser user) {
         // TODO: fix icons
         // TODO: get from parse
-        ClothingRanker athleticJacketRanker  = new ClothingRanker("Athletic jacket", R.drawable.hoodie);
-        ClothingRanker rainJacketRanker  = new ClothingRanker("Rain jacket", R.drawable.hoodie);
-        ClothingRanker winterCoatRanker  = new ClothingRanker("Winter coat", R.drawable.hoodie);
+        ClothingRanker athleticJacketRanker  = new ClothingRanker();
+        athleticJacketRanker.initializeFactorsToDefault("Athletic jacket", R.drawable.hoodie, user);
+        ClothingRanker rainJacketRanker  = new ClothingRanker();
+        rainJacketRanker.initializeFactorsToDefault("Rain jacket", R.drawable.hoodie, user);
+        ClothingRanker winterCoatRanker  = new ClothingRanker();
+        winterCoatRanker.initializeFactorsToDefault("Winter coat", R.drawable.hoodie, user);
 
-        // For testing only
-        athleticJacketRanker.setTemperatureLowerRange(60);
-        athleticJacketRanker.setTemperatureUpperRange(90);
-        rainJacketRanker.setTemperatureLowerRange(60);
-        rainJacketRanker.setTemperatureUpperRange(90);
-        winterCoatRanker.setTemperatureLowerRange(60);
-        winterCoatRanker.setTemperatureUpperRange(90);
-
-        // add everything to the list
         overBodyGarmentRankers = new ArrayList<>();
         overBodyGarmentRankers.add(athleticJacketRanker);
         overBodyGarmentRankers.add(rainJacketRanker);
         overBodyGarmentRankers.add(winterCoatRanker);
+
+        return overBodyGarmentRankers;
     }
 
     /**
@@ -73,24 +72,6 @@ public class OverBodyGarment {
      */
     public static List<ClothingRanker> getOverBodyGarmentRankers() {
         return overBodyGarmentRankers;
-    }
-
-    /**
-     * @param position the index of the over body garment within the list overBodyGarmentRankers
-     * @return the OverBodyGarmentType of the ClothingRanker at the index position within the list overBodyGarmentRankers
-     */
-    public static OverBodyGarmentType getOverBodyGarmentTypeAtPosition(int position) {
-        switch(position) {
-            case 0:
-                return OverBodyGarmentType.ATHLETIC_JACKET;
-            case 1:
-                return OverBodyGarmentType.RAIN_JACKET;
-            case 2:
-                return OverBodyGarmentType.WINTER_COAT;
-            default:
-                // Improper use of this function will return null
-                return null;
-        }
     }
 
     public OverBodyGarmentType getOverBodyGarmentType() {

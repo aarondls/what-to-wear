@@ -1,6 +1,7 @@
 package com.example.whattowear.models;
 
 import com.example.whattowear.ClothingInterface;
+import com.parse.ParseUser;
 
 import java.util.List;
 
@@ -29,11 +30,12 @@ public class Clothing {
         selectedActivityTypeIndex = 0;
 
         // Load all the rankers
-        OverBodyGarment.initializeOverBodyGarmentRankers();
-        UpperBodyGarment.initializeUpperBodyGarmentRankers();
-        LowerBodyGarment.initializeLowerBodyGarmentRankers();
-        Footwear.initializeFootwearRankers();
-        Accessories.initializeAccessoriesRankers();
+        ParseUser user = ParseUser.getCurrentUser();
+        OverBodyGarment.initializeOverBodyGarmentRankers(user);
+        UpperBodyGarment.initializeUpperBodyGarmentRankers(user);
+        LowerBodyGarment.initializeLowerBodyGarmentRankers(user);
+        Footwear.initializeFootwearRankers(user);
+        Accessories.initializeAccessoriesRankers(user);
     }
 
     /**

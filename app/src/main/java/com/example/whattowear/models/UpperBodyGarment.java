@@ -1,6 +1,7 @@
 package com.example.whattowear.models;
 
 import com.example.whattowear.R;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,21 +42,30 @@ public class UpperBodyGarment {
     }
 
     /**
-     * Initializes all the upper body garment rankers
+     * Initializes all the upper body garment rankers with default factors
+     * @param user the ParseUser owning the upper body garments
+     * @return the list of initialized clothing rankers for upper body garments with default factors
      */
-    public static void initializeUpperBodyGarmentRankers() {
+    public static List<ClothingRanker> initializeUpperBodyGarmentRankers(ParseUser user) {
         // TODO: fix icons
         // TODO: get from parse
-        ClothingRanker tShirtRanker = new ClothingRanker("T shirt", R.drawable.t_shirt);
-        ClothingRanker poloShirtRanker = new ClothingRanker("Polo shirt", R.drawable.t_shirt);
-        ClothingRanker dressShirtRanker = new ClothingRanker("Dress shirt", R.drawable.t_shirt);
-        ClothingRanker blouseRanker = new ClothingRanker("Blouse", R.drawable.t_shirt);
+        ClothingRanker tShirtRanker = new ClothingRanker();
+        tShirtRanker.initializeFactorsToDefault("T shirt", R.drawable.t_shirt, user);
+        ClothingRanker poloShirtRanker = new ClothingRanker();
+        poloShirtRanker.initializeFactorsToDefault("Polo shirt", R.drawable.t_shirt, user);
+        ClothingRanker dressShirtRanker = new ClothingRanker();
+        dressShirtRanker.initializeFactorsToDefault("Dress shirt", R.drawable.t_shirt, user);
+        ClothingRanker blouseRanker = new ClothingRanker();
+        blouseRanker.initializeFactorsToDefault("Blouse", R.drawable.t_shirt, user);
+
 
         upperBodyGarmentRankers = new ArrayList<>();
         upperBodyGarmentRankers.add(tShirtRanker);
         upperBodyGarmentRankers.add(poloShirtRanker);
         upperBodyGarmentRankers.add(dressShirtRanker);
         upperBodyGarmentRankers.add(blouseRanker);
+
+        return upperBodyGarmentRankers;
     }
 
     /**
@@ -63,24 +73,5 @@ public class UpperBodyGarment {
      */
     public static List<ClothingRanker> getUpperBodyGarmentRankers() {
         return upperBodyGarmentRankers;
-    }
-
-    /**
-     * @param position the index of the upper body garment within the list upperBodyGarmentRankers
-     * @return the UpperBodyGarmentType of the ClothingRanker at the index position within the list upperBodyGarmentRankers
-     */
-    public static UpperBodyGarmentType getUpperBodyGarmentTypeAtPosition(int position) {
-        switch(position) {
-            case 0:
-                return UpperBodyGarmentType.T_SHIRT;
-            case 1:
-                return UpperBodyGarmentType.POLO_SHIRT;
-            case 2:
-                return UpperBodyGarmentType.DRESS_SHIRT;
-            case 3:
-                return UpperBodyGarmentType.BLOUSE;
-            default:
-                return null;
-        }
     }
 }

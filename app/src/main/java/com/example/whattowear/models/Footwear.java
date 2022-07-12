@@ -3,6 +3,7 @@ package com.example.whattowear.models;
 import android.util.Log;
 
 import com.example.whattowear.R;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ public class Footwear {
     private FootwearType footwearType;
 
     private static enum FootwearType {
-        SNEAKERS, RUBBER_SHOES, BOAT, LOAFER, SANDALS, BOOTS, HEELS
+        SNEAKERS, BOAT, LOAFER, SANDALS, BOOTS, HEELS
     }
 
     // Indexing of this is based on the order declaration of the enum
@@ -44,27 +45,35 @@ public class Footwear {
     }
 
     /**
-     * Initializes all the footwear rankers
+     * Initializes all the footwear rankers with default factors
+     * @param user the ParseUser owning the footwear
+     * @return the list of initialized clothing rankers for footwear with default factors
      */
-    public static void initializeFootwearRankers() {
+    public static List<ClothingRanker> initializeFootwearRankers(ParseUser user) {
         // TODO: fix icons
         // TODO: get from parse
-        ClothingRanker sneakersRanker = new ClothingRanker("Sneakers", R.drawable.rubber_shoes);
-        ClothingRanker rubberShoesRanker = new ClothingRanker("Rubber shoes", R.drawable.rubber_shoes);
-        ClothingRanker boatRanker = new ClothingRanker("Boat", R.drawable.rubber_shoes);
-        ClothingRanker loaferRanker = new ClothingRanker("Loafer", R.drawable.rubber_shoes);
-        ClothingRanker sandalsRanker = new ClothingRanker("Sandals", R.drawable.rubber_shoes);
-        ClothingRanker bootsRanker = new ClothingRanker("Boots", R.drawable.rubber_shoes);
-        ClothingRanker heelsRanker = new ClothingRanker("Heels", R.drawable.rubber_shoes);
+        ClothingRanker sneakersRanker = new ClothingRanker();
+        sneakersRanker.initializeFactorsToDefault("Sneakers", R.drawable.rubber_shoes, user);
+        ClothingRanker boatRanker = new ClothingRanker();
+        boatRanker.initializeFactorsToDefault("Boat", R.drawable.rubber_shoes, user);
+        ClothingRanker loaferRanker = new ClothingRanker();
+        loaferRanker.initializeFactorsToDefault("Loafer", R.drawable.rubber_shoes, user);
+        ClothingRanker sandalsRanker = new ClothingRanker();
+        sandalsRanker.initializeFactorsToDefault("Sandals", R.drawable.rubber_shoes, user);
+        ClothingRanker bootsRanker = new ClothingRanker();
+        bootsRanker.initializeFactorsToDefault("Boots", R.drawable.rubber_shoes, user);
+        ClothingRanker heelsRanker = new ClothingRanker();
+        heelsRanker.initializeFactorsToDefault("Heels", R.drawable.rubber_shoes, user);
 
         footwearRankers = new ArrayList<>();
         footwearRankers.add(sneakersRanker);
-        footwearRankers.add(rubberShoesRanker);
         footwearRankers.add(boatRanker);
         footwearRankers.add(loaferRanker);
         footwearRankers.add(sandalsRanker);
         footwearRankers.add(bootsRanker);
         footwearRankers.add(heelsRanker);
+
+        return footwearRankers;
     }
 
     /**
@@ -72,30 +81,5 @@ public class Footwear {
      */
     public static List<ClothingRanker> getFootwearRankers() {
         return footwearRankers;
-    }
-
-    /**
-     * @param position the index of the footwear within the list footwearRankers
-     * @return the FootwearType of the ClothingRanker at the index position within the list footwearRankers
-     */
-    public static FootwearType getFootwearTypeAtPosition(int position) {
-        switch(position) {
-            case 0:
-                return FootwearType.SNEAKERS;
-            case 1:
-                return FootwearType.RUBBER_SHOES;
-            case 2:
-                return FootwearType.BOAT;
-            case 3:
-                return FootwearType.LOAFER;
-            case 4:
-                return FootwearType.SANDALS;
-            case 5:
-                return FootwearType.BOOTS;
-            case 6:
-                return FootwearType.HEELS;
-            default:
-                return null;
-        }
     }
 }

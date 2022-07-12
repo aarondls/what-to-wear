@@ -1,157 +1,443 @@
 package com.example.whattowear.models;
 
+import android.util.Log;
+import android.util.Pair;
+
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+
+import java.util.List;
+
 /**
  * Class responsible for ranking an individual piece of clothing based on weather and user given factors
  */
-public class ClothingRanker {
-    private String clothingTypeName;
-    private int clothingTypeIconID;
+@ParseClassName("ClothingRanker")
+public class ClothingRanker extends ParseObject {
+    // Parse keys
+    public static final String KEY_USER = "user";
+    public static final String KEY_CLOTHING_TYPE_NAME = "clothingTypeName";
+    public static final String KEY_PREFERENCE_FACTOR = "preferenceFactor";
+    public static final String KEY_TEMPERATURE_IMPORTANCE = "temperatureImportance";
+    public static final String KEY_TEMPERATURE_LOWER_RANGE = "temperatureLowerRange";
+    public static final String KEY_TEMPERATURE_UPPER_RANGE = "temperatureUpperRange";
+    public static final String KEY_ACTIVITY_IMPORTANCE = "activityImportance";
+    public static final String KEY_WORK_ACTIVITY_FACTOR = "workActivityFactor";
+    public static final String KEY_SPORTS_ACTIVITY_FACTOR = "sportsActivityFactor";
+    public static final String KEY_CASUAL_ACTIVITY_FACTOR = "casualActivityFactor";
+    public static final String KEY_WEATHER_IMPORTANCE = "weatherImportance";
+    private static final String KEY_CONDITIONS_THUNDERSTORM_FACTOR = "conditionsThunderstormFactor";
+    private static final String KEY_CONDITIONS_DRIZZLE_FACTOR = "conditionsDrizzleFactor";
+    private static final String KEY_CONDITIONS_RAIN_FACTOR = "conditionsRainFactor";
+    private static final String KEY_CONDITIONS_SNOW_FACTOR = "conditionsSnowFactor";
 
-    private int preferenceFactor; // how much the user likes this piece of clothing
 
-    // Temperature factors
-    private int temperatureImportance; // how sensitive this clothing is to the temp range
-    private int temperatureUpperRange;
-    private int temperatureLowerRange;
+    private static final int DEFAULT_PREFERENCE_FACTOR = 5;
+    private static final int DEFAULT_TEMPERATURE_IMPORTANCE = 5;
+    private static final int DEFAULT_TEMPERATURE_LOWER_RANGE = 0;
+    private static final int DEFAULT_TEMPERATURE_UPPER_RANGE = 100;
+    private static final int DEFAULT_ACTIVITY_IMPORTANCE = 5;
+    private static final int DEFAULT_WORK_ACTIVITY_FACTOR = 5;
+    private static final int DEFAULT_SPORTS_ACTIVITY_FACTOR = 5;
+    private static final int DEFAULT_CASUAL_ACTIVITY_FACTOR = 5;
+    private static final int DEFAULT_WEATHER_IMPORTANCE = 5;
+    private static final int DEFAULT_CONDITIONS_THUNDERSTORM_FACTOR = 0;
+    private static final int DEFAULT_CONDITIONS_DRIZZLE_FACTOR = 0;
+    private static final int DEFAULT_CONDITIONS_RAIN_FACTOR = 0;
+    private static final int DEFAULT_CONDITIONS_SNOW_FACTOR = 0;
 
-    // Activity factors
-    private int activityImportance; // how relevant this clothing is to the activity
-    private int workActivityFactor; // how relevant this clothing is for work
-    private int sportsActivityFactor; // how relevant this clothing is for sports
-    private int casualActivityFactor; // how relevant this clothing is for casual
+    private int clothingTypeIconID; // do not store in parse as generated during runtime
 
-    public ClothingRanker(String clothingTypeName, int clothingTypeIconID) {
-        this.clothingTypeName = clothingTypeName;
+
+    /**
+     *  All the variables available at the Parse database:
+     *
+     *  Clothing name
+     *  String clothingTypeName
+     *
+     *  Preference factors
+     *  int preferenceFactor: how much the user likes this piece of clothing
+     *
+     *  Temperature factors
+     *  int temperatureImportance: how sensitive this clothing is to the temp range
+     *  int temperatureLowerRange
+     *  int temperatureUpperRange
+     *
+     *  Activity factors
+     *  int activityImportance: how relevant this clothing is to the activity
+     *  int workActivityFactor: how relevant this clothing is for work
+     *  int sportsActivityFactor: how relevant this clothing is for sports
+     *  int casualActivityFactor: how relevant this clothing is for casual
+     *
+     *  Weather type factors
+     *  int weatherImportance: how relevant this clothing is for the weather
+     *  int conditionsThunderstormFactor: weather factors based on the condition ID first digit
+     *  int conditionsDrizzleFactor
+     *  int conditionsRainFactor
+     *  int conditionsSnowFactor
+     */
+
+    /**
+     * Needed for parse
+     */
+    public ClothingRanker() {}
+
+    /**
+     * Used to initialize a clothing ranker with default preference, temperature, activity, and weather type factors
+     * Must provide the clothingTypeName, clothingTypeIconID, and ParseUser to be associated with this clothing ranker
+     *
+     * @param clothingTypeName the type name of the clothing represented by this clothing ranker
+     * @param clothingTypeIconID the ID (generated at runtime) of the icon associated with this clothing
+     * @param user the user who owns this clothing
+     */
+    public void initializeFactorsToDefault(String clothingTypeName, int clothingTypeIconID, ParseUser user) {
+        // use the required given information
+        setClothingTypeName(clothingTypeName);
         this.clothingTypeIconID = clothingTypeIconID;
+        setUser(user);
 
-        // TODO: Get these from parse
-        temperatureImportance = 50;
-        temperatureUpperRange = 10;
-        temperatureLowerRange = 50;
-        preferenceFactor = 10;
-        activityImportance = 50;
-        workActivityFactor = 10;
-        sportsActivityFactor = 10;
-        casualActivityFactor = 10;
+        // use these defaults
+        setPreferenceFactor(DEFAULT_PREFERENCE_FACTOR);
+        setTemperatureImportance(DEFAULT_TEMPERATURE_IMPORTANCE);
+        setTemperatureLowerRange(DEFAULT_TEMPERATURE_LOWER_RANGE);
+        setTemperatureUpperRange(DEFAULT_TEMPERATURE_UPPER_RANGE);
+        setActivityImportance(DEFAULT_ACTIVITY_IMPORTANCE);
+        setWorkActivityFactor(DEFAULT_WORK_ACTIVITY_FACTOR);
+        setSportsActivityFactor(DEFAULT_SPORTS_ACTIVITY_FACTOR);
+        setCasualActivityFactor(DEFAULT_CASUAL_ACTIVITY_FACTOR);
+        setWeatherImportance(DEFAULT_WEATHER_IMPORTANCE);
+        setConditionsThunderstormFactor(DEFAULT_CONDITIONS_THUNDERSTORM_FACTOR);
+        setConditionsDrizzleFactor(DEFAULT_CONDITIONS_DRIZZLE_FACTOR);
+        setConditionsRainFactor(DEFAULT_CONDITIONS_RAIN_FACTOR);
+        setConditionsSnowFactor(DEFAULT_CONDITIONS_SNOW_FACTOR);
     }
 
     // TODO: create a model to calculate rating of clothes based on factor
     // these use placeholders for now
-    public int getCurrentPrimaryRating() {
-        return preferenceFactor*(getTemperatureFactor()*temperatureImportance + getPrimaryActivityFactor()*activityImportance);
+    public float getCurrentPrimaryRating() {
+        return getPreferenceFactor()*(getTemperatureFactor()*getTemperatureImportance() + getPrimaryActivityFactor()*getActivityImportance() + getWeatherConditionsFactor()*getWeatherImportance());
     }
 
-    public int getCurrentSecondaryRating() {
-        return preferenceFactor*(getTemperatureFactor()*temperatureImportance + getSecondaryActivityFactor()*activityImportance);
+    public float getCurrentSecondaryRating() {
+        return getPreferenceFactor()*(getTemperatureFactor()*getTemperatureImportance() + getSecondaryActivityFactor()*getActivityImportance() + getWeatherConditionsFactor()*getWeatherImportance());
     }
+
 
     private int getTemperatureFactor() {
         // must be >0 inside of defined temperature range, <0 outside
         // model using quadratic function
         // use temperatureLowerRange and temperatureLowerRange as the zeros
         // constrain stretch factor by having function maximum at 10
-
-        if (Weather.getCurrentForecast().getTemp() >= temperatureLowerRange && Weather.getCurrentForecast().getTemp() <= temperatureUpperRange) {
+        if (Weather.getCurrentForecast().getTemp() >= getTemperatureLowerRange() && Weather.getCurrentForecast().getTemp() <= getTemperatureUpperRange()) {
             return 1;
         } else {
             return 0;
         }
     }
 
+    /**
+     * Gets the icon ID representing the clothing type
+     * Do not get this from Parse as the ID is generated at runtime
+     *
+     * @return the icon ID representing the clothing type
+     */
+    public int getClothingTypeIconID() {
+        return clothingTypeIconID;
+    }
+
+    /**
+     * @param clothingTypeIconID the icon ID representing the clothing type
+     */
+    public void setClothingTypeIconID(int clothingTypeIconID) {
+        this.clothingTypeIconID = clothingTypeIconID;
+    }
+
+
+    /**
+     * All the following getter and setters utilize the Parse database
+     */
+
+    /**
+     * @return the ParseUser owning the clothing ranker
+     */
+    public ParseUser getUser() {
+       return getParseUser(KEY_USER);
+    }
+
+    /**
+     * @param user the ParseUser owning the clothing ranker
+     */
+    public void setUser(ParseUser user) {
+        put (KEY_USER, user);
+    }
+
+    /**
+     * @return the String representing the name of the current clothing type
+     */
+    public String getClothingTypeName() {
+        return getString(KEY_CLOTHING_TYPE_NAME);
+    }
+
+    /**
+     * @param clothingTypeName the String representing the name of the current clothing type
+     */
+    public void setClothingTypeName(String clothingTypeName) {
+        put(KEY_CLOTHING_TYPE_NAME, clothingTypeName);
+    }
+
+    /**
+     * @return the preference factor of the current clothing
+     */
+    public int getPreferenceFactor() {
+        return getInt(KEY_PREFERENCE_FACTOR);
+    }
+
+    /**
+     * @param preferenceFactor the preference factor of the current clothing
+     *                         must be between 0 and 10
+     */
+    public void setPreferenceFactor(int preferenceFactor) {
+        put(KEY_PREFERENCE_FACTOR, preferenceFactor);
+    }
+
+    /**
+     * @return the temperature importance of the current clothing
+     */
+    public int getTemperatureImportance() {
+        return getInt(KEY_TEMPERATURE_IMPORTANCE);
+    }
+
+    /**
+     * @param temperatureImportance the temperature importance of the current clothing
+     *                              must be between 0 and 10
+     */
+    public void setTemperatureImportance(int temperatureImportance) {
+        put(KEY_TEMPERATURE_IMPORTANCE, temperatureImportance);
+    }
+
+    /**
+     * @return the lower temperature range of the current clothing
+     */
+    public int getTemperatureLowerRange() {
+        return getInt(KEY_TEMPERATURE_LOWER_RANGE);
+    }
+
+    /**
+     * @param temperatureLowerRange the lower temperature range of the current clothing
+     *                              must be between 0 and 110
+     */
+    public void setTemperatureLowerRange(int temperatureLowerRange) {
+        put(KEY_TEMPERATURE_LOWER_RANGE, temperatureLowerRange);
+    }
+
+    /**
+     * @return the upper temperature range of the current clothing
+     */
+    public int getTemperatureUpperRange() {
+        return getInt(KEY_TEMPERATURE_UPPER_RANGE);
+    }
+
+    /**
+     * @param temperatureUpperRange the upper temperature range of the current clothing
+     *                              must be between 0 and 110
+     */
+    public void setTemperatureUpperRange(int temperatureUpperRange) {
+        put(KEY_TEMPERATURE_UPPER_RANGE, temperatureUpperRange);
+    }
+
+    /**
+     * @return the activity importance of the current clothing
+     */
+    public int getActivityImportance() {
+        return getInt(KEY_ACTIVITY_IMPORTANCE);
+    }
+
+    /**
+     * @param activityImportance the activity importance of the current clothing
+     *                           must be between 1 and 10, inclusive
+     */
+    public void setActivityImportance(int activityImportance) {
+        put(KEY_ACTIVITY_IMPORTANCE, activityImportance);
+    }
+
+    /**
+     * @return the primary activity factor of the current clothing
+     */
     private int getPrimaryActivityFactor() {
         return getActivityFactorFromType(Clothing.getSelectedActivityType().getPrimaryActivityType());
     }
 
+    /**
+     * @return the secondary activity factor of the current clothing
+     */
     private int getSecondaryActivityFactor() {
         return getActivityFactorFromType(Clothing.getSelectedActivityType().getSecondaryActivityType());
     }
 
+    // TODO: activity types will be changed to an enum
+    /**
+     * Returns the activity factor of the given activity type
+     * Allowed values are: "Work", "Sports", and "Casual"
+     *
+     * @param activityType the activity type to check
+     * @return the activity factor of the given activity type
+     */
     private int getActivityFactorFromType(String activityType) {
         // if no activity, return 0 so the calculation is not affected by it
         if (activityType == null) return 0;
 
         switch (activityType) {
             case "Work":
-                return workActivityFactor;
+                return getInt(KEY_WORK_ACTIVITY_FACTOR);
             case "Sports":
-                return sportsActivityFactor;
+                return getInt(KEY_SPORTS_ACTIVITY_FACTOR);
             case "Casual":
-                return casualActivityFactor;
+                return getInt(KEY_CASUAL_ACTIVITY_FACTOR);
             default:
                 // if no known factor, return 0 so the calculation is not affected by it
                 return 0;
         }
     }
 
-    public String getClothingTypeName() {
-        return clothingTypeName;
-    }
-
-    public int getClothingTypeIconID() {
-        return clothingTypeIconID;
-    }
-
-    public int getTemperatureImportance() {
-        return temperatureImportance;
-    }
-
-    public int getTemperatureUpperRange() {
-        return temperatureUpperRange;
-    }
-
-    public int getTemperatureLowerRange() {
-        return temperatureLowerRange;
-    }
-
-    public int getPreferenceFactor() {
-        return preferenceFactor;
-    }
-
+    /**
+     * @return the work activity factor of the current clothing
+     */
     public int getWorkActivityFactor() {
-        return workActivityFactor;
+        return getInt(KEY_WORK_ACTIVITY_FACTOR);
     }
 
+    /**
+     * @return the sports activity factor of the current clothing
+     */
     public int getSportsActivityFactor() {
-        return sportsActivityFactor;
+        return getInt(KEY_SPORTS_ACTIVITY_FACTOR);
     }
 
+    /**
+     * @return the casual activity factor of the current clothing
+     */
     public int getCasualActivityFactor() {
-        return casualActivityFactor;
+        return getInt(KEY_CASUAL_ACTIVITY_FACTOR);
     }
 
-    public int getActivityImportance() {
-        return activityImportance;
-    }
-
-    public void setActivityImportance(int activityImportance) {
-        this.activityImportance = activityImportance;
-    }
-
-    public void setTemperatureImportance(int temperatureImportance) {
-        this.temperatureImportance = temperatureImportance;
-    }
-
-    public void setTemperatureUpperRange(int temperatureUpperRange) {
-        this.temperatureUpperRange = temperatureUpperRange;
-    }
-
-    public void setTemperatureLowerRange(int temperatureLowerRange) {
-        this.temperatureLowerRange = temperatureLowerRange;
-    }
-
+    /**
+     * @param workActivityFactor the work activity factor of the current clothing
+     *                           must be between 1 and 10, inclusive
+     */
     public void setWorkActivityFactor(int workActivityFactor) {
-        this.workActivityFactor = workActivityFactor;
+        put(KEY_WORK_ACTIVITY_FACTOR, workActivityFactor);
     }
 
+    /**
+     * @param sportsActivityFactor the sports activity factor of the current clothing
+     *                             must be between 1 and 10, inclusive
+     */
     public void setSportsActivityFactor(int sportsActivityFactor) {
-        this.sportsActivityFactor = sportsActivityFactor;
+        put(KEY_SPORTS_ACTIVITY_FACTOR, sportsActivityFactor);
     }
 
+    /**
+     * @param casualActivityFactor the casual activity factor of the current clothing
+     *                             must be between 1 and 10, inclusive
+     */
     public void setCasualActivityFactor(int casualActivityFactor) {
-        this.casualActivityFactor = casualActivityFactor;
+        put(KEY_CASUAL_ACTIVITY_FACTOR, casualActivityFactor);
     }
 
-    public void setPreferenceFactor(int preferenceFactor) {
-        this.preferenceFactor = preferenceFactor;
+    /**
+     * @return the weather importance of the current clothing
+     */
+    public int getWeatherImportance() {
+        return getInt(KEY_WEATHER_IMPORTANCE);
+    }
+
+    /**
+     * @param weatherImportance the weather importance of the current clothing
+     *                          must be between 1 and 10, inclusive
+     */
+    public void setWeatherImportance(int weatherImportance) {
+        put(KEY_WEATHER_IMPORTANCE, weatherImportance);
+    }
+
+    /**
+     * @return the current weather conditions factor of the current clothing
+     */
+    private int getWeatherConditionsFactor() {
+        // check day weather condition
+        int currentConditionIDFirstDigit = Weather.getDayConditionsID();
+
+        switch (currentConditionIDFirstDigit) {
+            case Conditions.THUNDERSTORM_CONDITIONS_ID_FIRST_DIGIT:
+                return getNumber(KEY_CONDITIONS_THUNDERSTORM_FACTOR).intValue();
+            case Conditions.DRIZZLE_CONDITIONS_ID_FIRST_DIGIT:
+                return getNumber(KEY_CONDITIONS_DRIZZLE_FACTOR).intValue();
+            case Conditions.RAIN_CONDITIONS_ID_FIRST_DIGIT:
+                return getNumber(KEY_CONDITIONS_RAIN_FACTOR).intValue();
+            case Conditions.SNOW_CONDITIONS_ID_FIRST_DIGIT:
+                return getNumber(KEY_CONDITIONS_SNOW_FACTOR).intValue();
+            default:
+                // if unrecognized weather condition, return 0 so calculation is unaffected
+                return 0;
+        }
+    }
+
+    /**
+     * @return the thunderstorm conditions factor of the current clothing
+     */
+    public int getConditionsThunderstormFactor() {
+        return getNumber(KEY_CONDITIONS_THUNDERSTORM_FACTOR).intValue();
+    }
+
+    /**
+     * @return the drizzle conditions factor of the current clothing
+     */
+    public int getConditionsDrizzleFactor() {
+        return getNumber(KEY_CONDITIONS_DRIZZLE_FACTOR).intValue();
+    }
+
+    /**
+     * @return the rain conditions factor of the current clothing
+     */
+    public int getConditionsRainFactor() {
+        return getNumber(KEY_CONDITIONS_RAIN_FACTOR).intValue();
+    }
+
+    /**
+     * @return the snow conditions factor of the current clothing
+     */
+    public int getConditionsSnowFactor() {
+        return getNumber(KEY_CONDITIONS_SNOW_FACTOR).intValue();
+    }
+
+    /**
+     * @param conditionsThunderstormFactor the thunderstorm conditions factor of the current clothing
+     *                                     must be between 1 and 10, inclusive
+     */
+    public void setConditionsThunderstormFactor(int conditionsThunderstormFactor) {
+        put(KEY_CONDITIONS_THUNDERSTORM_FACTOR, conditionsThunderstormFactor);
+    }
+
+    /**
+     * @param conditionsDrizzleFactor the drizzle conditions factor of the current clothing
+     *                                must be between 1 and 10, inclusive
+     */
+    public void setConditionsDrizzleFactor(int conditionsDrizzleFactor) {
+        put(KEY_CONDITIONS_DRIZZLE_FACTOR, conditionsDrizzleFactor);
+    }
+
+    /**
+     * @param conditionsRainFactor the rain conditions factor of the current clothing
+     *                             must be between 1 and 10, inclusive
+     */
+    public void setConditionsRainFactor(int conditionsRainFactor) {
+        put(KEY_CONDITIONS_RAIN_FACTOR, conditionsRainFactor);
+    }
+
+    /**
+     * @param conditionsSnowFactor the snow conditions factor of the current clothing
+     *                             must be between 1 and 10, inclusive
+     */
+    public void setConditionsSnowFactor(int conditionsSnowFactor) {
+        put(KEY_CONDITIONS_SNOW_FACTOR, conditionsSnowFactor);
     }
 }

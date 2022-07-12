@@ -4,6 +4,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Conditions {
+    public static final int THUNDERSTORM_CONDITIONS_ID_FIRST_DIGIT = 2;
+    public static final int DRIZZLE_CONDITIONS_ID_FIRST_DIGIT = 3;
+    public static final int RAIN_CONDITIONS_ID_FIRST_DIGIT = 5;
+    public static final int SNOW_CONDITIONS_ID_FIRST_DIGIT = 6;
+
     private static final String IMG_URL_BEGIN = "https://openweathermap.org/img/wn/";
     private static final String IMG_URL_END = "@2x.png";
 

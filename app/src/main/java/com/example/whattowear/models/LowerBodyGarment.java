@@ -1,6 +1,7 @@
 package com.example.whattowear.models;
 
 import com.example.whattowear.R;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,7 @@ public class LowerBodyGarment {
     private LowerBodyGarmentType lowerBodyGarmentType;
 
     private static enum LowerBodyGarmentType {
-        PANTS, SHORTS, SKIRT, SWEATS
+        DRESS_PANTS, JEANS, SHORTS, SKIRT, SWEATS
     }
 
     // Indexing of this is based on the order declaration of the enum
@@ -40,21 +41,32 @@ public class LowerBodyGarment {
     }
 
     /**
-     * Initializes all the lower body garment rankers
+     * Initializes all the lower body garment rankers with default factors
+     * @param user the ParseUser owning the lower body garments
+     * @return the list of initialized clothing rankers for lower body garments with default factors
      */
-    public static void initializeLowerBodyGarmentRankers() {
+    public static List<ClothingRanker> initializeLowerBodyGarmentRankers(ParseUser user) {
         // TODO: fix icons
         // TODO: get from parse
-        ClothingRanker pantsRanker = new ClothingRanker("Pants", R.drawable.sweats);
-        ClothingRanker shortsRanker = new ClothingRanker("Shorts", R.drawable.sweats);
-        ClothingRanker skirtRanker = new ClothingRanker("Skirt", R.drawable.sweats);
-        ClothingRanker sweatsRanker = new ClothingRanker("Sweats", R.drawable.sweats);
+        ClothingRanker dressPantsRanker = new ClothingRanker();
+        dressPantsRanker.initializeFactorsToDefault("Dress pants", R.drawable.sweats, user);
+        ClothingRanker jeansRanker = new ClothingRanker();
+        jeansRanker.initializeFactorsToDefault("Jeans", R.drawable.sweats, user);
+        ClothingRanker shortsRanker = new ClothingRanker();
+        shortsRanker.initializeFactorsToDefault("Shorts", R.drawable.sweats, user);
+        ClothingRanker skirtRanker = new ClothingRanker();
+        skirtRanker.initializeFactorsToDefault("Skirt", R.drawable.sweats, user);
+        ClothingRanker sweatsRanker = new ClothingRanker();
+        sweatsRanker.initializeFactorsToDefault("Sweats", R.drawable.sweats, user);
 
         lowerBodyGarmentRankers = new ArrayList<>();
-        lowerBodyGarmentRankers.add(pantsRanker);
+        lowerBodyGarmentRankers.add(dressPantsRanker);
+        lowerBodyGarmentRankers.add(jeansRanker);
         lowerBodyGarmentRankers.add(shortsRanker);
         lowerBodyGarmentRankers.add(skirtRanker);
         lowerBodyGarmentRankers.add(sweatsRanker);
+
+        return lowerBodyGarmentRankers;
     }
 
     /**
@@ -62,24 +74,5 @@ public class LowerBodyGarment {
      */
     public static List<ClothingRanker> getLowerBodyGarmentRankers() {
         return lowerBodyGarmentRankers;
-    }
-
-    /**
-     * @param position the index of the lower body garment within the list lowerBodyGarmentRankers
-     * @return the LowerBodyGarmentType of the ClothingRanker at the index position within the list lowerBodyGarmentRankers
-     */
-    public static LowerBodyGarmentType getLowerBodyGarmentTypeAtPosition(int position) {
-        switch(position) {
-            case 0:
-                return LowerBodyGarmentType.PANTS;
-            case 1:
-                return LowerBodyGarmentType.SHORTS;
-            case 2:
-                return LowerBodyGarmentType.SKIRT;
-            case 3:
-                return LowerBodyGarmentType.SWEATS;
-            default:
-                return null;
-        }
     }
 }
