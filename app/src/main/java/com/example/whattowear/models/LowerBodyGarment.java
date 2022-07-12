@@ -1,6 +1,8 @@
 package com.example.whattowear.models;
 
 import com.example.whattowear.R;
+import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -38,6 +40,48 @@ public class LowerBodyGarment {
     public java.lang.Integer getLowerBodyGarmentImage() {
         // TODO: return correct image based on lower body garment
         return R.drawable.sweats;
+    }
+
+    /**
+     * @param clothingTypeName the clothingTypeName of the desired icon ID to get
+     * @return the ID of the local file of the upper body garment image, if
+     * it exists, based on the given clothingTypeName. Otherwise, this
+     * returns null.
+     */
+    public static Integer getLowerBodyGarmentImage(String clothingTypeName) {
+        // TODO: return correct image based on type
+        if (clothingTypeName.equals("Dress pants")) {
+            return R.drawable.sweats;
+        } else if (clothingTypeName.equals("Jeans")) {
+            return R.drawable.sweats;
+        } else if (clothingTypeName.equals("Shorts")) {
+            return R.drawable.sweats;
+        } else if (clothingTypeName.equals("Skirt")) {
+            return R.drawable.sweats;
+        } else if (clothingTypeName.equals("Sweats")) {
+            return R.drawable.sweats;
+        }
+        // unrecognized return null
+        return null;
+    }
+
+    /**
+     * Sets the lowerBodyGarmentRankers and fetches any missing information from the Parse database, if needed
+     * @param lowerBodyGarmentRankers the lowerBodyGarmentRankers to set
+     * @throws ParseException the non-null ParseException, if fetching the missing information fails
+     */
+    public static void setLowerBodyGarmentRankers(List<ClothingRanker> lowerBodyGarmentRankers) throws ParseException {
+        LowerBodyGarment.lowerBodyGarmentRankers = lowerBodyGarmentRankers;
+
+        try {
+            ClothingRanker.fetchAllIfNeeded(lowerBodyGarmentRankers);
+        } catch (ParseException e) {
+            throw e;
+        }
+
+        for (ClothingRanker clothingRanker : lowerBodyGarmentRankers) {
+            clothingRanker.setClothingTypeIconID(getLowerBodyGarmentImage(clothingRanker.getClothingTypeName()));
+        }
     }
 
     /**

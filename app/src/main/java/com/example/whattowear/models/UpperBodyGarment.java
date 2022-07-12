@@ -1,6 +1,8 @@
 package com.example.whattowear.models;
 
 import com.example.whattowear.R;
+import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -39,6 +41,46 @@ public class UpperBodyGarment {
         // TODO: return correct image based on type
 
         return R.drawable.t_shirt;
+    }
+
+    /**
+     * @param clothingTypeName the clothingTypeName of the desired icon ID to get
+     * @return the ID of the local file of the upper body garment image, if
+     * it exists, based on the given clothingTypeName. Otherwise, this
+     * returns null.
+     */
+    public static Integer getUpperBodyGarmentImage(String clothingTypeName) {
+        // TODO: return correct image based on type
+        if (clothingTypeName.equals("T shirt")) {
+            return R.drawable.t_shirt;
+        } else if (clothingTypeName.equals("Polo shirt")) {
+            return R.drawable.t_shirt;
+        } else if (clothingTypeName.equals("Dress shirt")) {
+            return R.drawable.t_shirt;
+        } else if (clothingTypeName.equals("Blouse")) {
+            return R.drawable.t_shirt;
+        }
+        // unrecognized return null
+        return null;
+    }
+
+    /**
+     * Sets the upperBodyGarmentRankers and fetches any missing information from the Parse database, if needed
+     * @param upperBodyGarmentRankers the upperBodyGarmentRankers to set
+     * @throws ParseException the non-null ParseException, if fetching the missing information fails
+     */
+    public static void setUpperBodyGarmentRankers(List<ClothingRanker> upperBodyGarmentRankers) throws ParseException {
+        UpperBodyGarment.upperBodyGarmentRankers = upperBodyGarmentRankers;
+
+        try {
+            ClothingRanker.fetchAllIfNeeded(upperBodyGarmentRankers);
+        } catch (ParseException e) {
+            throw e;
+        }
+
+        for (ClothingRanker clothingRanker : upperBodyGarmentRankers) {
+            clothingRanker.setClothingTypeIconID(getUpperBodyGarmentImage(clothingRanker.getClothingTypeName()));
+        }
     }
 
     /**

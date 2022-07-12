@@ -1,6 +1,7 @@
 package com.example.whattowear.models;
 
 import com.example.whattowear.R;
+import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -42,6 +43,46 @@ public class OverBodyGarment {
         if (overBodyGarmentType == OverBodyGarmentType.NONE) return null;
 
         return R.drawable.hoodie;
+    }
+
+    /**
+     * @param clothingTypeName the clothingTypeName of the desired icon ID to get
+     * @return the ID of the local file of the over body garment image, if
+     * it exists, based on the given clothingTypeName. Otherwise, if it
+     * is defined as OverBodyGarmentType.NONE or does not exist, then this
+     * returns null.
+     */
+    public static Integer getOverBodyGarmentImage(String clothingTypeName) {
+        // TODO: return correct image based on type
+        if (clothingTypeName.equals("Athletic jacket")) {
+            return R.drawable.clothing_over_body_athletic_jacket;
+        } else if (clothingTypeName.equals("Rain jacket")) {
+            return R.drawable.clothing_over_body_athletic_jacket;
+        } else if (clothingTypeName.equals("Winter coat")) {
+            return R.drawable.clothing_over_body_athletic_jacket;
+        }
+        // unrecognized return null
+        return null;
+    }
+
+    /**
+     * Sets the overBodyGarmentRankers and fetches any missing information from the Parse database, if needed
+     * @param overBodyGarmentRankers the overBodyGarmentRankers to set
+     * @throws ParseException the non-null ParseException, if fetching the missing information fails
+     */
+    public static void setOverBodyGarmentRankers(List<ClothingRanker> overBodyGarmentRankers) throws ParseException {
+        OverBodyGarment.overBodyGarmentRankers = overBodyGarmentRankers;
+
+        try {
+            ClothingRanker.fetchAllIfNeeded(overBodyGarmentRankers);
+        } catch (ParseException e) {
+            throw e;
+        }
+
+        // this is generated locally at runtime, so cannot get from parse database
+        for (ClothingRanker clothingRanker : overBodyGarmentRankers) {
+            clothingRanker.setClothingTypeIconID(getOverBodyGarmentImage(clothingRanker.getClothingTypeName()));
+        }
     }
 
     /**

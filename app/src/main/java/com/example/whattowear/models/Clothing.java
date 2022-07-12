@@ -28,14 +28,6 @@ public class Clothing {
         loadedDataLocationName = "";
         selectedActivityType = null;
         selectedActivityTypeIndex = 0;
-
-        // Load all the rankers
-        ParseUser user = ParseUser.getCurrentUser();
-        OverBodyGarment.initializeOverBodyGarmentRankers(user);
-        UpperBodyGarment.initializeUpperBodyGarmentRankers(user);
-        LowerBodyGarment.initializeLowerBodyGarmentRankers(user);
-        Footwear.initializeFootwearRankers(user);
-        Accessories.initializeAccessoriesRankers(user);
     }
 
     /**

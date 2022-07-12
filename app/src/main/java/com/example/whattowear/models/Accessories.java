@@ -3,6 +3,7 @@ package com.example.whattowear.models;
 import android.util.Log;
 
 import com.example.whattowear.R;
+import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -53,7 +54,44 @@ public class Accessories {
         }
 
         return accessoriesImages;
+    }
 
+    /**
+     * @param clothingTypeName the clothingTypeName of the desired icon ID to get
+     * @return the ID of the local file of the upper body garment image, if
+     * it exists, based on the given clothingTypeName. Otherwise, this
+     * returns null.
+     */
+    public static Integer getAccessoriesImages(String clothingTypeName) {
+        // TODO: return correct image based on type
+        if (clothingTypeName.equals("Umbrella")) {
+            return R.drawable.sunglasses;
+        } else if (clothingTypeName.equals("Hat")) {
+            return R.drawable.sunglasses;
+        } else if (clothingTypeName.equals("Sunglasses")) {
+            return R.drawable.sunglasses;
+        }
+        // unrecognized return null
+        return null;
+    }
+
+    /**
+     * Sets the accessoriesRankers and fetches any missing information from the Parse database, if needed
+     * @param accessoriesRankers the accessoriesRankers to set
+     * @throws ParseException the non-null ParseException, if fetching the missing information fails
+     */
+    public static void setAccessoriesRankers(List<ClothingRanker> accessoriesRankers) throws ParseException {
+        Accessories.accessoriesRankers = accessoriesRankers;
+
+        try {
+            ClothingRanker.fetchAllIfNeeded(accessoriesRankers);
+        } catch (ParseException e) {
+            throw e;
+        }
+
+        for (ClothingRanker clothingRanker : accessoriesRankers) {
+            clothingRanker.setClothingTypeIconID(getAccessoriesImages(clothingRanker.getClothingTypeName()));
+        }
     }
 
     /**

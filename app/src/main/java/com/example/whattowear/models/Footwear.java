@@ -3,6 +3,8 @@ package com.example.whattowear.models;
 import android.util.Log;
 
 import com.example.whattowear.R;
+import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -42,6 +44,50 @@ public class Footwear {
     public java.lang.Integer getFootwearImage() {
         // TODO: return correct image based on footwear
         return R.drawable.rubber_shoes;
+    }
+
+    /**
+     * @param clothingTypeName the clothingTypeName of the desired icon ID to get
+     * @return the ID of the local file of the upper body garment image, if
+     * it exists, based on the given clothingTypeName. Otherwise, this
+     * returns null.
+     */
+    public static Integer getFootwearImage(String clothingTypeName) {
+        // TODO: return correct image based on type
+        if (clothingTypeName.equals("Sneakers")) {
+            return R.drawable.rubber_shoes;
+        } else if (clothingTypeName.equals("Boat")) {
+            return R.drawable.rubber_shoes;
+        } else if (clothingTypeName.equals("Loafer")) {
+            return R.drawable.rubber_shoes;
+        } else if (clothingTypeName.equals("Sandals")) {
+            return R.drawable.rubber_shoes;
+        } else if (clothingTypeName.equals("Boots")) {
+            return R.drawable.rubber_shoes;
+        } else if (clothingTypeName.equals("Heels")) {
+            return R.drawable.rubber_shoes;
+        }
+        // unrecognized return null
+        return null;
+    }
+
+    /**
+     * Sets the footwearRankers and fetches any missing information from the Parse database, if needed
+     * @param footwearRankers the footwearRankers to set
+     * @throws ParseException the non-null ParseException, if fetching the missing information fails
+     */
+    public static void setFootwearRankers(List<ClothingRanker> footwearRankers) throws ParseException {
+        Footwear.footwearRankers = footwearRankers;
+
+        try {
+            ClothingRanker.fetchAllIfNeeded(footwearRankers);
+        } catch (ParseException e) {
+            throw e;
+        }
+
+        for (ClothingRanker clothingRanker : footwearRankers) {
+            clothingRanker.setClothingTypeIconID(getFootwearImage(clothingRanker.getClothingTypeName()));
+        }
     }
 
     /**
