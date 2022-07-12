@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +16,8 @@ import com.example.whattowear.models.Clothing;
 import com.example.whattowear.models.ClothingRanker;
 import com.google.android.material.slider.RangeSlider;
 import com.google.android.material.slider.Slider;
+import com.parse.ParseException;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,6 +120,7 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesAdapter.
                 @Override
                 public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
                     clothingRanker.setPreferenceFactor(Math.round(value));
+                    saveClothingRankerToParseInBackground(clothingRanker);
                 }
             });
 
@@ -128,6 +132,7 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesAdapter.
                     public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
                         Log.i(TAG, "Activity importance slider changed to " + value);
                         clothingRanker.setActivityImportance(Math.round(value));
+                        saveClothingRankerToParseInBackground(clothingRanker);
                     }
                 });
 
@@ -135,6 +140,7 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesAdapter.
                     @Override
                     public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
                         clothingRanker.setWorkActivityFactor(Math.round(value));
+                        saveClothingRankerToParseInBackground(clothingRanker);
                     }
                 });
 
@@ -142,6 +148,7 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesAdapter.
                     @Override
                     public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
                         clothingRanker.setSportsActivityFactor(Math.round(value));
+                        saveClothingRankerToParseInBackground(clothingRanker);
                     }
                 });
 
@@ -149,6 +156,7 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesAdapter.
                     @Override
                     public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
                         clothingRanker.setCasualActivityFactor(Math.round(value));
+                        saveClothingRankerToParseInBackground(clothingRanker);
                     }
                 });
 
@@ -156,6 +164,7 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesAdapter.
                     @Override
                     public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
                         clothingRanker.setTemperatureImportance(Math.round(value));
+                        saveClothingRankerToParseInBackground(clothingRanker);
                     }
                 });
 
@@ -169,10 +178,12 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesAdapter.
                             // change is the first end point
                             Log.i(TAG, "Temp lower range changed to " + value);
                             clothingRanker.setTemperatureLowerRange(Math.round(value));
+                            saveClothingRankerToParseInBackground(clothingRanker);
                         } else {
                             // change is the last end point
                             Log.i(TAG, "Temp upper range changed to " + value);
                             clothingRanker.setTemperatureUpperRange(Math.round(value));
+                            saveClothingRankerToParseInBackground(clothingRanker);
                         }
 
                     }
@@ -194,6 +205,22 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesAdapter.
                 temperatureRangeTextview.setVisibility(View.GONE);
             }
 
+        }
+
+        /**
+         * Saves the given clothing ranker to the Parse database in the background
+         * @param clothingRanker the clothingRanker to save to the database
+         */
+        public void saveClothingRankerToParseInBackground(ClothingRanker clothingRanker) {
+            clothingRanker.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    // TODO: as a stretch goal, perhaps add icon that preferences were updated when successful
+                    if (e != null) {
+                        Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG);
+                    }
+                }
+            });
         }
 
         public void bind(ClothingRanker clothingRanker) {
