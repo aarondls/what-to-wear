@@ -65,8 +65,8 @@ public class DashboardWeatherAnimationController {
      */
     public void onDashboardActivityRestart() {
         // only need to check if weather animation has valid data, since this comes from dashboard activity restart
-        if (WeatherAnimation.hasPreloadedDataToDisplay() && !confettiManagers.isEmpty() && weatherRequiresDynamicAnimation()) {
-            handleDynamicWeatherAnimation();
+        if (WeatherAnimation.hasPreloadedDataToDisplay() && !confettiManagers.isEmpty()) {
+            handleDynamicWeatherAnimationIfNeeded();
         }
     }
 
@@ -81,9 +81,7 @@ public class DashboardWeatherAnimationController {
                 clearVisibleWeatherAnimation();
                 confettiManagers = WeatherAnimation.startNewAnimationFromWeatherData(viewGroup);
 
-                if (weatherRequiresDynamicAnimation()) {
-                    handleDynamicWeatherAnimation();
-                }
+                handleDynamicWeatherAnimationIfNeeded();
             }
         });
     }
@@ -100,9 +98,7 @@ public class DashboardWeatherAnimationController {
 
                 confettiManagers = WeatherAnimation.startExistingAnimation(viewGroup);
 
-                if (weatherRequiresDynamicAnimation()) {
-                    handleDynamicWeatherAnimation();
-                }
+                handleDynamicWeatherAnimationIfNeeded();
             }
         });
     }
@@ -128,9 +124,15 @@ public class DashboardWeatherAnimationController {
     }
 
     /**
-     * Handles dynamic changing weather conditions, eg thunderstorms with changing wind conditions
+     * Handles dynamic changing weather conditions, eg thunderstorms with changing wind conditions,
+     * if needed. This is done by checking the weatherRequiresDynamicAnimation method.
      */
-    private void handleDynamicWeatherAnimation() {
+    private void handleDynamicWeatherAnimationIfNeeded() {
+        // check if dynamic animation is not needed
+        if (!weatherRequiresDynamicAnimation()) {
+            return;
+        }
+
         // get the condition modifiers (dynamic condition types) of the weather animation
         List<WeatherAnimation.ConditionsModifier> conditionsModifiers = WeatherAnimation.getConditionsModifiers();
 
