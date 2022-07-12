@@ -112,8 +112,6 @@ public class ClothingRanker extends ParseObject {
         setConditionsSnowFactor(DEFAULT_CONDITIONS_SNOW_FACTOR);
     }
 
-    // TODO: create a model to calculate rating of clothes based on factor
-    // these use placeholders for now
     public float getCurrentPrimaryRating() {
         return getPreferenceFactor()*(getTemperatureFactor()*getTemperatureImportance() + getPrimaryActivityFactor()*getActivityImportance() + getWeatherConditionsFactor()*getWeatherImportance());
     }
@@ -122,17 +120,57 @@ public class ClothingRanker extends ParseObject {
         return getPreferenceFactor()*(getTemperatureFactor()*getTemperatureImportance() + getSecondaryActivityFactor()*getActivityImportance() + getWeatherConditionsFactor()*getWeatherImportance());
     }
 
+    /**
+     * Generic function to calculate the optimal clothing type from a list of clothing rankers
+     *
+     * @param clothingRankers the list of clothing rankers from which the optimal one will be selected
+     * @param clothingTypesInOrder the associated clothing types of the list clothingRankers, in the same order (ie, the enum value RAIN_JACKET)
+     * @param <T> the enum type of clothing to rank (ie, the enum OverBodyGarment or Accessories)
+     * @return the clothing type (ie, enum value) and ranking score of the optimal clothing
+     */
+    public static <T> Pair<T, Float> getOptimalClothingType(List<ClothingRanker> clothingRankers, T[] clothingTypesInOrder) {
+        float maxRankingSoFar = 0;
 
-    private int getTemperatureFactor() {
+        T optimalType = null;
+        for (int i=0; i<clothingRankers.size(); i++) {
+            ClothingRanker currentRanker = clothingRankers.get(i);
+            float currentRank = currentRanker.getCurrentPrimaryRating();
+            if (currentRank > maxRankingSoFar) {
+                optimalType = clothingTypesInOrder[i];
+                maxRankingSoFar = currentRank;
+            }
+        }
+        return new Pair<>(optimalType, maxRankingSoFar);
+    }
+
+    /**
+     * @return the current temperature factor based on the current day mean temperature
+     */
+    private float getTemperatureFactor() {
         // must be >0 inside of defined temperature range, <0 outside
         // model using quadratic function
-        // use temperatureLowerRange and temperatureLowerRange as the zeros
-        // constrain stretch factor by having function maximum at 10
-        if (Weather.getCurrentForecast().getTemp() >= getTemperatureLowerRange() && Weather.getCurrentForecast().getTemp() <= getTemperatureUpperRange()) {
-            return 1;
-        } else {
-            return 0;
-        }
+        // use temperatureLowerRange and temperatureUpperRange as the zeros
+        // constrain stretch factor by defining maximum temperature factor as 10
+
+        // form of function at desired maximum is: -f(x-temperatureLowerRange)(x-temperatureUpperRange)=10
+        // need to solve for scaling factor f:
+        // -f(x^2 + (-temperatureLowerRange-temperatureUpperRange)x + temperatureLowerRange*temperatureUpperRange)=10
+        // Now denote the variables as: -f(x^2+bx+c)=10, where f is the scaling factor
+        // Maximum happens at x_max =-b/2
+
+        int temperatureLowerRange = getTemperatureLowerRange();
+        int temperatureUpperRange = getTemperatureUpperRange();
+        float b = -(temperatureLowerRange+temperatureUpperRange);
+        float c = temperatureLowerRange*temperatureUpperRange;
+        float xMax = -b/2f;
+        float f = (-10f)/(xMax*xMax + b*xMax + c);
+
+        // Now calculate current temperature factor given all variables and the current temperature
+        float dayMeanTemperature = Weather.getDayMeanTemperature();
+        // TODO: instead of day mean temp use next xx hours mean
+        float temperatureFactor = -f*(dayMeanTemperature-temperatureLowerRange)*(dayMeanTemperature-temperatureUpperRange);
+
+        return temperatureFactor;
     }
 
     /**

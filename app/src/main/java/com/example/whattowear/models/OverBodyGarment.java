@@ -1,5 +1,8 @@
 package com.example.whattowear.models;
 
+import android.util.Log;
+import android.util.Pair;
+
 import com.example.whattowear.R;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -8,7 +11,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OverBodyGarment {
+    private static final String TAG = "OverBodyGarment";
+
+    private static final float NONE_TYPE_RANKING = 300;
+
+    private static final int ATHLETIC_JACKET_TEMPERATURE_LOWER_RANGE = 40;
+    private static final int ATHLETIC_JACKET_TEMPERATURE_UPPER_RANGE = 60;
+    private static final int ATHLETIC_JACKET_WORK_ACTIVITY_FACTOR = 0;
+    private static final int ATHLETIC_JACKET_SPORTS_ACTIVITY_FACTOR = 10;
+    private static final int ATHLETIC_JACKET_CASUAL_ACTIVITY_FACTOR = 3;
+
+    private static final int RAIN_JACKET_TEMPERATURE_IMPORTANCE = 1;
+    private static final int RAIN_JACKET_TEMPERATURE_LOWER_RANGE = 30;
+    private static final int RAIN_JACKET_TEMPERATURE_UPPER_RANGE = 90;
+    private static final int RAIN_JACKET_ACTIVITY_IMPORTANCE = 1;
+    private static final int RAIN_JACKET_WEATHER_IMPORTANCE = 10;
+    private static final int RAIN_JACKET_CONDITIONS_THUNDERSTORM_FACTOR = 8;
+    private static final int RAIN_JACKET_CONDITIONS_DRIZZLE_FACTOR = 7;
+    private static final int RAIN_JACKET_CONDITIONS_RAIN_FACTOR = 10;
+    private static final int RAIN_JACKET_CONDITIONS_SNOW_FACTOR = 4;
+
+    private static final int WINTER_COAT_TEMPERATURE_IMPORTANCE = 9;
+    private static final int WINTER_COAT_TEMPERATURE_LOWER_RANGE = 0;
+    private static final int WINTER_COAT_TEMPERATURE_UPPER_RANGE = 25;
+    private static final int WINTER_COAT_WEATHER_IMPORTANCE = 10;
+    private static final int WINTER_COAT_CONDITIONS_SNOW_FACTOR = 10;
+
     private OverBodyGarmentType overBodyGarmentType;
+    private float rankingScore; // TODO: store ranking score for each clothing class, so this can be displayed in detailed clothing screen (or some kind of metric)
 
     private static enum OverBodyGarmentType {
         ATHLETIC_JACKET, RAIN_JACKET, WINTER_COAT, NONE
@@ -28,7 +58,19 @@ public class OverBodyGarment {
 
         OverBodyGarment overBodyGarment = new OverBodyGarment();
 
-        overBodyGarment.overBodyGarmentType = OverBodyGarmentType.NONE;
+        Pair<OverBodyGarmentType, Float> optimalResult = ClothingRanker.getOptimalClothingType(overBodyGarmentRankers, OverBodyGarmentType.values());
+
+        // see if NONE type is better
+        if (optimalResult.second > NONE_TYPE_RANKING) {
+            overBodyGarment.overBodyGarmentType = optimalResult.first;
+            overBodyGarment.rankingScore = optimalResult.second;
+        } else {
+            // NONE is better
+            overBodyGarment.overBodyGarmentType = OverBodyGarmentType.NONE;
+            overBodyGarment.rankingScore = NONE_TYPE_RANKING;
+        }
+
+        Log.i(TAG, "Returning optimal: " + overBodyGarment.overBodyGarmentType);
 
         return overBodyGarment;
     }
@@ -42,7 +84,7 @@ public class OverBodyGarment {
         // TODO: return correct image based on type
         if (overBodyGarmentType == OverBodyGarmentType.NONE) return null;
 
-        return R.drawable.hoodie;
+        return R.drawable.clothing_over_body_athletic_jacket;
     }
 
     /**
@@ -92,7 +134,6 @@ public class OverBodyGarment {
      */
     public static List<ClothingRanker> initializeOverBodyGarmentRankers(ParseUser user) {
         // TODO: fix icons
-        // TODO: get from parse
         ClothingRanker athleticJacketRanker  = new ClothingRanker();
         athleticJacketRanker.initializeFactorsToDefault("Athletic jacket", R.drawable.hoodie, user);
         ClothingRanker rainJacketRanker  = new ClothingRanker();
@@ -100,6 +141,30 @@ public class OverBodyGarment {
         ClothingRanker winterCoatRanker  = new ClothingRanker();
         winterCoatRanker.initializeFactorsToDefault("Winter coat", R.drawable.hoodie, user);
 
+        // Set all relevant default factors
+        athleticJacketRanker.setTemperatureLowerRange(ATHLETIC_JACKET_TEMPERATURE_LOWER_RANGE);
+        athleticJacketRanker.setTemperatureUpperRange(ATHLETIC_JACKET_TEMPERATURE_UPPER_RANGE);
+        athleticJacketRanker.setWorkActivityFactor(ATHLETIC_JACKET_WORK_ACTIVITY_FACTOR);
+        athleticJacketRanker.setSportsActivityFactor(ATHLETIC_JACKET_SPORTS_ACTIVITY_FACTOR);
+        athleticJacketRanker.setCasualActivityFactor(ATHLETIC_JACKET_CASUAL_ACTIVITY_FACTOR);
+
+        rainJacketRanker.setTemperatureImportance(RAIN_JACKET_TEMPERATURE_IMPORTANCE);
+        rainJacketRanker.setTemperatureLowerRange(RAIN_JACKET_TEMPERATURE_LOWER_RANGE);
+        rainJacketRanker.setTemperatureUpperRange(RAIN_JACKET_TEMPERATURE_UPPER_RANGE);
+        rainJacketRanker.setActivityImportance(RAIN_JACKET_ACTIVITY_IMPORTANCE);
+        rainJacketRanker.setWeatherImportance(RAIN_JACKET_WEATHER_IMPORTANCE);
+        rainJacketRanker.setConditionsThunderstormFactor(RAIN_JACKET_CONDITIONS_THUNDERSTORM_FACTOR);
+        rainJacketRanker.setConditionsDrizzleFactor(RAIN_JACKET_CONDITIONS_DRIZZLE_FACTOR);
+        rainJacketRanker.setConditionsRainFactor(RAIN_JACKET_CONDITIONS_RAIN_FACTOR);
+        rainJacketRanker.setConditionsSnowFactor(RAIN_JACKET_CONDITIONS_SNOW_FACTOR);
+
+        winterCoatRanker.setTemperatureImportance(WINTER_COAT_TEMPERATURE_IMPORTANCE);
+        winterCoatRanker.setTemperatureLowerRange(WINTER_COAT_TEMPERATURE_LOWER_RANGE);
+        winterCoatRanker.setTemperatureUpperRange(WINTER_COAT_TEMPERATURE_UPPER_RANGE);
+        winterCoatRanker.setWeatherImportance(WINTER_COAT_WEATHER_IMPORTANCE);
+        winterCoatRanker.setConditionsSnowFactor(WINTER_COAT_CONDITIONS_SNOW_FACTOR);
+
+        // add all rankers to the list
         overBodyGarmentRankers = new ArrayList<>();
         overBodyGarmentRankers.add(athleticJacketRanker);
         overBodyGarmentRankers.add(rainJacketRanker);

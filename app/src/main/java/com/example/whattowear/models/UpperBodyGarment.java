@@ -2,13 +2,34 @@ package com.example.whattowear.models;
 
 import com.example.whattowear.R;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UpperBodyGarment {
+    private static final int T_SHIRT_TEMPERATURE_IMPORTANCE = 3;
+    private static final int T_SHIRT_WORK_ACTIVITY_FACTOR = 0;
+    private static final int T_SHIRT_CASUAL_ACTIVITY_FACTOR = 9;
+
+    private static final int POLO_SHIRT_TEMPERATURE_LOWER_RANGE = 0;
+    private static final int POLO_SHIRT_TEMPERATURE_UPPER_RANGE = 70;
+    private static final int POLO_SHIRT_ACTIVITY_IMPORTANCE = 9;
+    private static final int POLO_SHIRT_WORK_ACTIVITY_FACTOR = 10;
+    private static final int POLO_SHIRT_SPORTS_ACTIVITY_FACTOR = 0;
+
+    private static final int DRESS_SHIRT_TEMPERATURE_LOWER_RANGE = 0;
+    private static final int DRESS_SHIRT_TEMPERATURE_UPPER_RANGE = 60;
+    private static final int DRESS_SHIRT_ACTIVITY_IMPORTANCE = 9;
+    private static final int DRESS_SHIRT_WORK_ACTIVITY_FACTOR = 10;
+    private static final int DRESS_SHIRT_SPORTS_ACTIVITY_FACTOR = 0;
+    private static final int DRESS_SHIRT_CASUAL_ACTIVITY_FACTOR = 0;
+
+    private static final int BLOUSE_TEMPERATURE_IMPORTANCE = 3;
+    private static final int BLOUSE_ACTIVITY_IMPORTANCE = 9;
+    private static final int BLOUSE_WORK_ACTIVITY_FACTOR = 10;
+    private static final int BLOUSE_SPORTS_ACTIVITY_FACTOR = 0;
+
     private UpperBodyGarmentType upperBodyGarmentType;
 
     private static enum UpperBodyGarmentType {
@@ -29,7 +50,7 @@ public class UpperBodyGarment {
 
         UpperBodyGarment upperBodyGarment = new UpperBodyGarment();
 
-        upperBodyGarment.upperBodyGarmentType = UpperBodyGarmentType.T_SHIRT;
+        upperBodyGarment.upperBodyGarmentType = ClothingRanker.getOptimalClothingType(upperBodyGarmentRankers, UpperBodyGarmentType.values()).first;
 
         return upperBodyGarment;
     }
@@ -90,7 +111,6 @@ public class UpperBodyGarment {
      */
     public static List<ClothingRanker> initializeUpperBodyGarmentRankers(ParseUser user) {
         // TODO: fix icons
-        // TODO: get from parse
         ClothingRanker tShirtRanker = new ClothingRanker();
         tShirtRanker.initializeFactorsToDefault("T shirt", R.drawable.t_shirt, user);
         ClothingRanker poloShirtRanker = new ClothingRanker();
@@ -100,6 +120,27 @@ public class UpperBodyGarment {
         ClothingRanker blouseRanker = new ClothingRanker();
         blouseRanker.initializeFactorsToDefault("Blouse", R.drawable.t_shirt, user);
 
+        tShirtRanker.setTemperatureImportance(T_SHIRT_TEMPERATURE_IMPORTANCE);
+        tShirtRanker.setWorkActivityFactor(T_SHIRT_WORK_ACTIVITY_FACTOR);
+        tShirtRanker.setCasualActivityFactor(T_SHIRT_CASUAL_ACTIVITY_FACTOR);
+
+        poloShirtRanker.setTemperatureLowerRange(POLO_SHIRT_TEMPERATURE_LOWER_RANGE);
+        poloShirtRanker.setTemperatureUpperRange(POLO_SHIRT_TEMPERATURE_UPPER_RANGE);
+        poloShirtRanker.setActivityImportance(POLO_SHIRT_ACTIVITY_IMPORTANCE);
+        poloShirtRanker.setWorkActivityFactor(POLO_SHIRT_WORK_ACTIVITY_FACTOR);
+        poloShirtRanker.setSportsActivityFactor(POLO_SHIRT_SPORTS_ACTIVITY_FACTOR);
+
+        dressShirtRanker.setTemperatureLowerRange(DRESS_SHIRT_TEMPERATURE_LOWER_RANGE);
+        dressShirtRanker.setTemperatureUpperRange(DRESS_SHIRT_TEMPERATURE_UPPER_RANGE);
+        dressShirtRanker.setActivityImportance(DRESS_SHIRT_ACTIVITY_IMPORTANCE);
+        dressShirtRanker.setWorkActivityFactor(DRESS_SHIRT_WORK_ACTIVITY_FACTOR);
+        dressShirtRanker.setSportsActivityFactor(DRESS_SHIRT_SPORTS_ACTIVITY_FACTOR);
+        dressShirtRanker.setCasualActivityFactor(DRESS_SHIRT_CASUAL_ACTIVITY_FACTOR);
+
+        blouseRanker.setTemperatureImportance(BLOUSE_TEMPERATURE_IMPORTANCE);
+        blouseRanker.setActivityImportance(BLOUSE_ACTIVITY_IMPORTANCE);
+        blouseRanker.setWorkActivityFactor(BLOUSE_WORK_ACTIVITY_FACTOR);
+        blouseRanker.setSportsActivityFactor(BLOUSE_SPORTS_ACTIVITY_FACTOR);
 
         upperBodyGarmentRankers = new ArrayList<>();
         upperBodyGarmentRankers.add(tShirtRanker);
@@ -115,5 +156,9 @@ public class UpperBodyGarment {
      */
     public static List<ClothingRanker> getUpperBodyGarmentRankers() {
         return upperBodyGarmentRankers;
+    }
+
+    public UpperBodyGarmentType getUpperBodyGarmentType() {
+        return upperBodyGarmentType;
     }
 }

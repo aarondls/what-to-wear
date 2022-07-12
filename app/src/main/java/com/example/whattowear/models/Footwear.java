@@ -4,14 +4,56 @@ import android.util.Log;
 
 import com.example.whattowear.R;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Footwear {
-    public static final String TAG = "Footwear";
+    private static final String TAG = "Footwear";
+
+    private static final int SNEAKERS_TEMPERATURE_LOWER_RANGE = 50;
+    private static final int SNEAKERS_TEMPERATURE_UPPER_RANGE = 100;
+    private static final int SNEAKERS_ACTIVITY_IMPORTANCE = 9;
+    private static final int SNEAKERS_WORK_ACTIVITY_FACTOR = 0;
+    private static final int SNEAKERS_SPORTS_ACTIVITY_FACTOR = 10;
+    private static final int SNEAKERS_CASUAL_ACTIVITY_FACTOR = 6;
+
+    private static final int BOAT_TEMPERATURE_LOWER_RANGE = 70;
+    private static final int BOAT_TEMPERATURE_UPPER_RANGE = 100;
+    private static final int BOAT_ACTIVITY_IMPORTANCE = 7;
+    private static final int BOAT_WORK_ACTIVITY_FACTOR = 7;
+    private static final int BOAT_SPORTS_ACTIVITY_FACTOR = 0;
+    private static final int BOAT_CASUAL_ACTIVITY_FACTOR = 10;
+
+    private static final int LOAFER_TEMPERATURE_LOWER_RANGE = 0;
+    private static final int LOAFER_TEMPERATURE_UPPER_RANGE = 70;
+    private static final int LOAFER_ACTIVITY_IMPORTANCE = 7;
+    private static final int LOAFER_WORK_ACTIVITY_FACTOR = 9;
+    private static final int LOAFER_SPORTS_ACTIVITY_FACTOR = 0;
+
+    private static final int SANDALS_TEMPERATURE_LOWER_RANGE = 80;
+    private static final int SANDALS_TEMPERATURE_UPPER_RANGE = 100;
+    private static final int SANDALS_WORK_ACTIVITY_FACTOR = 0;
+    private static final int SANDALS_SPORTS_ACTIVITY_FACTOR = 0;
+    private static final int SANDALS_CASUAL_ACTIVITY_FACTOR = 5;
+
+    private static final int BOOTS_TEMPERATURE_IMPORTANCE = 8;
+    private static final int BOOTS_TEMPERATURE_LOWER_RANGE = 0;
+    private static final int BOOTS_TEMPERATURE_UPPER_RANGE = 40;
+    private static final int BOOTS_SPORTS_ACTIVITY_FACTOR = 0;
+    private static final int BOOTS_WEATHER_IMPORTANCE = 10;
+    private static final int BOOTS_CONDITION_THUNDERSTORM_FACTOR = 9;
+    private static final int BOOTS_CONDITIONS_DRIZZLE_FACTOR = 8;
+    private static final int BOOTS_CONDITIONS_RAIN_FACTOR = 9;
+    private static final int BOOTS_CONDITIONS_SNOW_FACTOR = 10;
+
+    private static final int HEELS_TEMPERATURE_LOWER_RANGE = 50;
+    private static final int HEELS_TEMPERATURE_UPPER_RANGE = 100;
+    private static final int HEELS_WORK_ACTIVITY_FACTOR = 9;
+    private static final int HEELS_SPORTS_ACTIVITY_FACTOR = 0;
+    private static final int HEELS_CASUAL_ACTIVITY_FACTOR = 3;
+
     private FootwearType footwearType;
 
     private static enum FootwearType {
@@ -32,7 +74,7 @@ public class Footwear {
 
         Footwear footwear = new Footwear();
 
-        footwear.footwearType = FootwearType.SNEAKERS;
+        footwear.footwearType = ClothingRanker.getOptimalClothingType(footwearRankers, FootwearType.values()).first;
 
         Log.i(TAG, "Finished calculating footwear");
         return footwear;
@@ -111,6 +153,48 @@ public class Footwear {
         ClothingRanker heelsRanker = new ClothingRanker();
         heelsRanker.initializeFactorsToDefault("Heels", R.drawable.rubber_shoes, user);
 
+        sneakersRanker.setTemperatureLowerRange(SNEAKERS_TEMPERATURE_LOWER_RANGE);
+        sneakersRanker.setTemperatureUpperRange(SNEAKERS_TEMPERATURE_UPPER_RANGE);
+        sneakersRanker.setActivityImportance(SNEAKERS_ACTIVITY_IMPORTANCE);
+        sneakersRanker.setWorkActivityFactor(SNEAKERS_WORK_ACTIVITY_FACTOR);
+        sneakersRanker.setSportsActivityFactor(SNEAKERS_SPORTS_ACTIVITY_FACTOR);
+        sneakersRanker.setCasualActivityFactor(SNEAKERS_CASUAL_ACTIVITY_FACTOR);
+
+        boatRanker.setTemperatureLowerRange(BOAT_TEMPERATURE_LOWER_RANGE);
+        boatRanker.setTemperatureUpperRange(BOAT_TEMPERATURE_UPPER_RANGE);
+        boatRanker.setActivityImportance(BOAT_ACTIVITY_IMPORTANCE);
+        boatRanker.setWorkActivityFactor(BOAT_WORK_ACTIVITY_FACTOR);
+        boatRanker.setSportsActivityFactor(BOAT_SPORTS_ACTIVITY_FACTOR);
+        boatRanker.setCasualActivityFactor(BOAT_CASUAL_ACTIVITY_FACTOR);
+
+        loaferRanker.setTemperatureLowerRange(LOAFER_TEMPERATURE_LOWER_RANGE);
+        loaferRanker.setTemperatureUpperRange(LOAFER_TEMPERATURE_UPPER_RANGE);
+        loaferRanker.setActivityImportance(LOAFER_ACTIVITY_IMPORTANCE);
+        loaferRanker.setWorkActivityFactor(LOAFER_WORK_ACTIVITY_FACTOR);
+        loaferRanker.setSportsActivityFactor(LOAFER_SPORTS_ACTIVITY_FACTOR);
+
+        sandalsRanker.setTemperatureLowerRange(SANDALS_TEMPERATURE_LOWER_RANGE);
+        sandalsRanker.setTemperatureUpperRange(SANDALS_TEMPERATURE_UPPER_RANGE);
+        sandalsRanker.setWorkActivityFactor(SANDALS_WORK_ACTIVITY_FACTOR);
+        sandalsRanker.setSportsActivityFactor(SANDALS_SPORTS_ACTIVITY_FACTOR);
+        sandalsRanker.setCasualActivityFactor(SANDALS_CASUAL_ACTIVITY_FACTOR);
+
+        bootsRanker.setTemperatureImportance(BOOTS_TEMPERATURE_IMPORTANCE);
+        bootsRanker.setTemperatureLowerRange(BOOTS_TEMPERATURE_LOWER_RANGE);
+        bootsRanker.setTemperatureUpperRange(BOOTS_TEMPERATURE_UPPER_RANGE);
+        bootsRanker.setSportsActivityFactor(BOOTS_SPORTS_ACTIVITY_FACTOR);
+        bootsRanker.setWeatherImportance(BOOTS_WEATHER_IMPORTANCE);
+        bootsRanker.setConditionsThunderstormFactor(BOOTS_CONDITION_THUNDERSTORM_FACTOR);
+        bootsRanker.setConditionsDrizzleFactor(BOOTS_CONDITIONS_DRIZZLE_FACTOR);
+        bootsRanker.setConditionsRainFactor(BOOTS_CONDITIONS_RAIN_FACTOR);
+        bootsRanker.setConditionsSnowFactor(BOOTS_CONDITIONS_SNOW_FACTOR);
+
+        heelsRanker.setTemperatureLowerRange(HEELS_TEMPERATURE_LOWER_RANGE);
+        heelsRanker.setTemperatureUpperRange(HEELS_TEMPERATURE_UPPER_RANGE);
+        heelsRanker.setWorkActivityFactor(HEELS_WORK_ACTIVITY_FACTOR);
+        heelsRanker.setSportsActivityFactor(HEELS_SPORTS_ACTIVITY_FACTOR);
+        heelsRanker.setCasualActivityFactor(HEELS_CASUAL_ACTIVITY_FACTOR);
+
         footwearRankers = new ArrayList<>();
         footwearRankers.add(sneakersRanker);
         footwearRankers.add(boatRanker);
@@ -127,5 +211,9 @@ public class Footwear {
      */
     public static List<ClothingRanker> getFootwearRankers() {
         return footwearRankers;
+    }
+
+    public FootwearType getFootwearType() {
+        return footwearType;
     }
 }

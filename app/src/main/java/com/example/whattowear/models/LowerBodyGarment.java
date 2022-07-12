@@ -2,13 +2,49 @@ package com.example.whattowear.models;
 
 import com.example.whattowear.R;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class LowerBodyGarment {
+    private static final int DRESS_PANTS_TEMPERATURE_LOWER_RANGE = 0;
+    private static final int DRESS_PANTS_TEMPERATURE_UPPER_RANGE = 60;
+    private static final int DRESS_PANTS_ACTIVITY_IMPORTANCE = 9;
+    private static final int DRESS_PANTS_WORK_ACTIVITY_FACTOR = 10;
+    private static final int DRESS_PANTS_SPORTS_ACTIVITY_FACTOR = 0;
+    private static final int DRESS_PANTS_CASUAL_ACTIVITY_FACTOR = 0;
+
+    private static final int JEANS_TEMPERATURE_LOWER_RANGE = 0;
+    private static final int JEANS_TEMPERATURE_UPPER_RANGE = 70;
+    private static final int JEANS_ACTIVITY_IMPORTANCE = 7;
+    private static final int JEANS_WORK_ACTIVITY_FACTOR = 4;
+    private static final int JEANS_SPORTS_ACTIVITY_FACTOR = 0;
+    private static final int JEANS_CASUAL_ACTIVITY_FACTOR = 10;
+
+    private static final int SHORTS_TEMPERATURE_IMPORTANCE = 8;
+    private static final int SHORTS_TEMPERATURE_LOWER_RANGE = 70;
+    private static final int SHORTS_TEMPERATURE_UPPER_RANGE = 100;
+    private static final int SHORTS_ACTIVITY_IMPORTANCE = 9;
+    private static final int SHORTS_WORK_ACTIVITY_FACTOR = 2;
+    private static final int SHORTS_SPORTS_ACTIVITY_FACTOR = 10;
+    private static final int SHORTS_CASUAL_ACTIVITY_FACTOR = 8;
+
+    private static final int SKIRT_TEMPERATURE_IMPORTANCE = 8;
+    private static final int SKIRT_TEMPERATURE_LOWER_RANGE = 70;
+    private static final int SKIRT_TEMPERATURE_UPPER_RANGE = 100;
+    private static final int SKIRT_WORK_ACTIVITY_FACTOR = 7;
+    private static final int SKIRT_SPORTS_ACTIVITY_FACTOR = 2;
+    private static final int SKIRT_CASUAL_ACTIVITY_FACTOR = 9;
+
+    private static final int SWEATS_TEMPERATURE_LOWER_RANGE = 0;
+    private static final int SWEATS_TEMPERATURE_UPPER_RANGE = 60;
+    private static final int SWEATS_ACTIVITY_IMPORTANCE = 9;
+    private static final int SWEATS_WORK_ACTIVITY_FACTOR = 0;
+    private static final int SWEATS_SPORTS_ACTIVITY_FACTOR = 10;
+    private static final int SWEATS_CASUAL_ACTIVITY_FACTOR = 8;
+
+
     private LowerBodyGarmentType lowerBodyGarmentType;
 
     private static enum LowerBodyGarmentType {
@@ -29,7 +65,7 @@ public class LowerBodyGarment {
 
         LowerBodyGarment lowerBodyGarment = new LowerBodyGarment();
 
-        lowerBodyGarment.lowerBodyGarmentType = LowerBodyGarmentType.SWEATS;
+        lowerBodyGarment.lowerBodyGarmentType = ClothingRanker.getOptimalClothingType(lowerBodyGarmentRankers, LowerBodyGarmentType.values()).first;
 
         return lowerBodyGarment;
     }
@@ -103,6 +139,42 @@ public class LowerBodyGarment {
         ClothingRanker sweatsRanker = new ClothingRanker();
         sweatsRanker.initializeFactorsToDefault("Sweats", R.drawable.sweats, user);
 
+        dressPantsRanker.setTemperatureLowerRange(DRESS_PANTS_TEMPERATURE_LOWER_RANGE);
+        dressPantsRanker.setTemperatureUpperRange(DRESS_PANTS_TEMPERATURE_UPPER_RANGE);
+        dressPantsRanker.setActivityImportance(DRESS_PANTS_ACTIVITY_IMPORTANCE);
+        dressPantsRanker.setWorkActivityFactor(DRESS_PANTS_WORK_ACTIVITY_FACTOR);
+        dressPantsRanker.setSportsActivityFactor(DRESS_PANTS_SPORTS_ACTIVITY_FACTOR);
+        dressPantsRanker.setCasualActivityFactor(DRESS_PANTS_CASUAL_ACTIVITY_FACTOR);
+
+        jeansRanker.setTemperatureLowerRange(JEANS_TEMPERATURE_LOWER_RANGE);
+        jeansRanker.setTemperatureUpperRange(JEANS_TEMPERATURE_UPPER_RANGE);
+        jeansRanker.setActivityImportance(JEANS_ACTIVITY_IMPORTANCE);
+        jeansRanker.setWorkActivityFactor(JEANS_WORK_ACTIVITY_FACTOR);
+        jeansRanker.setSportsActivityFactor(JEANS_SPORTS_ACTIVITY_FACTOR);
+        jeansRanker.setCasualActivityFactor(JEANS_CASUAL_ACTIVITY_FACTOR);
+
+        shortsRanker.setTemperatureImportance(SHORTS_TEMPERATURE_IMPORTANCE);
+        shortsRanker.setTemperatureLowerRange(SHORTS_TEMPERATURE_LOWER_RANGE);
+        shortsRanker.setTemperatureUpperRange(SHORTS_TEMPERATURE_UPPER_RANGE);
+        shortsRanker.setActivityImportance(SHORTS_ACTIVITY_IMPORTANCE);
+        shortsRanker.setWorkActivityFactor(SHORTS_WORK_ACTIVITY_FACTOR);
+        shortsRanker.setSportsActivityFactor(SHORTS_SPORTS_ACTIVITY_FACTOR);
+        shortsRanker.setCasualActivityFactor(SHORTS_CASUAL_ACTIVITY_FACTOR);
+
+        skirtRanker.setTemperatureImportance(SKIRT_TEMPERATURE_IMPORTANCE);
+        skirtRanker.setTemperatureLowerRange(SKIRT_TEMPERATURE_LOWER_RANGE);
+        skirtRanker.setTemperatureUpperRange(SKIRT_TEMPERATURE_UPPER_RANGE);
+        skirtRanker.setWorkActivityFactor(SKIRT_WORK_ACTIVITY_FACTOR);
+        skirtRanker.setSportsActivityFactor(SKIRT_SPORTS_ACTIVITY_FACTOR);
+        skirtRanker.setCasualActivityFactor(SKIRT_CASUAL_ACTIVITY_FACTOR);
+
+        sweatsRanker.setTemperatureLowerRange(SWEATS_TEMPERATURE_LOWER_RANGE);
+        sweatsRanker.setTemperatureUpperRange(SWEATS_TEMPERATURE_UPPER_RANGE);
+        sweatsRanker.setActivityImportance(SWEATS_ACTIVITY_IMPORTANCE);
+        sweatsRanker.setWorkActivityFactor(SWEATS_WORK_ACTIVITY_FACTOR);
+        sweatsRanker.setSportsActivityFactor(SWEATS_SPORTS_ACTIVITY_FACTOR);
+        sweatsRanker.setCasualActivityFactor(SWEATS_CASUAL_ACTIVITY_FACTOR);
+
         lowerBodyGarmentRankers = new ArrayList<>();
         lowerBodyGarmentRankers.add(dressPantsRanker);
         lowerBodyGarmentRankers.add(jeansRanker);
@@ -118,5 +190,9 @@ public class LowerBodyGarment {
      */
     public static List<ClothingRanker> getLowerBodyGarmentRankers() {
         return lowerBodyGarmentRankers;
+    }
+
+    public LowerBodyGarmentType getLowerBodyGarmentType() {
+        return lowerBodyGarmentType;
     }
 }

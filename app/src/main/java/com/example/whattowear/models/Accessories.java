@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Accessories {
-    public static final String TAG = "Accessories";
+    private static final String TAG = "Accessories";
+
+    private static final float UV_ACCESSORY_THRESHOLD = 20;
 
     private List<AccessoryType> accessoriesTypes;
 
@@ -30,12 +32,34 @@ public class Accessories {
         // TODO: update type based on weather, activity, and preferences
         // for testing, default to empty
 
+        // TODO: how to rank accessories?
+        // just preferences, and its own unique factor?
+        // maybe restrict accessories settings to just preferences
+        // set all other factors to 0 manually
+        // then get preferences factor only, and multiply with UV index factor, then set up a threshold it must be bigger than
         Accessories accessories = new Accessories();
 
         accessories.accessoriesTypes = new ArrayList<>();
 
-        accessories.accessoriesTypes.add(AccessoryType.SUNGLASSES);
-        accessories.accessoriesTypes.add(AccessoryType.HAT);
+        // go through all rain related accessories
+        // umbrella works on rain/drizzle (but not thunderstorm, since that has high winds)
+        int dayConditionsIDFirstDigit = Weather.getDayConditionsID()/100;
+        if (dayConditionsIDFirstDigit == Conditions.DRIZZLE_CONDITIONS_ID_FIRST_DIGIT || dayConditionsIDFirstDigit == Conditions.RAIN_CONDITIONS_ID_FIRST_DIGIT) {
+            // TODO: interate preference factor better by multiplying with drizzle/rain strength
+            // TODO: move classification of conditions from animation to conditions class
+            if (accessoriesRankers.get(0).getPreferenceFactor() >= 5) {
+                accessories.accessoriesTypes.add(AccessoryType.UMBRELLA);
+            }
+        }
+
+        // go through all UV related accessories
+        float dayMaxUVIndex = Weather.getDayMaxUVIndex();
+        for (int i=1; i<3; i++) {
+            if (dayMaxUVIndex*accessoriesRankers.get(i).getPreferenceFactor() >= UV_ACCESSORY_THRESHOLD) {
+                // UV accessory exceeds required threshold to wear
+                accessories.accessoriesTypes.add(getAccessoriesTypeAtPosition(i));
+            }
+        }
 
         Log.i(TAG, "Finished calculating accessories");
         return accessories;
@@ -139,5 +163,9 @@ public class Accessories {
             default:
                 return null;
         }
+    }
+
+    public List<AccessoryType> getAccessoriesTypes() {
+        return accessoriesTypes;
     }
 }

@@ -1,7 +1,8 @@
 package com.example.whattowear.models;
 
+import android.util.Log;
+
 import com.example.whattowear.ClothingInterface;
-import com.parse.ParseUser;
 
 import java.util.List;
 
@@ -34,10 +35,19 @@ public class Clothing {
      * Updates clothing based on weather, activity, and preferences
      */
     public static void calculateOptimalClothing(ClothingInterface clothingInterface) {
-        upperBodyGarment = UpperBodyGarment.getOptimalUpperBodyGarment();
-        lowerBodyGarment = LowerBodyGarment.getOptimalLowerBodyGarment();
+        // Do not calculate anything if not all data is available
+        if (Weather.getLoadedDataLocationName().isEmpty() || selectedActivityType == null) {
+            return;
+        }
+
         overBodyGarment = OverBodyGarment.getOptimalOverBodyGarment();
+        Log.i("Clothing", "Optimal over body garment: " + overBodyGarment.getOverBodyGarmentType());
+        upperBodyGarment = UpperBodyGarment.getOptimalUpperBodyGarment();
+        Log.i("Clothing", "Optimal upper body garment: " + upperBodyGarment.getUpperBodyGarmentType());
+        lowerBodyGarment = LowerBodyGarment.getOptimalLowerBodyGarment();
+        Log.i("Clothing", "Optimal lower body garment: " + lowerBodyGarment.getLowerBodyGarmentType());
         footwear = Footwear.getOptimalFootwear();
+        Log.i("Clothing", "Optimal footwear: " + footwear.getFootwearType());
         accessories = Accessories.getOptimalAccessories();
 
         loadedDataLocationName = Weather.getLoadedDataLocationName();
