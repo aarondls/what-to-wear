@@ -46,16 +46,24 @@ public class PreferencesActivity extends AppCompatActivity {
         preferencesButtonToggleGroup.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-                if (checkedId == R.id.over_body_preferences_button && isChecked) {
-                    preferencesAdapter.onNewClothingType(ClothingType.OVER_BODY_GARMENT);
-                } else if (checkedId == R.id.upper_body_preferences_button && isChecked) {
-                    preferencesAdapter.onNewClothingType(ClothingType.UPPER_BODY_GARMENT);
-                } else if (checkedId == R.id.lower_body_preferences_button && isChecked) {
-                    preferencesAdapter.onNewClothingType(ClothingType.LOWER_BODY_GARMENT);
-                } else if (checkedId == R.id.footwear_preferences_button && isChecked) {
-                    preferencesAdapter.onNewClothingType(ClothingType.FOOTWEAR);
-                } else if (checkedId == R.id.accessories_preferences_button && isChecked) {
-                    preferencesAdapter.onNewClothingType(ClothingType.ACCESSORIES);
+                if (isChecked) {
+                    switch (checkedId) {
+                        case R.id.over_body_preferences_button:
+                            preferencesAdapter.onNewClothingType(ClothingType.OVER_BODY_GARMENT);
+                            break;
+                        case R.id.upper_body_preferences_button:
+                            preferencesAdapter.onNewClothingType(ClothingType.UPPER_BODY_GARMENT);
+                            break;
+                        case R.id.lower_body_preferences_button:
+                            preferencesAdapter.onNewClothingType(ClothingType.LOWER_BODY_GARMENT);
+                            break;
+                        case R.id.footwear_preferences_button:
+                            preferencesAdapter.onNewClothingType(ClothingType.FOOTWEAR);
+                            break;
+                        case R.id.accessories_preferences_button:
+                            preferencesAdapter.onNewClothingType(ClothingType.ACCESSORIES);
+                            break;
+                    }
                 }
                 // always scroll to top
                 preferencesReyclerview.scrollToPosition(0);
