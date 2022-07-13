@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.util.Pair;
 import android.view.ViewGroup;
 
+import com.example.whattowear.models.Conditions;
 import com.example.whattowear.models.Weather;
 import com.github.jinatonic.confetti.ConfettiManager;
 import com.github.jinatonic.confetti.ConfettiSource;
@@ -99,8 +100,214 @@ public class WeatherAnimation {
     private static void generateConfettoParametersFromWeatherData() {
         clearAllAnimationData();
 
-        classifyCurrentWeatherConditions();
+        int weatherConditionsID = Weather.getCurrentForecast().getHourCondition().getWeatherConditionsID();
 
+        int conditionsIDFirstDigit = weatherConditionsID/100;
+        int conditionsIDMiddleDigit = (weatherConditionsID/10)%10;
+        int conditionsIDLastDigit = weatherConditionsID%10;
+
+        // set intensity and type
+        // use chart at: https://openweathermap.org/weather-conditions#Weather-Condition-Codes-2
+        // interpret shower/ragged as the same
+
+        // notice that for some of the weather IDs:
+        // the first digit indicates the main condition type
+        // the last digit indicates intensity
+
+        switch (conditionsIDFirstDigit) {
+            case Conditions.THUNDERSTORM_CONDITIONS_ID_FIRST_DIGIT:
+                classifyThunderstormConditionsForConfettoParameters(conditionsIDMiddleDigit, conditionsIDLastDigit);
+                break;
+            case Conditions.DRIZZLE_CONDITIONS_ID_FIRST_DIGIT:
+                classifyDrizzleConditionsForConfettoParameters(conditionsIDMiddleDigit, conditionsIDLastDigit);
+                break;
+            case Conditions.RAIN_CONDITIONS_ID_FIRST_DIGIT:
+                classifyRainConditionsForConfettoParameters(conditionsIDMiddleDigit, conditionsIDLastDigit);
+                break;
+            case Conditions.SNOW_CONDITIONS_ID_FIRST_DIGIT:
+                classifySnowConditionsForConfettoParameters(conditionsIDMiddleDigit, conditionsIDLastDigit);
+                break;
+        }
+    }
+
+    /**
+     * Classifies the current thunderstorm conditions into the correct condition types and intensities.
+     * This adds the correct:
+     *      ConditionsModifier(s) to the conditionsModifiers list
+     *      ConditionsType(s) to conditionsTypes list
+     *      conditionsIntensity and alternateConditionsIntensity
+     * If the current thunderstorm conditions requires no animation, then nothing is added or set.
+     * @param conditionsIDMiddleDigit the middle digit of the current thunderstorm condition ID
+     * @param conditionsIDLastDigit the last digit of the current thunderstorm condition ID
+     */
+    private static void classifyThunderstormConditionsForConfettoParameters(int conditionsIDMiddleDigit, int conditionsIDLastDigit) {
+        // main weather condition is thunderstorm
+
+        // check for the correct ID
+        if (conditionsIDMiddleDigit == 0) {
+            // type is thunderstorm with rain
+            conditionsModifiers.add(ConditionsModifier.THUNDERSTORM);
+            conditionsTypes.add(ConditionsType.RAIN);
+            Pair<ConditionsIntensity, ConditionsIntensity> conditionsIntensityPair = calculateConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
+            conditionsIntensity = conditionsIntensityPair.first;
+            alternateConditionsIntensity = conditionsIntensityPair.second;
+        } else if (conditionsIDMiddleDigit == 3) {
+            // type is thunderstorm with drizzle
+            conditionsModifiers.add(ConditionsModifier.THUNDERSTORM);
+            conditionsTypes.add(ConditionsType.DRIZZLE);
+            Pair<ConditionsIntensity, ConditionsIntensity> conditionsIntensityPair = calculateConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
+            conditionsIntensity = conditionsIntensityPair.first;
+            alternateConditionsIntensity = conditionsIntensityPair.second;
+        }
+        // if ID does not match the above conditions, then no need for animation, so keep conditionsTypes empty
+        generateConfettoParametersFromClassifiedConditions();
+    }
+
+    /**
+     * Classifies the current drizzle conditions into the correct condition types and intensities.
+     * This adds the correct:
+     *      ConditionsModifier(s) to the conditionsModifiers list
+     *      ConditionsType(s) to conditionsTypes list
+     *      conditionsIntensity and alternateConditionsIntensity
+     * If the current drizzle conditions requires no animation, then nothing is added or set.
+     * @param conditionsIDMiddleDigit the middle digit of the current drizzle condition ID
+     * @param conditionsIDLastDigit the last digit of the current drizzle condition ID
+     */
+    private static void classifyDrizzleConditionsForConfettoParameters(int conditionsIDMiddleDigit, int conditionsIDLastDigit) {
+        // main weather condition is drizzle
+
+        // check for correct ID
+        if (conditionsIDMiddleDigit == 0) {
+            // type is drizzle
+            conditionsTypes.add(ConditionsType.DRIZZLE);
+            Pair<ConditionsIntensity, ConditionsIntensity> conditionsIntensityPair = calculateConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
+            conditionsIntensity = conditionsIntensityPair.first;
+            alternateConditionsIntensity = conditionsIntensityPair.second;
+        } else if (conditionsIDMiddleDigit == 1) {
+            // type is drizzle rain
+            conditionsTypes.add(ConditionsType.DRIZZLE);
+            conditionsTypes.add(ConditionsType.RAIN);
+
+            // condition intensity deviates from the last digit rule
+            if (conditionsIDLastDigit == 1 || conditionsIDLastDigit == 3) {
+                conditionsIntensity = ConditionsIntensity.MODERATE;
+                alternateConditionsIntensity = ConditionsIntensity.LIGHT;
+            } else {
+                conditionsIntensity = ConditionsIntensity.HEAVY;
+                alternateConditionsIntensity = ConditionsIntensity.LIGHT;
+            }
+        } else if (conditionsIDMiddleDigit == 2) {
+            // type is shower drizzle
+            conditionsModifiers.add(ConditionsModifier.SHOWER);
+            conditionsTypes.add(ConditionsType.DRIZZLE);
+            conditionsIntensity = ConditionsIntensity.MODERATE;
+            alternateConditionsIntensity = ConditionsIntensity.LIGHT;
+        }
+        // if ID does not match the above conditions, then no need for animation, so keep conditionsTypes empty
+        generateConfettoParametersFromClassifiedConditions();
+    }
+
+    /**
+     * Classifies the current rain conditions into the correct condition types and intensities.
+     * This adds the correct:
+     *      ConditionsModifier(s) to the conditionsModifiers list
+     *      ConditionsType(s) to conditionsTypes list
+     *      conditionsIntensity and alternateConditionsIntensity
+     * If the current rain conditions requires no animation, then nothing is added or set.
+     * @param conditionsIDMiddleDigit the middle digit of the current rain condition ID
+     * @param conditionsIDLastDigit the last digit of the current rain condition ID
+     */
+    private static void classifyRainConditionsForConfettoParameters(int conditionsIDMiddleDigit, int conditionsIDLastDigit) {
+        // main weather is rain
+
+        // check for correct ID
+        if (conditionsIDMiddleDigit == 0 || conditionsIDMiddleDigit == 1) {
+            // type is rain
+            conditionsTypes.add(ConditionsType.RAIN);
+            Pair<ConditionsIntensity, ConditionsIntensity> conditionsIntensityPair = calculateConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
+            conditionsIntensity = conditionsIntensityPair.first;
+            alternateConditionsIntensity = conditionsIntensityPair.second;
+        } else if (conditionsIDMiddleDigit == 2 || conditionsIDMiddleDigit == 3) {
+            // type is shower rain
+            conditionsModifiers.add(ConditionsModifier.SHOWER);
+            conditionsTypes.add(ConditionsType.RAIN);
+            Pair<ConditionsIntensity, ConditionsIntensity> conditionsIntensityPair = calculateConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
+            conditionsIntensity = conditionsIntensityPair.first;
+            alternateConditionsIntensity = conditionsIntensityPair.second;
+        }
+        // if ID does not match the above conditions, then no need for animation, so keep conditionsTypes empty
+        generateConfettoParametersFromClassifiedConditions();
+    }
+
+    /**
+     * Classifies the current snow conditions into the correct condition types and intensities.
+     * This adds the correct:
+     *      ConditionsModifier(s) to the conditionsModifiers list
+     *      ConditionsType(s) to conditionsTypes list
+     *      conditionsIntensity and alternateConditionsIntensity
+     * If the current rain conditions requires no animation, then nothing is added or set.
+     * @param conditionsIDMiddleDigit the middle digit of the current snow condition ID
+     * @param conditionsIDLastDigit the last digit of the current snow condition ID
+     */
+    private static void classifySnowConditionsForConfettoParameters(int conditionsIDMiddleDigit, int conditionsIDLastDigit) {
+        // main weather is snow
+
+        // check for correct ID
+        if (conditionsIDMiddleDigit == 0) {
+            // type is snow
+            conditionsTypes.add(ConditionsType.SNOW);
+            Pair<ConditionsIntensity, ConditionsIntensity> conditionsIntensityPair = calculateConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
+            conditionsIntensity = conditionsIntensityPair.first;
+            alternateConditionsIntensity = conditionsIntensityPair.second;
+        } else if (conditionsIDMiddleDigit == 1) {
+            // type is dependent
+            if (conditionsIDLastDigit == 1) {
+                // type is sleet
+                conditionsTypes.add(ConditionsType.SLEET);
+                conditionsIntensity = ConditionsIntensity.MODERATE;
+                alternateConditionsIntensity = ConditionsIntensity.LIGHT;
+            } else if (conditionsIDLastDigit == 2) {
+                // type is light shower sleet
+                conditionsModifiers.add(ConditionsModifier.SHOWER);
+                conditionsTypes.add(ConditionsType.SLEET);
+                conditionsIntensity = ConditionsIntensity.LIGHT;
+                alternateConditionsIntensity = ConditionsIntensity.NONE;
+            } else if (conditionsIDLastDigit == 3) {
+                // type is shower sleet
+                conditionsModifiers.add(ConditionsModifier.SHOWER);
+                conditionsTypes.add(ConditionsType.SLEET);
+                conditionsIntensity = ConditionsIntensity.MODERATE;
+                alternateConditionsIntensity = ConditionsIntensity.LIGHT;
+            } else if (conditionsIDLastDigit == 5) {
+                // type is light rain and snow
+                conditionsTypes.add(ConditionsType.RAIN);
+                conditionsTypes.add(ConditionsType.SNOW);
+                conditionsIntensity = ConditionsIntensity.LIGHT;
+                alternateConditionsIntensity = ConditionsIntensity.NONE;
+            } else if (conditionsIDLastDigit == 6) {
+                // type is rain and snow
+                conditionsTypes.add(ConditionsType.RAIN);
+                conditionsTypes.add(ConditionsType.SNOW);
+                conditionsIntensity = ConditionsIntensity.MODERATE;
+                alternateConditionsIntensity = ConditionsIntensity.LIGHT;
+            }
+        } else if (conditionsIDMiddleDigit == 2) {
+            // type is shower snow
+            conditionsModifiers.add(ConditionsModifier.SHOWER);
+            conditionsTypes.add(ConditionsType.SNOW);
+            Pair<ConditionsIntensity, ConditionsIntensity> conditionsIntensityPair = calculateConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
+            conditionsIntensity = conditionsIntensityPair.first;
+            alternateConditionsIntensity = conditionsIntensityPair.second;
+        }
+        // if ID does not match the above conditions, then no need for animation, so keep conditionsTypes empty
+        generateConfettoParametersFromClassifiedConditions();
+    }
+
+    /**
+     * Generates the weather animation parameters and confetto generators given the classified conditions
+     * Requires conditions to be classified already, ie conditionsModifiers, conditionsTypes, conditionsIntesity, and alternateConditionsIntensity to be set
+     */
+    private static void generateConfettoParametersFromClassifiedConditions() {
         // for each confetto type, create the appropriate generator
         for (int i=0; i<conditionsTypes.size(); i++) {
             ConditionsType currentConfettoType = conditionsTypes.get(i);
@@ -157,154 +364,6 @@ public class WeatherAnimation {
                     });
                     break;
             }
-        }
-
-    }
-
-    /**
-     * Classifies the current weather conditions into the correct condition types and intensities. \
-     * This adds the correct:
-     *      ConditionsModifier(s) to the conditionsModifiers list
-     *      ConditionsType(s) to conditionsTypes list
-     *      conditionsIntensity and alternateConditionsIntensity
-     * If the current weather conditions requires no animation, then nothing is added or set.
-     */
-    private static void classifyCurrentWeatherConditions() {
-        int weatherConditionsID = Weather.getCurrentForecast().getHourCondition().getWeatherConditionsID();
-
-        int conditionsIDFirstDigit = weatherConditionsID/100;
-        int conditionsIDMiddleDigit = (weatherConditionsID/10)%10;
-        int conditionsIDLastDigit = weatherConditionsID%10;
-
-        // set intensity and type
-        // use chart at: https://openweathermap.org/weather-conditions#Weather-Condition-Codes-2
-        // interpret shower/ragged as the same
-
-        // notice that for some of the weather IDs:
-        // the first digit indicates the main condition type
-        // the last digit indicates intensity
-
-        if (conditionsIDFirstDigit == 2) {
-            // main weather condition is thunderstorm
-
-            // check for the correct ID
-            if (conditionsIDMiddleDigit == 0) {
-                // type is thunderstorm with rain
-                conditionsModifiers.add(ConditionsModifier.THUNDERSTORM);
-                conditionsTypes.add(ConditionsType.RAIN);
-                Pair<ConditionsIntensity, ConditionsIntensity> conditionsIntensityPair = calculateConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
-                conditionsIntensity = conditionsIntensityPair.first;
-                alternateConditionsIntensity = conditionsIntensityPair.second;
-            } else if (conditionsIDMiddleDigit == 3) {
-                // type is thunderstorm with drizzle
-                conditionsModifiers.add(ConditionsModifier.THUNDERSTORM);
-                conditionsTypes.add(ConditionsType.DRIZZLE);
-                Pair<ConditionsIntensity, ConditionsIntensity> conditionsIntensityPair = calculateConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
-                conditionsIntensity = conditionsIntensityPair.first;
-                alternateConditionsIntensity = conditionsIntensityPair.second;
-            }
-            // if ID does not match the above conditions, then no need for animation, so keep conditionsTypes empty
-        } else if (conditionsIDFirstDigit == 3) {
-            // main weather condition is drizzle
-
-            // check for correct ID
-            if (conditionsIDMiddleDigit == 0) {
-                // type is drizzle
-                conditionsTypes.add(ConditionsType.DRIZZLE);
-                Pair<ConditionsIntensity, ConditionsIntensity> conditionsIntensityPair = calculateConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
-                conditionsIntensity = conditionsIntensityPair.first;
-                alternateConditionsIntensity = conditionsIntensityPair.second;
-            } else if (conditionsIDMiddleDigit == 1) {
-                // type is drizzle rain
-                conditionsTypes.add(ConditionsType.DRIZZLE);
-                conditionsTypes.add(ConditionsType.RAIN);
-
-                // condition intensity deviates from the last digit rule
-                if (conditionsIDLastDigit == 1 || conditionsIDLastDigit == 3) {
-                    conditionsIntensity = ConditionsIntensity.MODERATE;
-                    alternateConditionsIntensity = ConditionsIntensity.LIGHT;
-                } else {
-                    conditionsIntensity = ConditionsIntensity.HEAVY;
-                    alternateConditionsIntensity = ConditionsIntensity.LIGHT;
-                }
-            } else if (conditionsIDMiddleDigit == 2) {
-                // type is shower drizzle
-                conditionsModifiers.add(ConditionsModifier.SHOWER);
-                conditionsTypes.add(ConditionsType.DRIZZLE);
-                conditionsIntensity = ConditionsIntensity.MODERATE;
-                alternateConditionsIntensity = ConditionsIntensity.LIGHT;
-            }
-            // if ID does not match the above conditions, then no need for animation, so keep conditionsTypes empty
-        } else if (conditionsIDFirstDigit == 5) {
-            // main weather is rain
-
-            // check for correct ID
-            if (conditionsIDMiddleDigit == 0 || conditionsIDMiddleDigit == 1) {
-                // type is rain
-                conditionsTypes.add(ConditionsType.RAIN);
-                Pair<ConditionsIntensity, ConditionsIntensity> conditionsIntensityPair = calculateConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
-                conditionsIntensity = conditionsIntensityPair.first;
-                alternateConditionsIntensity = conditionsIntensityPair.second;
-            } else if (conditionsIDMiddleDigit == 2 || conditionsIDMiddleDigit == 3) {
-                // type is shower rain
-                conditionsModifiers.add(ConditionsModifier.SHOWER);
-                conditionsTypes.add(ConditionsType.RAIN);
-                Pair<ConditionsIntensity, ConditionsIntensity> conditionsIntensityPair = calculateConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
-                conditionsIntensity = conditionsIntensityPair.first;
-                alternateConditionsIntensity = conditionsIntensityPair.second;
-            }
-            // if ID does not match the above conditions, then no need for animation, so keep conditionsTypes empty
-        } else if (conditionsIDFirstDigit == 6) {
-            // main weather is snow
-
-            // check for correct ID
-            if (conditionsIDMiddleDigit == 0) {
-                // type is snow
-                conditionsTypes.add(ConditionsType.SNOW);
-                Pair<ConditionsIntensity, ConditionsIntensity> conditionsIntensityPair = calculateConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
-                conditionsIntensity = conditionsIntensityPair.first;
-                alternateConditionsIntensity = conditionsIntensityPair.second;
-            } else if (conditionsIDMiddleDigit == 1) {
-                // type is dependent
-                if (conditionsIDLastDigit == 1) {
-                    // type is sleet
-                    conditionsTypes.add(ConditionsType.SLEET);
-                    conditionsIntensity = ConditionsIntensity.MODERATE;
-                    alternateConditionsIntensity = ConditionsIntensity.LIGHT;
-                } else if (conditionsIDLastDigit == 2) {
-                    // type is light shower sleet
-                    conditionsModifiers.add(ConditionsModifier.SHOWER);
-                    conditionsTypes.add(ConditionsType.SLEET);
-                    conditionsIntensity = ConditionsIntensity.LIGHT;
-                    alternateConditionsIntensity = ConditionsIntensity.NONE;
-                } else if (conditionsIDLastDigit == 3) {
-                    // type is shower sleet
-                    conditionsModifiers.add(ConditionsModifier.SHOWER);
-                    conditionsTypes.add(ConditionsType.SLEET);
-                    conditionsIntensity = ConditionsIntensity.MODERATE;
-                    alternateConditionsIntensity = ConditionsIntensity.LIGHT;
-                } else if (conditionsIDLastDigit == 5) {
-                    // type is light rain and snow
-                    conditionsTypes.add(ConditionsType.RAIN);
-                    conditionsTypes.add(ConditionsType.SNOW);
-                    conditionsIntensity = ConditionsIntensity.LIGHT;
-                    alternateConditionsIntensity = ConditionsIntensity.NONE;
-                } else if (conditionsIDLastDigit == 6) {
-                    // type is rain and snow
-                    conditionsTypes.add(ConditionsType.RAIN);
-                    conditionsTypes.add(ConditionsType.SNOW);
-                    conditionsIntensity = ConditionsIntensity.MODERATE;
-                    alternateConditionsIntensity = ConditionsIntensity.LIGHT;
-                }
-            } else if (conditionsIDMiddleDigit == 2) {
-                // type is shower snow
-                conditionsModifiers.add(ConditionsModifier.SHOWER);
-                conditionsTypes.add(ConditionsType.SNOW);
-                Pair<ConditionsIntensity, ConditionsIntensity> conditionsIntensityPair = calculateConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
-                conditionsIntensity = conditionsIntensityPair.first;
-                alternateConditionsIntensity = conditionsIntensityPair.second;
-            }
-            // if ID does not match the above conditions, then no need for animation, so keep conditionsTypes empty
         }
     }
 
