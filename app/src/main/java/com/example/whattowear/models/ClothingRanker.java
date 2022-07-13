@@ -312,7 +312,6 @@ public class ClothingRanker extends ParseObject {
         return getActivityFactorFromType(Clothing.getSelectedActivityType().getSecondaryActivityType());
     }
 
-    // TODO: activity types will be changed to an enum
     /**
      * Returns the activity factor of the given activity type
      * Allowed values are: "Work", "Sports", and "Casual"
@@ -320,16 +319,16 @@ public class ClothingRanker extends ParseObject {
      * @param activityType the activity type to check
      * @return the activity factor of the given activity type
      */
-    private int getActivityFactorFromType(String activityType) {
+    private int getActivityFactorFromType(ActivityType.ActivityTypeName activityType) {
         // if no activity, return 0 so the calculation is not affected by it
         if (activityType == null) return 0;
 
         switch (activityType) {
-            case "Work":
+            case WORK:
                 return getInt(KEY_WORK_ACTIVITY_FACTOR);
-            case "Sports":
+            case SPORTS:
                 return getInt(KEY_SPORTS_ACTIVITY_FACTOR);
-            case "Casual":
+            case CASUAL:
                 return getInt(KEY_CASUAL_ACTIVITY_FACTOR);
             default:
                 // if no known factor, return 0 so the calculation is not affected by it

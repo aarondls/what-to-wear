@@ -11,10 +11,19 @@ import java.util.List;
  * that, ie go to work then go workout.
  */
 public class ActivityType {
-    private String primaryActivityType;
-    private String secondaryActivityType; // represents the activity to be done after the primary activity; can be set to null if not used
+    private ActivityTypeName primaryActivityType;
+    private ActivityTypeName secondaryActivityType; // represents the activity to be done after the primary activity; can be set to null if not used
 
-    public ActivityType(String primaryActivityType, String secondaryActivityType) {
+    // When adding new activity types, add it here, and fix its description inside getDescription
+    public static enum ActivityTypeName {
+        WORK, SPORTS, CASUAL
+    }
+
+    private static final String WORK_TYPE_DESCRIPTION = "Work";
+    private static final String SPORTS_TYPE_DESCRIPTION = "Sports";
+    private static final String CASUAL_TYPE_DESCRIPTION = "Casual";
+
+    public ActivityType(ActivityTypeName primaryActivityType, ActivityTypeName secondaryActivityType) {
         this.primaryActivityType = primaryActivityType;
         this.secondaryActivityType = secondaryActivityType;
     }
@@ -27,38 +36,53 @@ public class ActivityType {
         List<ActivityType> activitiesArrayList = new ArrayList<>();
 
         // add the activities
-        activitiesArrayList.add(new ActivityType("Work", null));
-        activitiesArrayList.add(new ActivityType("Sports", null));
-        activitiesArrayList.add(new ActivityType("Casual", null));
+        // for now, only add primaries
+        for (ActivityTypeName activityType : ActivityTypeName.values()) {
+            activitiesArrayList.add(new ActivityType(activityType, null));
+        }
 
         // TODO: add more activities as needed here
 
         return activitiesArrayList;
     }
 
-    public String getPrimaryActivityType() {
+    public ActivityTypeName getPrimaryActivityType() {
         return primaryActivityType;
     }
 
-    public String getSecondaryActivityType() {
+    public ActivityTypeName getSecondaryActivityType() {
         return secondaryActivityType;
     }
 
     public String getDescription() {
-        String activityDescription = primaryActivityType;
+        String activityDescription = getDescription(primaryActivityType);
         if (secondaryActivityType != null) {
-            activityDescription += " + " + secondaryActivityType;
+            activityDescription += " + " + getDescription(primaryActivityType);
         }
         return activityDescription;
     }
 
+    private String getDescription(ActivityTypeName activityType) {
+        switch (activityType) {
+            case WORK:
+                return WORK_TYPE_DESCRIPTION;
+            case SPORTS:
+                return SPORTS_TYPE_DESCRIPTION;
+            case CASUAL:
+                return CASUAL_TYPE_DESCRIPTION;
+            default:
+                // this will never happen if properly defined as described above
+                return null;
+        }
+    }
+
     public int getImageID() {
         switch (primaryActivityType) {
-            case "Work":
+            case WORK:
                 return R.drawable.activity_type_work;
-            case "Sports":
+            case SPORTS:
                 return R.drawable.activity_type_sport;
-            case "Casual":
+            case CASUAL:
                 return R.drawable.activity_type_casual;
             default:
                 // for types without an icon that naturally describes them, use custom icon
