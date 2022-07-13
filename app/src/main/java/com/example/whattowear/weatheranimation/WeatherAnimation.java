@@ -1,7 +1,5 @@
 package com.example.whattowear.weatheranimation;
 
-import android.graphics.Color;
-import android.util.Pair;
 import android.view.ViewGroup;
 
 import com.example.whattowear.models.Conditions;
@@ -128,6 +126,8 @@ public class WeatherAnimation {
                 classifySnowConditionsForConfettoParameters(conditionsIDMiddleDigit, conditionsIDLastDigit);
                 break;
         }
+
+        generateConfettoParametersFromClassifiedConditions();
     }
 
     /**
@@ -148,19 +148,14 @@ public class WeatherAnimation {
             // type is thunderstorm with rain
             conditionsModifiers.add(ConditionsModifier.THUNDERSTORM);
             conditionsTypes.add(ConditionsType.RAIN);
-            Pair<ConditionsIntensity, ConditionsIntensity> conditionsIntensityPair = calculateConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
-            conditionsIntensity = conditionsIntensityPair.first;
-            alternateConditionsIntensity = conditionsIntensityPair.second;
+            setConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
         } else if (conditionsIDMiddleDigit == 3) {
             // type is thunderstorm with drizzle
             conditionsModifiers.add(ConditionsModifier.THUNDERSTORM);
             conditionsTypes.add(ConditionsType.DRIZZLE);
-            Pair<ConditionsIntensity, ConditionsIntensity> conditionsIntensityPair = calculateConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
-            conditionsIntensity = conditionsIntensityPair.first;
-            alternateConditionsIntensity = conditionsIntensityPair.second;
+            setConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
         }
         // if ID does not match the above conditions, then no need for animation, so keep conditionsTypes empty
-        generateConfettoParametersFromClassifiedConditions();
     }
 
     /**
@@ -180,9 +175,7 @@ public class WeatherAnimation {
         if (conditionsIDMiddleDigit == 0) {
             // type is drizzle
             conditionsTypes.add(ConditionsType.DRIZZLE);
-            Pair<ConditionsIntensity, ConditionsIntensity> conditionsIntensityPair = calculateConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
-            conditionsIntensity = conditionsIntensityPair.first;
-            alternateConditionsIntensity = conditionsIntensityPair.second;
+            setConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
         } else if (conditionsIDMiddleDigit == 1) {
             // type is drizzle rain
             conditionsTypes.add(ConditionsType.DRIZZLE);
@@ -204,7 +197,6 @@ public class WeatherAnimation {
             alternateConditionsIntensity = ConditionsIntensity.LIGHT;
         }
         // if ID does not match the above conditions, then no need for animation, so keep conditionsTypes empty
-        generateConfettoParametersFromClassifiedConditions();
     }
 
     /**
@@ -224,19 +216,14 @@ public class WeatherAnimation {
         if (conditionsIDMiddleDigit == 0 || conditionsIDMiddleDigit == 1) {
             // type is rain
             conditionsTypes.add(ConditionsType.RAIN);
-            Pair<ConditionsIntensity, ConditionsIntensity> conditionsIntensityPair = calculateConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
-            conditionsIntensity = conditionsIntensityPair.first;
-            alternateConditionsIntensity = conditionsIntensityPair.second;
+            setConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
         } else if (conditionsIDMiddleDigit == 2 || conditionsIDMiddleDigit == 3) {
             // type is shower rain
             conditionsModifiers.add(ConditionsModifier.SHOWER);
             conditionsTypes.add(ConditionsType.RAIN);
-            Pair<ConditionsIntensity, ConditionsIntensity> conditionsIntensityPair = calculateConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
-            conditionsIntensity = conditionsIntensityPair.first;
-            alternateConditionsIntensity = conditionsIntensityPair.second;
+            setConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
         }
         // if ID does not match the above conditions, then no need for animation, so keep conditionsTypes empty
-        generateConfettoParametersFromClassifiedConditions();
     }
 
     /**
@@ -256,9 +243,7 @@ public class WeatherAnimation {
         if (conditionsIDMiddleDigit == 0) {
             // type is snow
             conditionsTypes.add(ConditionsType.SNOW);
-            Pair<ConditionsIntensity, ConditionsIntensity> conditionsIntensityPair = calculateConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
-            conditionsIntensity = conditionsIntensityPair.first;
-            alternateConditionsIntensity = conditionsIntensityPair.second;
+            setConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
         } else if (conditionsIDMiddleDigit == 1) {
             // type is dependent
             if (conditionsIDLastDigit == 1) {
@@ -295,12 +280,9 @@ public class WeatherAnimation {
             // type is shower snow
             conditionsModifiers.add(ConditionsModifier.SHOWER);
             conditionsTypes.add(ConditionsType.SNOW);
-            Pair<ConditionsIntensity, ConditionsIntensity> conditionsIntensityPair = calculateConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
-            conditionsIntensity = conditionsIntensityPair.first;
-            alternateConditionsIntensity = conditionsIntensityPair.second;
+            setConditionIntensityFromIDLastDigit(conditionsIDLastDigit);
         }
         // if ID does not match the above conditions, then no need for animation, so keep conditionsTypes empty
-        generateConfettoParametersFromClassifiedConditions();
     }
 
     /**
@@ -378,23 +360,33 @@ public class WeatherAnimation {
      * alternateConditionsIntensity is then set based on conditionsIntensity. It is set to NONE when
      * conditionsIntensity is LIGHT, MODERATE when conditionsIntensity is EXTREME, and LIGHT otherwise.
      * @param conditionsIDLastDigit the last digit of the current conditions ID
-     * @return a pair consisting of the calculated conditionsIntensity and alternateConditionsIntensity, in that order
      */
-    private static Pair<ConditionsIntensity, ConditionsIntensity> calculateConditionIntensityFromIDLastDigit(int conditionsIDLastDigit) {
+    private static void setConditionIntensityFromIDLastDigit(int conditionsIDLastDigit) {
         switch(conditionsIDLastDigit) {
             case 0:
-                return new Pair<>(ConditionsIntensity.LIGHT, ConditionsIntensity.NONE);
+                conditionsIntensity = ConditionsIntensity.LIGHT;
+                alternateConditionsIntensity = ConditionsIntensity.NONE;
+                break;
             case 1:
-                return new Pair<>(ConditionsIntensity.MODERATE, ConditionsIntensity.LIGHT);
+                conditionsIntensity = ConditionsIntensity.MODERATE;
+                alternateConditionsIntensity = ConditionsIntensity.LIGHT;
+                break;
             case 2:
-                return new Pair<>(ConditionsIntensity.HEAVY, ConditionsIntensity.LIGHT);
+                conditionsIntensity = ConditionsIntensity.HEAVY;
+                alternateConditionsIntensity = ConditionsIntensity.LIGHT;
+                break;
             case 3:
-                return new Pair<>(ConditionsIntensity.VERY_HEAVY, ConditionsIntensity.LIGHT);
+                conditionsIntensity = ConditionsIntensity.VERY_HEAVY;
+                alternateConditionsIntensity = ConditionsIntensity.LIGHT;
+                break;
             case 4:
-                return new Pair<>(ConditionsIntensity.EXTREME, ConditionsIntensity.MODERATE);
+                conditionsIntensity = ConditionsIntensity.EXTREME;
+                alternateConditionsIntensity = ConditionsIntensity.MODERATE;
+                break;
             default:
-                // return none for unidentifiable ID
-                return new Pair<>(ConditionsIntensity.NONE, ConditionsIntensity.NONE);
+                // set none for unidentifiable ID
+                conditionsIntensity = ConditionsIntensity.NONE;
+                alternateConditionsIntensity = ConditionsIntensity.NONE;
         }
     }
 
