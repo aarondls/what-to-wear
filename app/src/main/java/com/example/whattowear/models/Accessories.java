@@ -12,6 +12,8 @@ import java.util.List;
 public class Accessories {
     private static final String TAG = "Accessories";
 
+    private static final String ACCESSORIES_NAME = "Accessories";
+
     private static final float UV_ACCESSORY_THRESHOLD = 20;
 
     private List<AccessoryType> accessoriesTypes;
@@ -63,6 +65,31 @@ public class Accessories {
 
         Log.i(TAG, "Finished calculating accessories");
         return accessories;
+    }
+
+    /**
+     * @return the footwear name describing its type of garment
+     */
+    public static String getAccessoriesName() {
+        return ACCESSORIES_NAME;
+    }
+
+    /**
+     * @return a list of the names of all accessories types
+     */
+    public List<String> getAccessoriesTypeNames() {
+        List<String> accessoriesNames = new ArrayList<>();
+        for (AccessoryType accessory : accessoriesTypes) {
+            switch (accessory) {
+                case UMBRELLA:
+                    accessoriesNames.add("Umbrella");
+                case HAT:
+                    accessoriesNames.add("Hat");
+                case SUNGLASSES:
+                    accessoriesNames.add("Sunglasses");
+            }
+        }
+        return accessoriesNames;
     }
 
     /**

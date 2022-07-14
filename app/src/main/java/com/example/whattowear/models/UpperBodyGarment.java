@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UpperBodyGarment {
+    private static final String UPPER_BODY_GARMENT_NAME = "Upper body garment";
+
     private static final int T_SHIRT_TEMPERATURE_IMPORTANCE = 3;
     private static final int T_SHIRT_WORK_ACTIVITY_FACTOR = 0;
     private static final int T_SHIRT_CASUAL_ACTIVITY_FACTOR = 9;
@@ -53,6 +55,31 @@ public class UpperBodyGarment {
         upperBodyGarment.upperBodyGarmentType = ClothingRanker.getOptimalClothingType(upperBodyGarmentRankers, UpperBodyGarmentType.values()).first;
 
         return upperBodyGarment;
+    }
+
+    /**s
+     * @return the upper body garment name describing its type of garment
+     */
+    public static String getUpperBodyGarmentName() {
+        return UPPER_BODY_GARMENT_NAME;
+    }
+
+    /**s
+     * @return the name of the upper body garment type
+     */
+    public String getUpperBodyGarmentTypeName() {
+        switch (upperBodyGarmentType) {
+            case T_SHIRT:
+                return "T-shirt";
+            case POLO_SHIRT:
+                return "Polo shirt";
+            case DRESS_SHIRT:
+                return "Dress shirt";
+            case BLOUSE:
+                return "Blouse";
+        }
+        // The cases above cover all possibilities, so this cannot happen
+        return null;
     }
 
     /**

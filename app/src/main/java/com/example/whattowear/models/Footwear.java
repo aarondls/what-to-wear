@@ -12,6 +12,8 @@ import java.util.List;
 public class Footwear {
     private static final String TAG = "Footwear";
 
+    private static final String FOOTWEAR_NAME = "Footwear";
+
     private static final int SNEAKERS_TEMPERATURE_LOWER_RANGE = 50;
     private static final int SNEAKERS_TEMPERATURE_UPPER_RANGE = 100;
     private static final int SNEAKERS_ACTIVITY_IMPORTANCE = 9;
@@ -78,6 +80,35 @@ public class Footwear {
 
         Log.i(TAG, "Finished calculating footwear");
         return footwear;
+    }
+
+    /**
+     * @return the footwear name describing its type of garment
+     */
+    public static String getFootwearName() {
+        return FOOTWEAR_NAME;
+    }
+
+    /**
+     * @return the name of the current footwear type
+     */
+    public String getFootwearTypeName() {
+        switch (footwearType) {
+            case SNEAKERS:
+                return "Sneakers";
+            case BOAT:
+                return "Boat";
+            case LOAFER:
+                return "Loafer";
+            case SANDALS:
+                return "Sandals";
+            case BOOTS:
+                return "Boots";
+            case HEELS:
+                return "Heels";
+        }
+        // The cases above cover all possibilities, so this cannot happen
+        return null;
     }
 
     /**

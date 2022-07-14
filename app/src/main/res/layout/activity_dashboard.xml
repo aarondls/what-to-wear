@@ -8,6 +8,20 @@
     android:background="@drawable/morning_gradient"
     tools:context=".DashboardActivity">
 
+    <FrameLayout
+        android:id="@+id/dashboard_weather_animation_view"
+        android:layout_width="match_parent"
+        android:layout_height="538dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
+        android:elevation="-10dp"/>
+
     <Spinner
         android:id="@+id/activity_selector_spinner"
         android:layout_width="match_parent"
@@ -144,17 +158,6 @@
         app:icon="@drawable/ic_baseline_menu_24"
         app:iconGravity="top"/>
 
-    <Button
-        android:id="@+id/detailed_clothing_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginEnd="19dp"
-        android:layout_marginBottom="25dp"
-        android:text="Detailed Clothing"/>
-
     <TextView
         android:id="@+id/dashboard_location_textview"
         android:layout_width="wrap_content"
@@ -204,67 +207,81 @@
         android:textSize="60sp"
         tools:text="22"/>
 
-    <ImageView
-        android:id="@+id/dashboard_lower_body_garment_imageview"
-        android:layout_width="73dp"
-        android:layout_height="61dp"
-        android:layout_above="@+id/dashboard_footwear_imageview"
+    <RelativeLayout
+        android:id="@+id/clothing_overview_relativelayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/activity_selector_spinner"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="56dp"
-        android:layout_marginBottom="19dp"
-        tools:srcCompat="@tools:sample/avatars"/>
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="30dp">
 
-    <ImageView
-        android:id="@+id/dashboard_upper_body_garment_imageview"
-        android:layout_width="73dp"
-        android:layout_height="61dp"
-        android:layout_above="@+id/dashboard_footwear_imageview"
-        android:layout_marginStart="27dp"
-        android:layout_marginBottom="22dp"
-        android:layout_toEndOf="@+id/dashboard_lower_body_garment_imageview"
-        tools:srcCompat="@tools:sample/avatars"/>
+        <ImageView
+            android:id="@+id/dashboard_lower_body_garment_imageview"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            tools:srcCompat="@tools:sample/avatars"/>
 
-    <ImageView
-        android:id="@+id/dashboard_over_body_garment_imageview"
-        android:layout_width="73dp"
-        android:layout_height="61dp"
-        android:layout_above="@+id/dashboard_footwear_imageview"
-        android:layout_marginStart="37dp"
-        android:layout_marginBottom="19dp"
-        android:layout_toEndOf="@+id/dashboard_upper_body_garment_imageview"
-        tools:srcCompat="@tools:sample/avatars"/>
+        <ImageView
+            android:id="@+id/dashboard_upper_body_garment_imageview"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignTop="@+id/dashboard_lower_body_garment_imageview"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_toEndOf="@+id/dashboard_lower_body_garment_imageview"
+            tools:srcCompat="@tools:sample/avatars"/>
 
-    <ImageView
-        android:id="@+id/dashboard_footwear_imageview"
-        android:layout_width="73dp"
-        android:layout_height="61dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="61dp"
-        android:layout_marginBottom="131dp"
-        tools:srcCompat="@tools:sample/avatars"/>
+        <ImageView
+            android:id="@+id/dashboard_over_body_garment_imageview"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignTop="@+id/dashboard_lower_body_garment_imageview"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="19dp"
+            android:layout_toEndOf="@+id/dashboard_upper_body_garment_imageview"
+            tools:srcCompat="@tools:sample/avatars"/>
 
-    <ImageView
-        android:id="@+id/dashboard_accessories_imageview"
-        android:layout_width="73dp"
-        android:layout_height="61dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="28dp"
-        android:layout_marginBottom="130dp"
-        android:layout_toEndOf="@+id/dashboard_footwear_imageview"
-        tools:srcCompat="@tools:sample/avatars"/>
+        <ImageView
+            android:id="@+id/dashboard_footwear_imageview"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_below="@+id/dashboard_lower_body_garment_imageview"
+            android:layout_alignStart="@+id/dashboard_lower_body_garment_imageview"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="35dp"
+            tools:srcCompat="@tools:sample/avatars"/>
 
-    <TextView
-        android:id="@+id/dashboard_excess_accessories_textview"
-        android:layout_width="98dp"
-        android:layout_height="46dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="29dp"
-        android:layout_marginBottom="136dp"
-        android:layout_toEndOf="@+id/dashboard_accessories_imageview"
-        android:textColor="@color/white"
-        tools:text="+2 more accessories"/>
+        <ImageView
+            android:id="@+id/dashboard_accessories_imageview"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignTop="@+id/dashboard_footwear_imageview"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_toEndOf="@+id/dashboard_footwear_imageview"
+            tools:srcCompat="@tools:sample/avatars"/>
+
+        <TextView
+            android:id="@+id/dashboard_excess_accessories_textview"
+            android:layout_width="98dp"
+            android:layout_height="46dp"
+            android:layout_alignTop="@+id/dashboard_footwear_imageview"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="5dp"
+            android:layout_toEndOf="@+id/dashboard_accessories_imageview"
+            android:textColor="@color/white"
+            tools:text="+2 more accessories"/>
+    </RelativeLayout>
 
     <Button
         android:id="@+id/location_services_denied_warning_button"
@@ -303,19 +320,5 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="3dp"
         android:layout_marginTop="15dp"/>
-
-    <FrameLayout
-        android:id="@+id/dashboard_weather_animation_view"
-        android:layout_width="match_parent"
-        android:layout_height="538dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="0dp"
-        android:elevation="-10dp"/>
 
 </RelativeLayout>

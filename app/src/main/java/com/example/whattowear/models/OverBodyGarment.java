@@ -13,6 +13,8 @@ import java.util.List;
 public class OverBodyGarment {
     private static final String TAG = "OverBodyGarment";
 
+    private static final String OVER_BODY_GARMENT_NAME = "Over body garment";
+
     private static final float NONE_TYPE_RANKING = 300;
 
     private static final int ATHLETIC_JACKET_TEMPERATURE_LOWER_RANGE = 40;
@@ -73,6 +75,31 @@ public class OverBodyGarment {
         Log.i(TAG, "Returning optimal: " + overBodyGarment.overBodyGarmentType);
 
         return overBodyGarment;
+    }
+
+    /**
+     * @return the over body garment name describing its type of garment
+     */
+    public static String getOverBodyGarmentName() {
+        return OVER_BODY_GARMENT_NAME;
+    }
+
+    /**
+     * @return the name of the over body garment type
+     */
+    public String getOverBodyGarmentTypeName() {
+        switch (overBodyGarmentType) {
+            case ATHLETIC_JACKET:
+                return "Athletic jacket";
+            case RAIN_JACKET:
+                return "Rain jacket";
+            case WINTER_COAT:
+                return "Winter coat";
+            case NONE:
+                return "None";
+        }
+        // The cases above cover all possibilities, so this cannot happen
+        return null;
     }
 
     /**

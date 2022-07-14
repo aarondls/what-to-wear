@@ -67,9 +67,9 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
     private DashboardWeatherAnimationController dashboardWeatherAnimationController;
     private LocationDataListener locationDataListener;
 
-    private Button detailedClothingButton;
     private Button menuButton;
     private RelativeLayout detailedWeatherClickable;
+    private RelativeLayout detailedClothingClickable;
 
     private Button locationServicesDeniedWarningButton;
     private Button getUserLocationButton;
@@ -108,9 +108,9 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
         // this handles the weather animation in the background
         dashboardWeatherAnimationController = new DashboardWeatherAnimationController(findViewById(R.id.dashboard_weather_animation_view), dashboardWeatherController);
 
-        detailedClothingButton = findViewById(R.id.detailed_clothing_button);
         menuButton = findViewById(R.id.dashboard_to_menu_button);
         detailedWeatherClickable = findViewById(R.id.forecast_3hr_relativelayout);
+        detailedClothingClickable = findViewById(R.id.clothing_overview_relativelayout);
 
         getUserLocationButton = findViewById(R.id.get_user_location_button);
         getUserLocationButton.setVisibility(View.GONE);
@@ -129,15 +129,6 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
         // Change places search icon to white drawable icon
         ImageView searchIcon = (ImageView)((LinearLayout)autocompleteFragment.getView()).getChildAt(0);
         searchIcon.setImageResource(R.drawable.ic_baseline_search_24);
-
-        detailedClothingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Move to detailed clothing screen
-                Intent i = new Intent(DashboardActivity.this, DetailedClothingActivity.class);
-                startActivity(i);
-            }
-        });
 
         getUserLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,6 +167,15 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
             public void onClick(View v) {
                 // Move to detailed weather screen
                 Intent i = new Intent(DashboardActivity.this, DetailedWeatherActivity.class);
+                startActivity(i);
+            }
+        });
+
+        detailedClothingClickable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Move to detailed clothing screen
+                Intent i = new Intent(DashboardActivity.this, DetailedClothingActivity.class);
                 startActivity(i);
             }
         });
