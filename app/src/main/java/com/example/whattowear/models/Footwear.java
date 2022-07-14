@@ -83,9 +83,8 @@ public class Footwear {
     /**
      * @return the ID of the local file of the footwear image
      */
-    public java.lang.Integer getFootwearImage() {
-        // TODO: return correct image based on footwear
-        return R.drawable.rubber_shoes;
+    public Integer getFootwearImage() {
+        return getFootwearImage(footwearType.name());
     }
 
     /**
@@ -95,19 +94,18 @@ public class Footwear {
      * returns null.
      */
     public static Integer getFootwearImage(String clothingTypeName) {
-        // TODO: return correct image based on type
-        if (clothingTypeName.equals("Sneakers")) {
-            return R.drawable.rubber_shoes;
-        } else if (clothingTypeName.equals("Boat")) {
-            return R.drawable.rubber_shoes;
-        } else if (clothingTypeName.equals("Loafer")) {
-            return R.drawable.rubber_shoes;
-        } else if (clothingTypeName.equals("Sandals")) {
-            return R.drawable.rubber_shoes;
-        } else if (clothingTypeName.equals("Boots")) {
-            return R.drawable.rubber_shoes;
-        } else if (clothingTypeName.equals("Heels")) {
-            return R.drawable.rubber_shoes;
+        if (clothingTypeName.equals(FootwearType.SNEAKERS.name())) {
+            return R.drawable.clothing_icon_sneakers;
+        } else if (clothingTypeName.equals(FootwearType.BOAT.name())) {
+            return R.drawable.clothing_icon_boat;
+        } else if (clothingTypeName.equals(FootwearType.LOAFER.name())) {
+            return R.drawable.clothing_icon_loafer;
+        } else if (clothingTypeName.equals(FootwearType.SANDALS.name())) {
+            return R.drawable.clothing_icon_sandals;
+        } else if (clothingTypeName.equals(FootwearType.BOOTS.name())) {
+            return R.drawable.clothing_icon_boots;
+        } else if (clothingTypeName.equals(FootwearType.HEELS.name())) {
+            return R.drawable.clothing_icon_heels;
         }
         // unrecognized return null
         return null;
@@ -138,20 +136,18 @@ public class Footwear {
      * @return the list of initialized clothing rankers for footwear with default factors
      */
     public static List<ClothingRanker> initializeFootwearRankers(ParseUser user) {
-        // TODO: fix icons
-        // TODO: get from parse
         ClothingRanker sneakersRanker = new ClothingRanker();
-        sneakersRanker.initializeFactorsToDefault("Sneakers", R.drawable.rubber_shoes, user);
+        sneakersRanker.initializeFactorsToDefault(FootwearType.SNEAKERS.name(), R.drawable.clothing_icon_sneakers, user);
         ClothingRanker boatRanker = new ClothingRanker();
-        boatRanker.initializeFactorsToDefault("Boat", R.drawable.rubber_shoes, user);
+        boatRanker.initializeFactorsToDefault(FootwearType.BOAT.name(), R.drawable.clothing_icon_boat, user);
         ClothingRanker loaferRanker = new ClothingRanker();
-        loaferRanker.initializeFactorsToDefault("Loafer", R.drawable.rubber_shoes, user);
+        loaferRanker.initializeFactorsToDefault(FootwearType.LOAFER.name(), R.drawable.clothing_icon_loafer, user);
         ClothingRanker sandalsRanker = new ClothingRanker();
-        sandalsRanker.initializeFactorsToDefault("Sandals", R.drawable.rubber_shoes, user);
+        sandalsRanker.initializeFactorsToDefault(FootwearType.SANDALS.name(), R.drawable.clothing_icon_sandals, user);
         ClothingRanker bootsRanker = new ClothingRanker();
-        bootsRanker.initializeFactorsToDefault("Boots", R.drawable.rubber_shoes, user);
+        bootsRanker.initializeFactorsToDefault(FootwearType.BOOTS.name(), R.drawable.clothing_icon_boots, user);
         ClothingRanker heelsRanker = new ClothingRanker();
-        heelsRanker.initializeFactorsToDefault("Heels", R.drawable.rubber_shoes, user);
+        heelsRanker.initializeFactorsToDefault(FootwearType.HEELS.name(), R.drawable.clothing_icon_heels, user);
 
         sneakersRanker.setTemperatureLowerRange(SNEAKERS_TEMPERATURE_LOWER_RANGE);
         sneakersRanker.setTemperatureUpperRange(SNEAKERS_TEMPERATURE_UPPER_RANGE);

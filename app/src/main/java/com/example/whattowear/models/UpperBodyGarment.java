@@ -58,10 +58,8 @@ public class UpperBodyGarment {
     /**
      * @return the ID of the local file of the over body garment image
      */
-    public java.lang.Integer getUpperBodyGarmentImage() {
-        // TODO: return correct image based on type
-
-        return R.drawable.t_shirt;
+    public Integer getUpperBodyGarmentImage() {
+        return getUpperBodyGarmentImage(upperBodyGarmentType.name());
     }
 
     /**
@@ -71,17 +69,17 @@ public class UpperBodyGarment {
      * returns null.
      */
     public static Integer getUpperBodyGarmentImage(String clothingTypeName) {
-        // TODO: return correct image based on type
-        if (clothingTypeName.equals("T shirt")) {
-            return R.drawable.t_shirt;
-        } else if (clothingTypeName.equals("Polo shirt")) {
-            return R.drawable.t_shirt;
-        } else if (clothingTypeName.equals("Dress shirt")) {
-            return R.drawable.t_shirt;
-        } else if (clothingTypeName.equals("Blouse")) {
-            return R.drawable.t_shirt;
+        if (clothingTypeName.equals(UpperBodyGarmentType.T_SHIRT.name())) {
+            return R.drawable.clothing_icon_t_shirt;
+        } else if (clothingTypeName.equals(UpperBodyGarmentType.POLO_SHIRT.name())) {
+            return R.drawable.clothing_icon_polo_shirt;
+        } else if (clothingTypeName.equals(UpperBodyGarmentType.DRESS_SHIRT.name())) {
+            return R.drawable.clothing_icon_dress_shirt;
+        } else if (clothingTypeName.equals(UpperBodyGarmentType.BLOUSE.name())) {
+            return R.drawable.clothing_icon_blouse;
         }
         // unrecognized return null
+        // this is unreachable since if defined correctly, all of the enum types have been enumerated
         return null;
     }
 
@@ -110,15 +108,14 @@ public class UpperBodyGarment {
      * @return the list of initialized clothing rankers for upper body garments with default factors
      */
     public static List<ClothingRanker> initializeUpperBodyGarmentRankers(ParseUser user) {
-        // TODO: fix icons
         ClothingRanker tShirtRanker = new ClothingRanker();
-        tShirtRanker.initializeFactorsToDefault("T shirt", R.drawable.t_shirt, user);
+        tShirtRanker.initializeFactorsToDefault(UpperBodyGarmentType.T_SHIRT.name(), R.drawable.clothing_icon_t_shirt, user);
         ClothingRanker poloShirtRanker = new ClothingRanker();
-        poloShirtRanker.initializeFactorsToDefault("Polo shirt", R.drawable.t_shirt, user);
+        poloShirtRanker.initializeFactorsToDefault(UpperBodyGarmentType.POLO_SHIRT.name(), R.drawable.clothing_icon_polo_shirt, user);
         ClothingRanker dressShirtRanker = new ClothingRanker();
-        dressShirtRanker.initializeFactorsToDefault("Dress shirt", R.drawable.t_shirt, user);
+        dressShirtRanker.initializeFactorsToDefault(UpperBodyGarmentType.DRESS_SHIRT.name(), R.drawable.clothing_icon_dress_shirt, user);
         ClothingRanker blouseRanker = new ClothingRanker();
-        blouseRanker.initializeFactorsToDefault("Blouse", R.drawable.t_shirt, user);
+        blouseRanker.initializeFactorsToDefault(UpperBodyGarmentType.BLOUSE.name(), R.drawable.clothing_icon_blouse, user);
 
         tShirtRanker.setTemperatureImportance(T_SHIRT_TEMPERATURE_IMPORTANCE);
         tShirtRanker.setWorkActivityFactor(T_SHIRT_WORK_ACTIVITY_FACTOR);

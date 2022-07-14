@@ -73,9 +73,8 @@ public class LowerBodyGarment {
     /**
      * @return the ID of the local file of the lower body garment image
      */
-    public java.lang.Integer getLowerBodyGarmentImage() {
-        // TODO: return correct image based on lower body garment
-        return R.drawable.sweats;
+    public Integer getLowerBodyGarmentImage() {
+        return getLowerBodyGarmentImage(lowerBodyGarmentType.name());
     }
 
     /**
@@ -85,17 +84,16 @@ public class LowerBodyGarment {
      * returns null.
      */
     public static Integer getLowerBodyGarmentImage(String clothingTypeName) {
-        // TODO: return correct image based on type
-        if (clothingTypeName.equals("Dress pants")) {
-            return R.drawable.sweats;
-        } else if (clothingTypeName.equals("Jeans")) {
-            return R.drawable.sweats;
-        } else if (clothingTypeName.equals("Shorts")) {
-            return R.drawable.sweats;
-        } else if (clothingTypeName.equals("Skirt")) {
-            return R.drawable.sweats;
-        } else if (clothingTypeName.equals("Sweats")) {
-            return R.drawable.sweats;
+        if (clothingTypeName.equals(LowerBodyGarmentType.DRESS_PANTS.name())) {
+            return R.drawable.clothing_icon_dress_pants;
+        } else if (clothingTypeName.equals(LowerBodyGarmentType.JEANS.name())) {
+            return R.drawable.clothing_icon_jeans;
+        } else if (clothingTypeName.equals(LowerBodyGarmentType.SHORTS.name())) {
+            return R.drawable.clothing_icon_shorts;
+        } else if (clothingTypeName.equals(LowerBodyGarmentType.SKIRT.name())) {
+            return R.drawable.clothing_icon_skirt;
+        } else if (clothingTypeName.equals(LowerBodyGarmentType.SWEATS.name())) {
+            return R.drawable.clothing_icon_sweatpants;
         }
         // unrecognized return null
         return null;
@@ -126,18 +124,16 @@ public class LowerBodyGarment {
      * @return the list of initialized clothing rankers for lower body garments with default factors
      */
     public static List<ClothingRanker> initializeLowerBodyGarmentRankers(ParseUser user) {
-        // TODO: fix icons
-        // TODO: get from parse
         ClothingRanker dressPantsRanker = new ClothingRanker();
-        dressPantsRanker.initializeFactorsToDefault("Dress pants", R.drawable.sweats, user);
+        dressPantsRanker.initializeFactorsToDefault(LowerBodyGarmentType.DRESS_PANTS.name(), R.drawable.clothing_icon_dress_pants, user);
         ClothingRanker jeansRanker = new ClothingRanker();
-        jeansRanker.initializeFactorsToDefault("Jeans", R.drawable.sweats, user);
+        jeansRanker.initializeFactorsToDefault(LowerBodyGarmentType.JEANS.name(), R.drawable.clothing_icon_jeans, user);
         ClothingRanker shortsRanker = new ClothingRanker();
-        shortsRanker.initializeFactorsToDefault("Shorts", R.drawable.sweats, user);
+        shortsRanker.initializeFactorsToDefault(LowerBodyGarmentType.SHORTS.name(), R.drawable.clothing_icon_shorts, user);
         ClothingRanker skirtRanker = new ClothingRanker();
-        skirtRanker.initializeFactorsToDefault("Skirt", R.drawable.sweats, user);
+        skirtRanker.initializeFactorsToDefault(LowerBodyGarmentType.SKIRT.name(), R.drawable.clothing_icon_skirt, user);
         ClothingRanker sweatsRanker = new ClothingRanker();
-        sweatsRanker.initializeFactorsToDefault("Sweats", R.drawable.sweats, user);
+        sweatsRanker.initializeFactorsToDefault(LowerBodyGarmentType.SWEATS.name(), R.drawable.clothing_icon_sweatpants, user);
 
         dressPantsRanker.setTemperatureLowerRange(DRESS_PANTS_TEMPERATURE_LOWER_RANGE);
         dressPantsRanker.setTemperatureUpperRange(DRESS_PANTS_TEMPERATURE_UPPER_RANGE);

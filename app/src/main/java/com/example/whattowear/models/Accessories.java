@@ -69,12 +69,11 @@ public class Accessories {
      * @return all the IDs of the local file of the accessories images as
      * a list. If there are no accessories, then the returned list is empty.
      */
-    public List<java.lang.Integer> getAccessoriesImages() {
-        // TODO: return correct image based on type
-        List<java.lang.Integer> accessoriesImages = new ArrayList<>();
+    public List<Integer> getAccessoriesImages() {
+        List<Integer> accessoriesImages = new ArrayList<>();
 
         for (AccessoryType accessory : accessoriesTypes) {
-            accessoriesImages.add(R.drawable.sunglasses);
+            accessoriesImages.add(getAccessoriesImages(accessory.name()));
         }
 
         return accessoriesImages;
@@ -87,13 +86,12 @@ public class Accessories {
      * returns null.
      */
     public static Integer getAccessoriesImages(String clothingTypeName) {
-        // TODO: return correct image based on type
-        if (clothingTypeName.equals("Umbrella")) {
-            return R.drawable.sunglasses;
-        } else if (clothingTypeName.equals("Hat")) {
-            return R.drawable.sunglasses;
-        } else if (clothingTypeName.equals("Sunglasses")) {
-            return R.drawable.sunglasses;
+        if (clothingTypeName.equals(AccessoryType.UMBRELLA.name())) {
+            return R.drawable.clothing_icon_umbrella;
+        } else if (clothingTypeName.equals(AccessoryType.HAT.name())) {
+            return R.drawable.clothing_icon_hat;
+        } else if (clothingTypeName.equals(AccessoryType.SUNGLASSES.name())) {
+            return R.drawable.clothing_icon_sunglasses;
         }
         // unrecognized return null
         return null;
@@ -124,14 +122,12 @@ public class Accessories {
      * @return the list of initialized clothing rankers for accessory with default factors
      */
     public static List<ClothingRanker> initializeAccessoriesRankers(ParseUser user) {
-        // TODO: fix icons
-        // TODO: get from parse
         ClothingRanker umbrellaRanker = new ClothingRanker();
-        umbrellaRanker.initializeFactorsToDefault("Umbrella", R.drawable.sunglasses, user);
+        umbrellaRanker.initializeFactorsToDefault(AccessoryType.UMBRELLA.name(), R.drawable.clothing_icon_sunglasses, user);
         ClothingRanker hatRanker = new ClothingRanker();
-        hatRanker.initializeFactorsToDefault("Hat", R.drawable.sunglasses, user);
+        hatRanker.initializeFactorsToDefault(AccessoryType.HAT.name(), R.drawable.clothing_icon_hat, user);
         ClothingRanker sunglassesRanker = new ClothingRanker();
-        sunglassesRanker.initializeFactorsToDefault("Sunglasses", R.drawable.sunglasses, user);
+        sunglassesRanker.initializeFactorsToDefault(AccessoryType.SUNGLASSES.name(), R.drawable.clothing_icon_umbrella, user);
 
         accessoriesRankers = new ArrayList<>();
         accessoriesRankers.add(umbrellaRanker);

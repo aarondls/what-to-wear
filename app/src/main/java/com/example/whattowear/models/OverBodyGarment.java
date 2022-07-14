@@ -80,11 +80,8 @@ public class OverBodyGarment {
      * it exists. If it is defined as OverBodyGarmentType.NONE, then this
      * returns null.
      */
-    public java.lang.Integer getOverBodyGarmentImage() {
-        // TODO: return correct image based on type
-        if (overBodyGarmentType == OverBodyGarmentType.NONE) return null;
-
-        return R.drawable.clothing_over_body_athletic_jacket;
+    public Integer getOverBodyGarmentImage() {
+        return getOverBodyGarmentImage(overBodyGarmentType.name());
     }
 
     /**
@@ -95,15 +92,14 @@ public class OverBodyGarment {
      * returns null.
      */
     public static Integer getOverBodyGarmentImage(String clothingTypeName) {
-        // TODO: return correct image based on type
-        if (clothingTypeName.equals("Athletic jacket")) {
-            return R.drawable.clothing_over_body_athletic_jacket;
-        } else if (clothingTypeName.equals("Rain jacket")) {
-            return R.drawable.clothing_over_body_athletic_jacket;
-        } else if (clothingTypeName.equals("Winter coat")) {
-            return R.drawable.clothing_over_body_athletic_jacket;
+        if (clothingTypeName.equals(OverBodyGarmentType.ATHLETIC_JACKET.name())) {
+            return R.drawable.clothing_icon_athletic_jacket;
+        } else if (clothingTypeName.equals(OverBodyGarmentType.RAIN_JACKET.name())) {
+            return R.drawable.clothing_icon_raincoat;
+        } else if (clothingTypeName.equals(OverBodyGarmentType.WINTER_COAT.name())) {
+            return R.drawable.clothing_icon_winter_coat;
         }
-        // unrecognized return null
+        // unrecognized (or none) return null
         return null;
     }
 
@@ -135,11 +131,11 @@ public class OverBodyGarment {
     public static List<ClothingRanker> initializeOverBodyGarmentRankers(ParseUser user) {
         // TODO: fix icons
         ClothingRanker athleticJacketRanker  = new ClothingRanker();
-        athleticJacketRanker.initializeFactorsToDefault("Athletic jacket", R.drawable.hoodie, user);
+        athleticJacketRanker.initializeFactorsToDefault(OverBodyGarmentType.ATHLETIC_JACKET.name(), R.drawable.clothing_icon_athletic_jacket, user);
         ClothingRanker rainJacketRanker  = new ClothingRanker();
-        rainJacketRanker.initializeFactorsToDefault("Rain jacket", R.drawable.hoodie, user);
+        rainJacketRanker.initializeFactorsToDefault(OverBodyGarmentType.RAIN_JACKET.name(), R.drawable.clothing_icon_raincoat, user);
         ClothingRanker winterCoatRanker  = new ClothingRanker();
-        winterCoatRanker.initializeFactorsToDefault("Winter coat", R.drawable.hoodie, user);
+        winterCoatRanker.initializeFactorsToDefault(OverBodyGarmentType.WINTER_COAT.name(), R.drawable.clothing_icon_winter_coat, user);
 
         // Set all relevant default factors
         athleticJacketRanker.setTemperatureLowerRange(ATHLETIC_JACKET_TEMPERATURE_LOWER_RANGE);
