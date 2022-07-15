@@ -23,6 +23,10 @@ public class Weather {
 
     public static final String TAG = "Weather";
 
+    private static final String LOW_TEMP_CHAR = "L ";
+    private static final String HIGH_TEMP_CHAR = "H ";
+    private static final String DEG_SIGN = "\u00B0";
+
     private final static int SECONDS_FACTOR = 1000;
     private final static int MINUTES_FACTOR = 60;
 
@@ -189,12 +193,13 @@ public class Weather {
         return dayConditionsID;
     }
 
-    public static int getDayMinTemperature() {
-        return dayMinTemperature;
+    public static String getDayMinFormattedTemperature() {
+        return LOW_TEMP_CHAR + dayMinTemperature + DEG_SIGN;
+
     }
 
-    public static int getDayMaxTemperature() {
-        return dayMaxTemperature;
+    public static String getDayMaxFormattedTemperature() {
+        return HIGH_TEMP_CHAR + dayMaxTemperature + DEG_SIGN;
     }
 
     public static int getDayMeanTemperature() {

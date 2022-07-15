@@ -1,15 +1,14 @@
 package com.example.whattowear;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
-
-import com.example.whattowear.models.Weather;
 
 /**
  * DetailedWeatherActivity represents the screen where
@@ -20,8 +19,10 @@ import com.example.whattowear.models.Weather;
 public class DetailedWeatherActivity extends AppCompatActivity {
     public static final String TAG = "DetailedWeatherActivity";
 
-    private TextView locationTextview;
     private Button backToDashboardButton;
+
+    private DetailedWeatherController detailedWeatherController;
+
     private RecyclerView weatherRecyclerview;
     private WeatherAdapter adapter;
 
@@ -30,8 +31,10 @@ public class DetailedWeatherActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_weather);
 
-        locationTextview = findViewById(R.id.detailed_weather_location_textview);
         backToDashboardButton = findViewById(R.id.weather_back_to_dashboard_button);
+
+        detailedWeatherController = new DetailedWeatherController(this);
+
         weatherRecyclerview = findViewById(R.id.weather_info_recycleview);
 
         backToDashboardButton.setOnClickListener(new View.OnClickListener() {
@@ -42,6 +45,15 @@ public class DetailedWeatherActivity extends AppCompatActivity {
             }
         });
 
+        // TODO: create diff gradient for morning/afternoon/night
+        // Put gradient as background
+        // for now, use morning
+        View dashboardView = findViewById(R.id.detailed_weather_relative_layout);
+        dashboardView.setBackground(AppCompatResources.getDrawable(this, R.drawable.dark_gradient));
+
+        // have layout be full screen to hide both the top and bottom bars
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
         // initialize recycle view
         adapter = new WeatherAdapter(this);
         // Recycleview setup: layout manager and adapter
@@ -50,7 +62,5 @@ public class DetailedWeatherActivity extends AppCompatActivity {
 
         // notify adapter that weather data is ready
         adapter.notifyDataSetChanged();
-
-        locationTextview.setText(Weather.getLastLocationName());
     }
 }

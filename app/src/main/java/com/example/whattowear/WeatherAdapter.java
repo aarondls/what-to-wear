@@ -14,8 +14,6 @@ import com.bumptech.glide.Glide;
 import com.example.whattowear.models.Forecast;
 import com.example.whattowear.models.Weather;
 
-import java.util.Date;
-
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHolder> {
     public static final String TAG = "WeatherAdapter";
 
@@ -54,25 +52,28 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     // Define a viewholder
     public class ViewHolder extends RecyclerView.ViewHolder {
         // follow layout
-        TextView hourly_temp_textview;
-        TextView hourly_time_textview;
-        ImageView hourly_weather_imageview;
+        TextView hourlyTempTextview;
+        TextView hourlyTimeTextview;
+        ImageView hourlyWeatherImageview;
+        TextView hourlyFeelsLikeTextview;
 
         public ViewHolder(@NonNull View itemView) {
             // itemview is representation of one row
             super(itemView);
-            hourly_temp_textview = itemView.findViewById(R.id.hourly_temp_textview);
-            hourly_time_textview = itemView.findViewById(R.id.hourly_time_textview);
-            hourly_weather_imageview = itemView.findViewById(R.id.hourly_weather_imageview);
+            hourlyTempTextview = itemView.findViewById(R.id.hourly_temp_textview);
+            hourlyTimeTextview = itemView.findViewById(R.id.hourly_time_textview);
+            hourlyWeatherImageview = itemView.findViewById(R.id.hourly_weather_imageview);
+            hourlyFeelsLikeTextview = itemView.findViewById(R.id.hourly_feels_like_textview);
         }
 
         public void bind(Forecast hourly_forecast) {
-            hourly_temp_textview.setText(hourly_forecast.getFormattedTemp());
-            hourly_time_textview.setText(hourly_forecast.getAMPMTime());
+            hourlyTempTextview.setText(hourly_forecast.getFormattedTemp());
+            hourlyTimeTextview.setText(hourly_forecast.getAMPMTime());
 
             // TODO: can convert into using local images based on condition ID
-            Glide.with(context).load(hourly_forecast.getHourCondition().getConditionIconLink()).into(hourly_weather_imageview);
+            Glide.with(context).load(hourly_forecast.getHourCondition().getConditionIconLink()).into(hourlyWeatherImageview);
 
+            hourlyFeelsLikeTextview.setText(hourly_forecast.getFormattedFeelsLikeTemp());
             // TODO: load all other data here
         }
 

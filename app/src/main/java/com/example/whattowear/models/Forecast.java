@@ -12,7 +12,10 @@ import java.util.List;
 
 public class Forecast {
     public static final String TAG = "Forecast";
-    public static final String DEG_SIGN = "\u00B0";
+    private static final String DEG_SIGN = "\u00B0";
+    private static final String PERCENT_SIGN = "%";
+    private static final String FEELS_LIKE_SENTENCE = "But feels like: ";
+    private static final String TWO_DECIMAL_PLACES_FORMAT = "%.2f";
 
     // TODO: Remove fields that may not be used once clothing selection logic is completed
     private Date dt;
@@ -105,6 +108,23 @@ public class Forecast {
 
     public Conditions getHourCondition() {
         return hourCondition;
+    }
+
+    public String getFormattedFeelsLikeTemp() {
+        return FEELS_LIKE_SENTENCE + feelsLike + DEG_SIGN;
+    }
+
+    public String getFormattedHumidity() {
+        return humidity + PERCENT_SIGN;
+    }
+
+    public String getFormattedUvIndex() {
+        return String.format(TWO_DECIMAL_PLACES_FORMAT, uvIndex);
+    }
+
+    public String getFormattedProbOfPrecipitation() {
+        if (probOfPrecipitation == -1) return "0" + PERCENT_SIGN;
+        return probOfPrecipitation + PERCENT_SIGN;
     }
 
     // TODO: Generate getter functions once they're needed

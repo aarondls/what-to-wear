@@ -1,50 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detailed_weather_relative_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/dark_gradient"
     tools:context=".DetailedWeatherActivity">
 
-    <TextView
-        android:id="@+id/detailed_weather_location_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/detailed_weather_overview_relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="318dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="22dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Menlo Park"/>
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:background="@drawable/morning_gradient">
+
+        <Button
+            android:id="@+id/weather_back_to_dashboard_button"
+            android:layout_width="49dp"
+            android:layout_height="32dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            app:icon="@drawable/ic_baseline_arrow_back_ios_24"/>
+
+        <TextView
+            android:id="@+id/detailed_weather_location_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="20dp"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Menlo Park"/>
+
+        <ImageView
+            android:id="@+id/detailed_weather_icon_imageview"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_below="@+id/weather_back_to_dashboard_button"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="20dp"
+            tools:srcCompat="@tools:sample/avatars"/>
+
+        <TextView
+            android:id="@+id/detailed_weather_forecast_description_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="80dp"
+            android:layout_marginEnd="150dp"
+            android:textColor="@color/white"
+            tools:text="clear sky"/>
+
+        <TextView
+            android:id="@+id/detailed_weather_high_temp_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/detailed_weather_current_temp_textview"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="7dp"
+            android:layout_toEndOf="@+id/detailed_weather_current_temp_textview"
+            android:textColor="@color/white"
+            tools:text="H27"/>
+
+        <TextView
+            android:id="@+id/detailed_weather_low_temp_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/detailed_weather_high_temp_textview"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="0dp"
+            android:layout_toEndOf="@+id/detailed_weather_high_temp_textview"
+            android:textColor="#D8D8D8"
+            tools:text="L20"/>
+
+        <TextView
+            android:id="@+id/detailed_weather_current_temp_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/detailed_weather_forecast_description_textview"
+            android:layout_alignStart="@+id/detailed_weather_forecast_description_textview"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/white"
+            android:textSize="40sp"
+            tools:text="22"/>
+
+        <TextView
+            android:id="@+id/detailed_weather_feels_like_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/detailed_weather_current_temp_textview"
+            android:layout_alignStart="@+id/detailed_weather_current_temp_textview"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="10dp"
+            android:textColor="#D8D8D8"
+            tools:text="but feels like 20"/>
+
+        <TextView
+            android:id="@+id/detailed_weather_uv_index_description_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="20dp"
+            android:layout_toStartOf="@+id/detailed_weather_humidity_description_textview"
+            android:layout_toEndOf="@+id/detailed_weather_chance_of_rain_description_textview"
+            android:text="UV Index"
+            android:textAlignment="center"
+            android:textColor="#D8D8D8"/>
+
+        <TextView
+            android:id="@+id/detailed_weather_uv_index_value_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/detailed_weather_uv_index_description_textview"
+            android:layout_alignStart="@+id/detailed_weather_uv_index_description_textview"
+            android:layout_alignEnd="@+id/detailed_weather_uv_index_description_textview"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="5dp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            tools:text="9"/>
+
+        <TextView
+            android:id="@+id/detailed_weather_humidity_description_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="20dp"
+            android:text="Humidity"
+            android:textColor="#D8D8D8"/>
+
+        <TextView
+            android:id="@+id/detailed_weather_humidity_value_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/detailed_weather_humidity_description_textview"
+            android:layout_alignStart="@+id/detailed_weather_humidity_description_textview"
+            android:layout_alignEnd="@+id/detailed_weather_humidity_description_textview"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="5dp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            tools:text="10%"/>
+
+        <TextView
+            android:id="@+id/detailed_weather_chance_of_rain_description_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="25dp"
+            android:layout_marginBottom="20dp"
+            android:text="Chance of rain"
+            android:textColor="#D8D8D8"/>
+
+        <TextView
+            android:id="@+id/detailed_weather_chance_of_rain_value_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/detailed_weather_chance_of_rain_description_textview"
+            android:layout_alignStart="@+id/detailed_weather_chance_of_rain_description_textview"
+            android:layout_alignEnd="@+id/detailed_weather_chance_of_rain_description_textview"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="5dp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            tools:text="10%"/>
+    </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/weather_info_recycleview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/detailed_weather_location_textview"
+        android:layout_below="@+id/detailed_weather_overview_relative_layout"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
-        android:layout_marginBottom="0dp"
-        android:backgroundTint="#FFFFFF"/>
-
-    <Button
-        android:id="@+id/weather_back_to_dashboard_button"
-        android:layout_width="49dp"
-        android:layout_height="32dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="5dp"
-        app:icon="@drawable/ic_baseline_arrow_back_ios_24"/>
+        android:layout_marginBottom="0dp"/>
 
 </RelativeLayout>
