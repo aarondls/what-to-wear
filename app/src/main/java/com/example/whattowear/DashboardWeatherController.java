@@ -45,7 +45,7 @@ public class DashboardWeatherController {
 
     private AsyncHttpClient openWeatherClient;
 
-    private WeatherDataListener listener;
+    private List<WeatherDataListener> listeners;
 
     private TextView locationTextview;
     private TextView forecastDescriptionTextview;
@@ -63,7 +63,7 @@ public class DashboardWeatherController {
 
         openWeatherClient = new AsyncHttpClient();
 
-        listener = null;
+        listeners = new ArrayList<>();
 
         locationTextview = activity.findViewById(R.id.dashboard_location_textview);
         forecastDescriptionTextview = activity.findViewById(R.id.dashboard_forecast_description_textview);
@@ -107,8 +107,8 @@ public class DashboardWeatherController {
         });
     }
 
-    public void setNewWeatherDataListener(WeatherDataListener listener) {
-        this.listener = listener;
+    public void addNewWeatherDataListener(WeatherDataListener listener) {
+        listeners.add(listener);
     }
 
     /**
@@ -179,8 +179,8 @@ public class DashboardWeatherController {
      * Updates the dashboard weather controller elements with the available Weather data
      */
     private void updateDashboardDisplay() {
-        // notify the listener (clothing controller)
-        if (listener != null) {
+        // notify the listeners (clothing controller and weather animation controller)
+        for (WeatherDataListener listener : listeners) {
             Log.i(TAG, "calling listener");
             listener.onNewWeatherDataReady();
         }

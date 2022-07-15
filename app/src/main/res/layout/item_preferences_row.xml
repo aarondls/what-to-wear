@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/preference_clothing_type_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        tools:text="Clothing type"/>
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/activity_importance_slider"
+        android:layout_width="200dp"
+        android:layout_height="61dp"
+        android:layout_below="@+id/preferences_activity_importance_textview"
+        android:layout_alignStart="@+id/preferences_activity_importance_textview"
+        android:layout_marginStart="-10dp"
+        android:layout_marginTop="-10dp"
+        android:stepSize="10"
+        android:value="20"
+        android:valueFrom="0"
+        android:valueTo="100"
+        app:haloColor="@color/quantum_bluegrey700"
+        app:labelBehavior="floating"
+        app:trackColorActive="@color/quantum_bluegrey400"
+        app:trackColorInactive="@color/quantum_bluegrey100"/>
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/activity_work_factor_slider"
+        android:layout_width="200dp"
+        android:layout_height="61dp"
+        android:layout_below="@id/preferences_work_factor_textview"
+        android:layout_alignStart="@id/preferences_work_factor_textview"
+        android:layout_marginStart="-10dp"
+        android:layout_marginTop="-10dp"
+        android:stepSize="10"
+        android:value="20"
+        android:valueFrom="0"
+        android:valueTo="100"
+        app:haloColor="@color/quantum_bluegrey700"
+        app:labelBehavior="floating"
+        app:trackColorActive="@color/quantum_bluegrey400"
+        app:trackColorInactive="@color/quantum_bluegrey100"/>
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/activity_sports_factor_slider"
+        android:layout_width="200dp"
+        android:layout_height="61dp"
+        android:layout_below="@+id/preferences_sports_factor_textview"
+        android:layout_alignStart="@+id/preferences_sports_factor_textview"
+        android:layout_marginStart="-10dp"
+        android:layout_marginTop="-10dp"
+        android:stepSize="10"
+        android:value="20"
+        android:valueFrom="0"
+        android:valueTo="100"
+        app:haloColor="@color/quantum_bluegrey700"
+        app:labelBehavior="floating"
+        app:trackColorActive="@color/quantum_bluegrey400"
+        app:trackColorInactive="@color/quantum_bluegrey100"/>
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/activity_casual_factor_slider"
+        android:layout_width="200dp"
+        android:layout_height="61dp"
+        android:layout_below="@+id/preferences_casual_factor_textview"
+        android:layout_alignStart="@+id/preferences_casual_factor_textview"
+        android:layout_marginStart="-10dp"
+        android:layout_marginTop="-10dp"
+        android:stepSize="10"
+        android:value="20"
+        android:valueFrom="0"
+        android:valueTo="100"
+        app:haloColor="@color/quantum_bluegrey700"
+        app:labelBehavior="floating"
+        app:trackColorActive="@color/quantum_bluegrey400"
+        app:trackColorInactive="@color/quantum_bluegrey100"/>
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/preferences_factor_slider"
+        android:layout_width="200dp"
+        android:layout_height="61dp"
+        android:layout_below="@+id/preferences_preference_factor_textview"
+        android:layout_alignStart="@+id/preferences_preference_factor_textview"
+        android:layout_marginStart="-10dp"
+        android:layout_marginTop="-10dp"
+        android:stepSize="10"
+        android:value="20"
+        android:valueFrom="0"
+        android:valueTo="100"
+        app:haloColor="@color/quantum_bluegrey700"
+        app:labelBehavior="floating"
+        app:trackColorActive="@color/quantum_bluegrey400"
+        app:trackColorInactive="@color/quantum_bluegrey100"/>
+
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/temperature_rangeslider"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/preferences_temperature_range_textview"
+        android:layout_alignStart="@+id/preferences_temperature_range_textview"
+        android:layout_marginStart="-10dp"
+        android:layout_marginTop="-10dp"
+        android:stepSize="10"
+        android:valueFrom="0"
+        android:valueTo="100"
+        app:haloColor="@color/quantum_bluegrey700"
+        app:labelBehavior="floating"
+        app:trackColorActive="@color/quantum_bluegrey400"
+        app:trackColorInactive="@color/quantum_bluegrey100"/>
+
+    <ImageView
+        android:id="@+id/preferences_clothing_icon_imageview"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/preference_clothing_type_textview"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        tools:srcCompat="@tools:sample/avatars"/>
+
+    <TextView
+        android:id="@+id/preferences_activity_importance_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="152dp"
+        android:layout_marginTop="10dp"
+        android:text="Activity importance"/>
+
+    <TextView
+        android:id="@+id/preferences_work_factor_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/activity_importance_slider"
+        android:layout_alignStart="@+id/preferences_activity_importance_textview"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="5dp"
+        android:text="Work activity factor"/>
+
+    <TextView
+        android:id="@+id/preferences_sports_factor_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/activity_work_factor_slider"
+        android:layout_alignStart="@+id/preferences_work_factor_textview"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="5dp"
+        android:text="Sports activity factor"/>
+
+    <TextView
+        android:id="@+id/preferences_casual_factor_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/activity_sports_factor_slider"
+        android:layout_alignStart="@+id/preferences_sports_factor_textview"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="5dp"
+        android:text="Casual activity factor"/>
+
+    <TextView
+        android:id="@+id/preferences_preference_factor_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/activity_casual_factor_slider"
+        android:layout_alignStart="@+id/preferences_casual_factor_textview"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="5dp"
+        android:text="Preference factor"/>
+
+    <TextView
+        android:id="@+id/preferences_temperature_range_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/preferences_factor_slider"
+        android:layout_alignStart="@+id/preferences_preference_factor_textview"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="5dp"
+        android:text="Temperature range"/>
+</RelativeLayout>

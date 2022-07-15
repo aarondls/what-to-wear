@@ -2,9 +2,14 @@ package com.example.whattowear;
 
 import android.app.Activity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import com.example.whattowear.models.ActivityType;
 import com.example.whattowear.models.Clothing;
 import com.example.whattowear.models.Weather;
 
@@ -21,6 +26,7 @@ public class DashboardClothingController {
     private ImageView footwearImageview;
     private ImageView accessoriesImageview;
     private TextView excessAccessoriesTextview;
+    private Spinner activitySelectorSpinner;
 
     public DashboardClothingController(Activity activity, DashboardWeatherController dashboardWeatherController) {
         this.activity = activity;
@@ -31,6 +37,7 @@ public class DashboardClothingController {
         footwearImageview = activity.findViewById(R.id.dashboard_footwear_imageview);
         accessoriesImageview = activity.findViewById(R.id.dashboard_accessories_imageview);
         excessAccessoriesTextview = activity.findViewById(R.id.dashboard_excess_accessories_textview);
+        activitySelectorSpinner = activity.findViewById(R.id.activity_selector_spinner);
 
         // Check if there is data to be displayed
         if (Weather.hasPreloadedDataToDisplay()) {
@@ -48,7 +55,26 @@ public class DashboardClothingController {
             displayPlaceholderOnDashboard();
         }
 
-        dashboardWeatherController.setNewWeatherDataListener(new DashboardWeatherController.WeatherDataListener() {
+        SpinnerAdapter spinnerAdapter = new ActivityAdapter(activity, R.layout.item_activity_option, ActivityType.getActivityTypes());
+        activitySelectorSpinner.setAdapter(spinnerAdapter);
+        activitySelectorSpinner.setSelection(Clothing.getSelectedActivityTypeIndex());
+
+        activitySelectorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Set clothing type and position in clothing class
+                Clothing.setSelectedActivity((ActivityType) parent.getItemAtPosition(position), position);
+
+                onDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // No need to do anything
+            }
+        });
+
+        dashboardWeatherController.addNewWeatherDataListener(new DashboardWeatherController.WeatherDataListener() {
             @Override
             public void onNewWeatherDataReady() {
                 Log.i(TAG, "Weather data is ready from clothing controller");
@@ -58,7 +84,7 @@ public class DashboardClothingController {
     }
 
     /**
-     * Handles calculating all the clothing information when new weather data has come in,
+     * Handles calculating all the clothing information when new weather or activity data has come in,
      * and updates the clothing display as necessary
      */
     public void onDataSetChanged() {
@@ -80,6 +106,8 @@ public class DashboardClothingController {
     public void updateDashboardDisplay() {
         if (Clothing.getOverBodyGarment().getOverBodyGarmentImage() != null) {
             overBodyGarmentImageview.setImageResource(Clothing.getOverBodyGarment().getOverBodyGarmentImage());
+        } else {
+            overBodyGarmentImageview.setImageDrawable(null);
         }
         upperBodyGarmentImageview.setImageResource(Clothing.getUpperBodyGarment().getUpperBodyGarmentImage());
         lowerBodyGarmentImageview.setImageResource(Clothing.getLowerBodyGarment().getLowerBodyGarmentImage());
@@ -98,6 +126,8 @@ public class DashboardClothingController {
                 }
                 excessAccessoriesTextview.setText(excessAccessoryCount);
             }
+        } else {
+            accessoriesImageview.setImageDrawable(null);
         }
     }
 
@@ -105,12 +135,6 @@ public class DashboardClothingController {
      * Displays placeholder clothing information to visually signal that there is no clothing data yet
      */
     public void displayPlaceholderOnDashboard() {
-        overBodyGarmentImageview.setImageDrawable(null);
-        upperBodyGarmentImageview.setImageDrawable(null);
-        lowerBodyGarmentImageview.setImageDrawable(null);
-        footwearImageview.setImageDrawable(null);
-
-        accessoriesImageview.setImageDrawable(null);
-        excessAccessoriesTextview.setText("");
+        excessAccessoriesTextview.setText("No clothing information.");
     }
 }

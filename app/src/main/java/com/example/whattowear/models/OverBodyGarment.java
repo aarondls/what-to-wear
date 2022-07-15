@@ -9,6 +9,14 @@ public class OverBodyGarment {
         ATHLETIC_JACKET, RAIN_JACKET, WINTER_COAT, NONE
     }
 
+    // Indexing of this is based on the order declaration of the enum
+    private static ClothingRanker athleticJacketRanker;
+    private static ClothingRanker rainJacketRanker;
+    private static ClothingRanker winterCoatRanker;
+
+    // number of over body garment rankers as defined above
+    public static final int OVER_BODY_GARMENT_RANKERS_COUNT = 3;
+
     /**
      * Calculates the optimal over body garment based on weather,
      * activity, and preferences, then returns it
@@ -34,6 +42,36 @@ public class OverBodyGarment {
         // TODO: return correct image based on type
         if (overBodyGarmentType == OverBodyGarmentType.NONE) return null;
 
-        return R.drawable.ic_baseline_arrow_back_ios_24;
+        return R.drawable.hoodie;
+    }
+
+    /**
+     * Initializes all the over body garment rankers
+     */
+    public static void initializeOverBodyGarmentRankers() {
+        // TODO: fix icons
+        // TODO: get from parse
+        athleticJacketRanker = new ClothingRanker("Athletic jacket", R.drawable.hoodie);
+        rainJacketRanker = new ClothingRanker("Rain jacket", R.drawable.hoodie);
+        winterCoatRanker = new ClothingRanker("Winter coat", R.drawable.hoodie);
+    }
+
+    /**
+     * @param position the index of the desired over body garment ranker, which is based on its declaration within the enum OverBodyGarmentType
+     * @return the over body garment ranker at the index position
+     */
+    public static ClothingRanker getOverBodyGarmentRankerAtPosition(int position) {
+        switch(position) {
+            case 0:
+                return athleticJacketRanker;
+            case 1:
+                return rainJacketRanker;
+            case 2:
+                return winterCoatRanker;
+            default:
+                // Initialization inside Clothing will ensure this will not be null
+                // Improper use of this function will return null
+                return null;
+        }
     }
 }
