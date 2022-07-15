@@ -9,7 +9,10 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -49,6 +52,9 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
 
     public static final int PERMISSIONS_REQUEST_CODE = 1;
 
+    private static float minVerticalSwipeDistance; // Minimum vertical swipe distance for the swipe up gesture
+    private float y1, y2; // used to store where the swipe started/ended
+
     /**
      * Used to let weather controller know when new location data is available
      */
@@ -59,6 +65,8 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
     private FusedLocationProviderClient fusedLocationClient;
     private AsyncHttpClient openWeatherClient;
     private PlacesClient placesClient;
+
+    private GestureDetector gestureDetector;
 
     private AutocompleteSupportFragment autocompleteFragment;
 
@@ -89,6 +97,11 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
         Places.initialize(getApplicationContext(), BuildConfig.GOOGLEPLACES_API_KEY);
         // Create new Places client instance
         placesClient = Places.createClient(this);
+
+        // Set the minimum swipe distance to be at least half the screen
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        minVerticalSwipeDistance = 0.5f*displayMetrics.heightPixels;
 
         // Initialize the AutocompleteSupportFragment.
         autocompleteFragment = (AutocompleteSupportFragment)
@@ -204,6 +217,29 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                y1 = event.getY();
+                return true;
+            case MotionEvent.ACTION_UP:
+                y2 = event.getY();
+
+                float deltaY = y2-y1;
+
+                // check if distance travelled meets min swipe distance and is upwards
+                if (deltaY <= -minVerticalSwipeDistance) {
+                    // Move to menu screen
+                    Intent i = new Intent(DashboardActivity.this, MenuActivity.class);
+                    startActivity(i);
+                }
+                return true;
+            default:
+                return super.onTouchEvent(event);
+        }
     }
 
     public void setNewLocationDataListener(LocationDataListener locationDataListener) {
