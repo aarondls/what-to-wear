@@ -1,40 +1,271 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/menu_relative_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/dark_gradient"
     tools:context=".MenuActivity">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="What to Wear"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <Button
-        android:id="@+id/menu_select_dashboard_button"
+        android:id="@+id/what_to_wear_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="142dp"
-        android:layout_marginTop="169dp"
-        android:text="Dashboard"
-        tools:layout_editor_absoluteX="39dp"
-        tools:layout_editor_absoluteY="64dp"/>
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:text="What to Wear"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-    <Button
-        android:id="@+id/menu_select_preferences_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/menu_select_dashboard_button"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="149dp"
-        android:text="Preferences"/>
+    <ScrollView
+        android:id="@+id/menu_options_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/what_to_wear_textview"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/menu_dashboard_option_relative_layout"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="40dp"
+                android:background="@drawable/morning_gradient_rounded">
+
+                <TextView
+                    android:id="@+id/menu_dashboard_location_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/white"
+                    tools:text="Menlo Park"/>
+
+                <ImageView
+                    android:id="@+id/menu_dashboard_weather_icon_imageview"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_below="@+id/menu_dashboard_location_textview"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="15dp"
+                    tools:srcCompat="@tools:sample/avatars"/>
+
+                <TextView
+                    android:id="@+id/menu_dashboard_current_temp_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="30dp"
+                    android:textColor="@color/white"
+                    tools:text="22"/>
+
+                <TextView
+                    android:id="@+id/menu_dashboard_forecast_description_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/menu_dashboard_current_temp_textview"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:textColor="@color/white"
+                    tools:text="mostly cloudy"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/menu_preferences_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/menu_dashboard_option_relative_layout"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="25dp"
+                android:text="Preferences"
+                android:textColor="@color/white"/>
+
+            <RelativeLayout
+                android:id="@+id/menu_over_body_preferences_option_relative_layout"
+                android:layout_width="140dp"
+                android:layout_height="120dp"
+                android:layout_below="@+id/menu_preferences_textview"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="45dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/selectable_style_background_rounded">
+
+                <TextView
+                    android:id="@+id/menu_over_body_preferences_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Over body garment"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/menu_upper_body_preferences_option_relative_layout"
+                android:layout_width="140dp"
+                android:layout_height="120dp"
+                android:layout_alignTop="@+id/menu_over_body_preferences_option_relative_layout"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="40dp"
+                android:background="@drawable/selectable_style_background_rounded">
+
+                <TextView
+                    android:id="@+id/menu_upper_body_preferences_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Upper body garment"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/menu_lower_body_preferences_option_relative_layout"
+                android:layout_width="140dp"
+                android:layout_height="120dp"
+                android:layout_below="@+id/menu_over_body_preferences_option_relative_layout"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="45dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/selectable_style_background_rounded">
+
+                <TextView
+                    android:id="@+id/menu_lower_body_preferences_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Lower body garment"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/menu_footwear_preferences_option_relative_layout"
+                android:layout_width="140dp"
+                android:layout_height="120dp"
+                android:layout_alignTop="@+id/menu_lower_body_preferences_option_relative_layout"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="40dp"
+                android:background="@drawable/selectable_style_background_rounded">
+
+                <TextView
+                    android:id="@+id/menu_footwear_preferences_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Footwear"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/menu_accessories_preferences_option_relative_layout"
+                android:layout_width="303dp"
+                android:layout_height="64dp"
+                android:layout_below="@+id/menu_lower_body_preferences_option_relative_layout"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="45dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="40dp"
+                android:background="@drawable/selectable_style_background_rounded">
+
+                <TextView
+                    android:id="@+id/menu_accessories_preferences_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Accessories"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/menu_enable_advanced_preferences_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/menu_accessories_preferences_option_relative_layout"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="45dp"
+                android:layout_marginTop="20dp"
+                android:text="Enable advanced preferences"
+                android:textColor="@color/white"/>
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/menu_enable_advanced_preferences_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/menu_enable_advanced_preferences_textview"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="30dp"/>
+
+            <TextView
+                android:id="@+id/menu_profile_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/menu_enable_advanced_preferences_textview"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="25dp"
+                android:text="Profile"
+                android:textColor="@color/white"/>
+
+            <Button
+                android:id="@+id/menu_logout_button"
+                android:layout_width="218dp"
+                android:layout_height="36dp"
+                android:layout_below="@+id/menu_profile_textview"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="80dp"
+                android:text="Logout"
+                android:textSize="10sp"/>
+
+        </RelativeLayout>
+    </ScrollView>
+
 </RelativeLayout>
