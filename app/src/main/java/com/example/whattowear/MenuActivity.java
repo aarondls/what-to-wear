@@ -5,11 +5,14 @@ import androidx.appcompat.content.res.AppCompatResources;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.whattowear.models.Clothing;
@@ -17,6 +20,9 @@ import com.example.whattowear.models.Conditions;
 import com.example.whattowear.models.Forecast;
 import com.example.whattowear.models.Weather;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.parse.LogOutCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 
 /**
  * MenuActivity represents the menu screen, where the user can move towards
@@ -25,6 +31,7 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
  * public feed stretch goal, it would also be accessible within this menu screen.
  */
 public class MenuActivity extends AppCompatActivity {
+    private static final String TAG = "MenuActivity";
     private static final String PLACEHOLDER_LOCATION = "No location";
 
     private RelativeLayout dashboardClickable;
@@ -33,6 +40,7 @@ public class MenuActivity extends AppCompatActivity {
     private RelativeLayout lowerBodyGarmentPreferencesClickable;
     private RelativeLayout footwearPreferencesClickable;
     private RelativeLayout accessoriesPreferencesClickable;
+    private Button logoutButton;
     private TextView dashboardLocationTextview;
     private TextView dashboardCurrentTemperatureTextview;
     private TextView dashboardForecastDescriptionTextview;
@@ -51,6 +59,7 @@ public class MenuActivity extends AppCompatActivity {
         footwearPreferencesClickable = findViewById(R.id.menu_footwear_preferences_option_relative_layout);
         accessoriesPreferencesClickable = findViewById(R.id.menu_accessories_preferences_option_relative_layout);
         advancedPreferencesSwitch = findViewById(R.id.menu_enable_advanced_preferences_switch);
+        logoutButton = findViewById(R.id.menu_logout_button);
 
         dashboardLocationTextview = findViewById(R.id.menu_dashboard_location_textview);
         dashboardCurrentTemperatureTextview = findViewById(R.id.menu_dashboard_current_temp_textview);
@@ -107,6 +116,31 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 moveToPreferences(Clothing.ClothingType.ACCESSORIES);
+            }
+        });
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ParseUser.logOutInBackground(new LogOutCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            // Successfully logged out
+                            Toast.makeText(MenuActivity.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+                            // Move to login screen
+                            Intent i = new Intent(MenuActivity.this, LoginActivity.class);
+                            // clear task and make new one so user cannot go back to activities that require being logged in
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(i);
+                        } else {
+                            // Let user know of error
+                            Toast.makeText(MenuActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, e.getMessage());
+                        }
+                    }
+                });
             }
         });
 
