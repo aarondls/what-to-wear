@@ -4,75 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#919191"
+    android:background="@drawable/dark_gradient"
     tools:context=".PreferencesActivity">
 
-    <HorizontalScrollView
-        android:id="@+id/preferences_button_toggle_group_horizontal_scroll_view"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/preferences_title_textview"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
-        android:layout_marginEnd="10dp"
-        android:layout_toStartOf="@+id/preferences_to_menu_button">
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        tools:text="Preferences"/>
 
-        <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/preferences_button_toggle_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="0dp"
-            android:isScrollContainer="true"
-            app:selectionRequired="true"
-            app:singleSelection="true">
-
-            <Button
-                android:id="@+id/over_body_preferences_button"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Over"
-                android:textSize="10sp"/>
-
-            <Button
-                android:id="@+id/upper_body_preferences_button"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Upper"
-                android:textSize="10sp"/>
-
-            <Button
-                android:id="@+id/lower_body_preferences_button"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Lower"
-                android:textSize="10sp"/>
-
-            <Button
-                android:id="@+id/footwear_preferences_button"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Footwear"
-                android:textSize="10sp"/>
-
-            <Button
-                android:id="@+id/accessories_preferences_button"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Accessories"
-                android:textSize="10sp"/>
-        </com.google.android.material.button.MaterialButtonToggleGroup>
-    </HorizontalScrollView>
+    <TextView
+        android:id="@+id/preferences_type_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/preferences_title_textview"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/white"
+        tools:text="Over body garment"/>
 
     <Button
         android:id="@+id/preferences_to_menu_button"
@@ -89,8 +45,9 @@
         android:id="@+id/preferences_recycleview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/preferences_button_toggle_group_horizontal_scroll_view"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="5dp"/>
+        android:layout_marginTop="100dp"/>
+
 </RelativeLayout>

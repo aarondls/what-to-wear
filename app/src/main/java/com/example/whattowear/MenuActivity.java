@@ -148,6 +148,10 @@ public class MenuActivity extends AppCompatActivity {
      * @param clothingType the clothingType of the factors to display
      */
     private void moveToPreferences(Clothing.ClothingType clothingType) {
-        // TODO: will be implemented once preferences screen is fixed
+        // Move to preferences screen
+        Intent i = new Intent(MenuActivity.this, PreferencesActivity.class);
+        i.putExtra(PreferencesActivity.IS_ADVANCED_SETTINGS_KEY, advancedPreferencesSwitch.isChecked());
+        i.putExtra(PreferencesActivity.PREFERENCES_TYPE_KEY, clothingType);
+        startActivity(i);
     }
 }

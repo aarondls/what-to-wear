@@ -13,6 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
+        android:textColor="@color/white"
         tools:text="Clothing type"/>
 
     <com.google.android.material.slider.Slider
@@ -151,7 +152,8 @@
         android:layout_alignStart="@+id/preferences_preference_factor_textview"
         android:layout_marginStart="0dp"
         android:layout_marginTop="5dp"
-        android:text="Activity importance"/>
+        android:text="Activity importance"
+        android:textColor="@color/white"/>
 
     <TextView
         android:id="@+id/preferences_work_factor_textview"
@@ -161,7 +163,8 @@
         android:layout_alignStart="@+id/preferences_activity_importance_textview"
         android:layout_marginStart="0dp"
         android:layout_marginTop="5dp"
-        android:text="Work activity factor"/>
+        android:text="Work activity factor"
+        android:textColor="@color/white"/>
 
     <TextView
         android:id="@+id/preferences_sports_factor_textview"
@@ -171,7 +174,8 @@
         android:layout_alignStart="@+id/preferences_work_factor_textview"
         android:layout_marginStart="0dp"
         android:layout_marginTop="5dp"
-        android:text="Sports activity factor"/>
+        android:text="Sports activity factor"
+        android:textColor="@color/white"/>
 
     <TextView
         android:id="@+id/preferences_casual_factor_textview"
@@ -181,7 +185,8 @@
         android:layout_alignStart="@+id/preferences_sports_factor_textview"
         android:layout_marginStart="0dp"
         android:layout_marginTop="5dp"
-        android:text="Casual activity factor"/>
+        android:text="Casual activity factor"
+        android:textColor="@color/white"/>
 
     <TextView
         android:id="@+id/preferences_preference_factor_textview"
@@ -191,7 +196,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="152dp"
         android:layout_marginTop="10dp"
-        android:text="Preference factor"/>
+        android:text="Preference factor"
+        android:textColor="@color/white"/>
 
     <TextView
         android:id="@+id/preferences_temperature_range_textview"
@@ -201,7 +207,8 @@
         android:layout_alignStart="@+id/preferences_temperature_importance_textview"
         android:layout_marginStart="0dp"
         android:layout_marginTop="5dp"
-        android:text="Temperature range"/>
+        android:text="Temperature range"
+        android:textColor="@color/white"/>
 
     <TextView
         android:id="@+id/preferences_temperature_importance_textview"
@@ -211,5 +218,6 @@
         android:layout_alignStart="@+id/preferences_casual_factor_textview"
         android:layout_marginStart="0dp"
         android:layout_marginTop="5dp"
-        android:text="Temperature importance"/>
+        android:text="Temperature importance"
+        android:textColor="@color/white"/>
 </RelativeLayout>

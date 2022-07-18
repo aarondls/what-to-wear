@@ -136,4 +136,22 @@ public class Clothing {
                 return null;
         }
     }
+
+    public static String getClothingNameFromType(ClothingType clothingType) {
+        switch (clothingType) {
+            case OVER_BODY_GARMENT:
+                return "Over body garment";
+            case UPPER_BODY_GARMENT:
+                return "Upper body garment";
+            case LOWER_BODY_GARMENT:
+                return "Lower body garment";
+            case FOOTWEAR:
+                return "Footwear";
+            case ACCESSORIES:
+                return "Accessories";
+            default:
+                // if unrecognized type, return null
+                return null;
+        }
+    }
 }

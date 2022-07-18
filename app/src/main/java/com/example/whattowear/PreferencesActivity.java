@@ -4,23 +4,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 
-import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.example.whattowear.models.Clothing;
 
 import static com.example.whattowear.models.Clothing.ClothingType;
 
 public class PreferencesActivity extends AppCompatActivity {
     public static final String IS_ADVANCED_SETTINGS_KEY = "isAdvancedSettings";
-    private Button menuButton;
+    public static final String PREFERENCES_TYPE_KEY = "preferencesType";
 
+    private Button menuButton;
+    private TextView clothingTypeTextview;
     private RecyclerView preferencesReyclerview;
     private PreferencesAdapter preferencesAdapter;
-    private MaterialButtonToggleGroup preferencesButtonToggleGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +29,8 @@ public class PreferencesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_preferences);
 
         menuButton = findViewById(R.id.preferences_to_menu_button);
+        clothingTypeTextview = findViewById(R.id.preferences_type_textview);
         preferencesReyclerview = findViewById(R.id.preferences_recycleview);
-        preferencesButtonToggleGroup = findViewById(R.id.preferences_button_toggle_group);
-        preferencesButtonToggleGroup.check(R.id.over_body_preferences_button);
 
         // have layout be full screen to hide both the top and bottom bars
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -43,36 +43,16 @@ public class PreferencesActivity extends AppCompatActivity {
             }
         });
 
-        preferencesButtonToggleGroup.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
-            @Override
-            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-                if (isChecked) {
-                    switch (checkedId) {
-                        case R.id.over_body_preferences_button:
-                            preferencesAdapter.onNewClothingType(ClothingType.OVER_BODY_GARMENT);
-                            break;
-                        case R.id.upper_body_preferences_button:
-                            preferencesAdapter.onNewClothingType(ClothingType.UPPER_BODY_GARMENT);
-                            break;
-                        case R.id.lower_body_preferences_button:
-                            preferencesAdapter.onNewClothingType(ClothingType.LOWER_BODY_GARMENT);
-                            break;
-                        case R.id.footwear_preferences_button:
-                            preferencesAdapter.onNewClothingType(ClothingType.FOOTWEAR);
-                            break;
-                        case R.id.accessories_preferences_button:
-                            preferencesAdapter.onNewClothingType(ClothingType.ACCESSORIES);
-                            break;
-                    }
-                }
-                // always scroll to top
-                preferencesReyclerview.scrollToPosition(0);
-            }
-        });
+        // Get passed clothing type
+        ClothingType clothingType = (ClothingType) getIntent().getSerializableExtra(PREFERENCES_TYPE_KEY);
+        clothingTypeTextview.setText(Clothing.getClothingNameFromType(clothingType));
+
+        // TODO: store and get whether preferences advanced settings was checked from parse
 
         // set up recycler view with adapter
+        // pass in correct clothing type
         // pass in whether advanced settings need to be displayed
-        preferencesAdapter = new PreferencesAdapter(this, ClothingType.OVER_BODY_GARMENT, getIntent().getExtras().getBoolean(IS_ADVANCED_SETTINGS_KEY)); // starts with over body
+        preferencesAdapter = new PreferencesAdapter(this, clothingType, getIntent().getExtras().getBoolean(IS_ADVANCED_SETTINGS_KEY));
         preferencesReyclerview.setLayoutManager(new LinearLayoutManager(this));
         preferencesReyclerview.setAdapter(preferencesAdapter);
     }
