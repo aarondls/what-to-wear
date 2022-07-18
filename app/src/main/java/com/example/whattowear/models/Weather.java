@@ -44,7 +44,6 @@ public class Weather {
     private static int dayConditionsID;
     private static int dayMinTemperature;
     private static int dayMaxTemperature;
-    private static int dayMeanTemperature;
     private static float dayMaxUVIndex;
 
     // private to ensure that only the class can instantiate itself
@@ -70,7 +69,6 @@ public class Weather {
         JSONObject dayTemperatureData = dayWeatherData.getJSONObject("temp");
         dayMinTemperature = dayTemperatureData.getInt("min");
         dayMaxTemperature = dayTemperatureData.getInt("max");
-        dayMeanTemperature = (dayMinTemperature+dayMaxTemperature)/2; // round down to int
         dayMaxUVIndex = (float) dayWeatherData.getDouble("uvi");
 
         // TODO: fill up currentForecast and dayConditions, when needed
@@ -203,7 +201,7 @@ public class Weather {
     }
 
     public static int getDayMeanTemperature() {
-        return dayMeanTemperature;
+        return (dayMinTemperature+dayMaxTemperature)/2; // round down to int
     }
 
     public static float getDayMaxUVIndex() {
