@@ -20,8 +20,6 @@ public class Preferences extends ParseObject {
     public static final String KEY_FOOTWEAR_RANKERS = "footwearRankers";
     public static final String KEY_ACCESSORIES_RANKERS = "accessoriesRankers";
 
-    public static final String FAHRENHEIT_UNIT = "Fahrenheit";
-
     /**
      * Required default constructor for parse
      */
@@ -45,7 +43,7 @@ public class Preferences extends ParseObject {
     }
 
     /**
-     * Possible values: Fahrenheit
+     * Possible values: Weather.WeatherUnit.FAHRENHEIT, Weather.WeatherUnit.CELSIUS
      *
      * @return the weather unit to be used
      */
@@ -55,7 +53,7 @@ public class Preferences extends ParseObject {
 
     /**
      * Sets the weather unit
-     * Possible values: Fahrenheit
+     * Possible values: Weather.WeatherUnit.FAHRENHEIT, Weather.WeatherUnit.CELSIUS
      *
      * @param weatherUnit the weather unit to be used
      */

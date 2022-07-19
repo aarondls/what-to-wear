@@ -17,6 +17,7 @@ import com.example.whattowear.models.LowerBodyGarment;
 import com.example.whattowear.models.OverBodyGarment;
 import com.example.whattowear.models.Preferences;
 import com.example.whattowear.models.UpperBodyGarment;
+import com.example.whattowear.models.Weather;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -94,7 +95,7 @@ public class SignupActivity extends AppCompatActivity {
      * @param user the newly created user that requires new preferences
      */
     public void createUserPreferences(ParseUser user) {
-        // set create all the rankers first
+        // create all the rankers first
         List<ClothingRanker> allGarmentRankers = new ArrayList<>();
         allGarmentRankers.addAll(OverBodyGarment.initializeOverBodyGarmentRankers(user));
         allGarmentRankers.addAll(UpperBodyGarment.initializeUpperBodyGarmentRankers(user));
@@ -109,7 +110,7 @@ public class SignupActivity extends AppCompatActivity {
                     // rankers successfully created, so create preferences then update user
                     Preferences preferences = new Preferences();
                     preferences.setUser(user);
-                    preferences.setWeatherUnit(Preferences.FAHRENHEIT_UNIT);
+                    preferences.setWeatherUnit(Weather.DEFAULT_WEATHER_UNIT); // set default
                     preferences.setOverBodyGarmentRankers(OverBodyGarment.getOverBodyGarmentRankers());
                     preferences.setUpperBodyGarmentRankers(UpperBodyGarment.getUpperBodyGarmentRankers());
                     preferences.setLowerBodyGarmentRankers(LowerBodyGarment.getLowerBodyGarmentRankers());

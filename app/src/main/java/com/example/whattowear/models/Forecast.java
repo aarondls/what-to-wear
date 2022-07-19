@@ -12,14 +12,14 @@ import java.util.List;
 
 public class Forecast {
     public static final String TAG = "Forecast";
-    private static final String DEG_SIGN = "\u00B0";
+
     private static final String PERCENT_SIGN = "%";
     private static final String FEELS_LIKE_SENTENCE = "But feels like: ";
     private static final String TWO_DECIMAL_PLACES_FORMAT = "%.2f";
 
     // TODO: Remove fields that may not be used once clothing selection logic is completed
     private Date dt;
-    private int temp;
+    private int fahrenheitTemp;
     private int feelsLike;
     private int humidity;
     private double uvIndex;
@@ -34,7 +34,7 @@ public class Forecast {
         Forecast forecast = new Forecast();
 
         forecast.dt = new Date(Long.parseLong(jsonObject.getString("dt")) * 1000);
-        forecast.temp = jsonObject.getInt("temp");
+        forecast.fahrenheitTemp = jsonObject.getInt("temp");
         forecast.feelsLike = jsonObject.getInt("feels_like");
         forecast.humidity = jsonObject.getInt("humidity");
         forecast.uvIndex = jsonObject.getDouble("uvi");
@@ -96,24 +96,28 @@ public class Forecast {
         }
     }
 
-    public int getTemp() {
-        return temp;
-    }
-
-    public String getFormattedTemp() {
-        // TODO: Change specific deg sign based on units
-        // "\u2103" for C and "\u2109" for F
-        return String.valueOf(temp) + DEG_SIGN;
-    }
-
     public Conditions getHourCondition() {
         return hourCondition;
     }
 
-    public String getFormattedFeelsLikeTemp() {
-        return FEELS_LIKE_SENTENCE + feelsLike + DEG_SIGN;
+    /**
+     * @return the Forecast temperature formatted in the correct unit according to Weather.weatherUnits with the degree symbol
+     */
+    public String getFormattedTemp() {
+        return Weather.getFormattedTemp(fahrenheitTemp);
     }
 
+    /**
+     * @return the Forecast feels like temperature formatted in the correct unit according to Weather.weatherUnits with the degree symbol
+     * and the phrase "But feels like"
+     */
+    public String getFormattedFeelsLikeTemp() {
+        return FEELS_LIKE_SENTENCE + Weather.getFormattedTemp(feelsLike);
+    }
+
+    /**
+     * @return the Forecast humidity with the percent sign
+     */
     public String getFormattedHumidity() {
         return humidity + PERCENT_SIGN;
     }
@@ -122,10 +126,11 @@ public class Forecast {
         return String.format(TWO_DECIMAL_PLACES_FORMAT, uvIndex);
     }
 
+    /**
+     * @return the Forecast probability of precipitation with the percent sign
+     */
     public String getFormattedProbOfPrecipitation() {
         if (probOfPrecipitation == -1) return "0" + PERCENT_SIGN;
         return probOfPrecipitation + PERCENT_SIGN;
     }
-
-    // TODO: Generate getter functions once they're needed
 }

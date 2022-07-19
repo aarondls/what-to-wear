@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.example.whattowear.models.Clothing;
 import com.example.whattowear.models.Conditions;
 import com.example.whattowear.models.Forecast;
+import com.example.whattowear.models.Preferences;
 import com.example.whattowear.models.Weather;
 import com.github.angads25.toggle.interfaces.OnToggledListener;
 import com.github.angads25.toggle.model.ToggleableView;
@@ -25,6 +26,7 @@ import com.github.angads25.toggle.widget.LabeledSwitch;
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 /**
  * MenuActivity represents the menu screen, where the user can move towards
@@ -48,6 +50,7 @@ public class MenuActivity extends AppCompatActivity {
     private TextView dashboardForecastDescriptionTextview;
     private ImageView dashboardWeatherIconImageview;
     private LabeledSwitch advancedPreferencesSwitch;
+    private LabeledSwitch weatherUnitsSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,7 @@ public class MenuActivity extends AppCompatActivity {
         footwearPreferencesClickable = findViewById(R.id.menu_footwear_preferences_option_relative_layout);
         accessoriesPreferencesClickable = findViewById(R.id.menu_accessories_preferences_option_relative_layout);
         advancedPreferencesSwitch = findViewById(R.id.menu_enable_advanced_preferences_switch);
+        weatherUnitsSwitch = findViewById(R.id.menu_weather_unit_switch);
         logoutButton = findViewById(R.id.menu_logout_button);
 
         dashboardLocationTextview = findViewById(R.id.menu_dashboard_location_textview);
@@ -121,6 +125,41 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
+        // Set weather units switch from Parse
+        Preferences preferences = (Preferences) ParseUser.getCurrentUser().getParseObject(Preferences.KEY_PREFERENCES);
+
+        Boolean isCelsius = (preferences.getWeatherUnit().equals(Weather.WeatherUnit.CELSIUS.name()));
+        weatherUnitsSwitch.setOn(isCelsius);
+
+        weatherUnitsSwitch.setOnToggledListener(new OnToggledListener() {
+            @Override
+            public void onSwitched(ToggleableView toggleableView, boolean isOn) {
+                // Save to parse and update weather units
+                Weather.WeatherUnit weatherUnit;
+                if (isOn) {
+                    weatherUnit = Weather.WeatherUnit.CELSIUS;
+                } else {
+                    weatherUnit = Weather.WeatherUnit.FAHRENHEIT;
+                }
+
+                // Set the weather units inside preferences and save to parse
+                preferences.setWeatherUnit(weatherUnit.name());
+                preferences.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e != null) {
+                            // Let user know something wrong happened
+                            Toast.makeText(MenuActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, e.getMessage());
+                        }
+                    }
+                });
+
+                // Update dashboard widget display
+                loadDashboardOverviewWidget();
+            }
+        });
+
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,8 +184,6 @@ public class MenuActivity extends AppCompatActivity {
                 });
             }
         });
-
-        // TODO: get whether switch is toggled from parse
 
         // Only display data if it is valid
         if (Weather.hasPreloadedDataToDisplay()) {

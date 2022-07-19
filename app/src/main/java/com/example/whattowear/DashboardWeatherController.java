@@ -41,6 +41,8 @@ public class DashboardWeatherController {
         public void onNewWeatherDataReady();
     }
 
+    private static final String REQUEST_WEATHER_DATA_UNIT = "imperial";
+
     private Activity activity;
 
     private AsyncHttpClient openWeatherClient;
@@ -135,7 +137,7 @@ public class DashboardWeatherController {
         String apiUrl = "https://api.openweathermap.org/data/3.0/onecall?"
                 + "lat=" + latitude
                 + "&lon=" + longitude
-                + "&units=" + Weather.getWeatherUnits()
+                + "&units=" + REQUEST_WEATHER_DATA_UNIT
                 + "&appid=" + BuildConfig.OPENWEATHER_API_KEY;
 
         Log.i(TAG, "Requesting weather data");

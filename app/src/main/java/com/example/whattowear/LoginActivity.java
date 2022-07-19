@@ -17,6 +17,7 @@ import com.example.whattowear.models.LowerBodyGarment;
 import com.example.whattowear.models.OverBodyGarment;
 import com.example.whattowear.models.Preferences;
 import com.example.whattowear.models.UpperBodyGarment;
+import com.example.whattowear.models.Weather;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -118,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                     Accessories.setAccessoriesRankers(accessoriesRankers);
                 } catch (ParseException | NullPointerException ex) {
                     // Let user know of the error
-                    Toast.makeText(LoginActivity.this, ex.getMessage(), Toast.LENGTH_LONG);
+                    Toast.makeText(LoginActivity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
                     ex.printStackTrace();
                     // end function, so the screen remains in login activity and the user can re-login
                     return;
