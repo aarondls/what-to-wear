@@ -116,6 +116,18 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/selectable_style_background_rounded">
 
+                <ImageView
+                    android:id="@+id/menu_over_body_preferences_imageview"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_below="@+id/menu_over_body_preferences_textview"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="40dp"
+                    app:srcCompat="@drawable/clothing_icon_athletic_jacket"/>
+
                 <TextView
                     android:id="@+id/menu_over_body_preferences_textview"
                     android:layout_width="wrap_content"
@@ -150,6 +162,18 @@
                     android:text="Upper body garment"
                     android:textColor="@color/white"
                     android:textSize="12sp"/>
+
+                <ImageView
+                    android:id="@+id/menu_upper_body_preferences_imageview"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_below="@+id/menu_upper_body_preferences_textview"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="40dp"
+                    app:srcCompat="@drawable/clothing_icon_t_shirt"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -173,6 +197,18 @@
                     android:text="Lower body garment"
                     android:textColor="@color/white"
                     android:textSize="12sp"/>
+
+                <ImageView
+                    android:id="@+id/menu_lower_body_preferences_imageview"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_below="@+id/menu_lower_body_preferences_textview"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="40dp"
+                    app:srcCompat="@drawable/clothing_icon_jeans"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -196,12 +232,24 @@
                     android:text="Footwear"
                     android:textColor="@color/white"
                     android:textSize="12sp"/>
+
+                <ImageView
+                    android:id="@+id/menu_footwear_preferences_imageview"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_below="@+id/menu_footwear_preferences_textview"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="40dp"
+                    app:srcCompat="@drawable/clothing_icon_sneakers"/>
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/menu_accessories_preferences_option_relative_layout"
                 android:layout_width="303dp"
-                android:layout_height="64dp"
+                android:layout_height="100dp"
                 android:layout_below="@+id/menu_lower_body_preferences_option_relative_layout"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
@@ -221,6 +269,38 @@
                     android:text="Accessories"
                     android:textColor="@color/white"
                     android:textSize="12sp"/>
+
+                <ImageView
+                    android:id="@+id/menu_accessories_preferences_imageview"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/menu_accessories_preferences_textview"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="45dp"
+                    android:layout_marginTop="15dp"
+                    app:srcCompat="@drawable/clothing_icon_umbrella"/>
+
+                <ImageView
+                    android:id="@+id/menu_accessories_preferences_imageview2"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignTop="@+id/menu_accessories_preferences_imageview"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="45dp"
+                    app:srcCompat="@drawable/clothing_icon_sunglasses"/>
+
+                <ImageView
+                    android:id="@+id/menu_accessories_preferences_imageview3"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignTop="@+id/menu_accessories_preferences_imageview"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@+id/menu_accessories_preferences_imageview2"
+                    android:layout_toEndOf="@+id/menu_accessories_preferences_imageview"
+                    app:srcCompat="@drawable/clothing_icon_hat"/>
             </RelativeLayout>
 
             <TextView
