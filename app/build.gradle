@@ -68,4 +68,7 @@ dependencies {
 
     // For a particle system
     implementation 'com.github.jinatonic.confetti:confetti:1.1.2'
+
+    // For custom switches
+    implementation 'com.github.angads25:toggle:1.1.0'
 }

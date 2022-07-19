@@ -314,23 +314,57 @@
                 android:text="Enable advanced preferences"
                 android:textColor="@color/white"/>
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.github.angads25.toggle.widget.LabeledSwitch
                 android:id="@+id/menu_enable_advanced_preferences_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="55dp"
+                android:layout_height="25dp"
                 android:layout_alignTop="@+id/menu_enable_advanced_preferences_textview"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="-10dp"
-                android:layout_marginEnd="30dp"/>
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="40dp"
+                android:textSize="11sp"
+                app:colorBorder="@color/dark_blue"
+                app:colorOff="@color/dark_gray"
+                app:colorOn="@color/dark_blue"
+                app:on="false"
+                app:textOff="No"
+                app:textOn="Yes"/>
+
+            <TextView
+                android:id="@+id/menu_weather_unit_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/menu_enable_advanced_preferences_textview"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="45dp"
+                android:layout_marginTop="15dp"
+                android:text="Weather units"
+                android:textColor="@color/white"/>
+
+            <com.github.angads25.toggle.widget.LabeledSwitch
+                android:id="@+id/menu_weather_unit_switch"
+                android:layout_width="55dp"
+                android:layout_height="25dp"
+                android:layout_alignTop="@+id/menu_weather_unit_textview"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="40dp"
+                android:textSize="11sp"
+                app:colorBorder="@color/dark_blue"
+                app:colorOff="@color/dark_gray"
+                app:colorOn="@color/dark_blue"
+                app:on="false"
+                app:textOff="F"
+                app:textOn="C"/>
 
             <TextView
                 android:id="@+id/menu_profile_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/menu_enable_advanced_preferences_textview"
+                android:layout_below="@+id/menu_weather_unit_textview"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="40dp"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="15dp"
                 android:text="Profile"
                 android:textColor="@color/white"/>
 

@@ -19,7 +19,9 @@ import com.example.whattowear.models.Clothing;
 import com.example.whattowear.models.Conditions;
 import com.example.whattowear.models.Forecast;
 import com.example.whattowear.models.Weather;
-import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.github.angads25.toggle.interfaces.OnToggledListener;
+import com.github.angads25.toggle.model.ToggleableView;
+import com.github.angads25.toggle.widget.LabeledSwitch;
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -45,7 +47,7 @@ public class MenuActivity extends AppCompatActivity {
     private TextView dashboardCurrentTemperatureTextview;
     private TextView dashboardForecastDescriptionTextview;
     private ImageView dashboardWeatherIconImageview;
-    private SwitchMaterial advancedPreferencesSwitch;
+    private LabeledSwitch advancedPreferencesSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,7 +186,7 @@ public class MenuActivity extends AppCompatActivity {
     private void moveToPreferences(Clothing.ClothingType clothingType) {
         // Move to preferences screen
         Intent i = new Intent(MenuActivity.this, PreferencesActivity.class);
-        i.putExtra(PreferencesActivity.IS_ADVANCED_SETTINGS_KEY, advancedPreferencesSwitch.isChecked());
+        i.putExtra(PreferencesActivity.IS_ADVANCED_SETTINGS_KEY, advancedPreferencesSwitch.isOn());
         i.putExtra(PreferencesActivity.PREFERENCES_TYPE_KEY, clothingType);
         startActivity(i);
     }
