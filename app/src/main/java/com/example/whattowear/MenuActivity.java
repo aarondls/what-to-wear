@@ -125,8 +125,28 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
-        // Set weather units switch from Parse
+        // Get advanced preferences and weather units switch from Parse
         Preferences preferences = (Preferences) ParseUser.getCurrentUser().getParseObject(Preferences.KEY_PREFERENCES);
+
+        advancedPreferencesSwitch.setOn(preferences.getShowAdvancedPreferences());
+
+        advancedPreferencesSwitch.setOnToggledListener(new OnToggledListener() {
+            @Override
+            public void onSwitched(ToggleableView toggleableView, boolean isOn) {
+                // Save to parse
+                preferences.setShowAdvancedPreferences(isOn);
+                preferences.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e != null) {
+                            // Let user know something wrong happened
+                            Toast.makeText(MenuActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, e.getMessage());
+                        }
+                    }
+                });
+            }
+        });
 
         Boolean isCelsius = (preferences.getWeatherUnit().equals(Weather.WeatherUnit.CELSIUS.name()));
         weatherUnitsSwitch.setOn(isCelsius);

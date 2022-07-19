@@ -11,9 +11,12 @@ import java.util.List;
  */
 @ParseClassName("Preferences")
 public class Preferences extends ParseObject {
+    public static final Boolean DEFAULT_SHOW_ADVANCED_PREFERENCES = false;
+
     public static final String KEY_PREFERENCES = "preferences";
     public static final String KEY_USER = "user";
     public static final String KEY_WEATHER_UNIT = "weatherUnit";
+    public static final String KEY_SHOW_ADVANCED_PREFERENCES = "showAdvancedPreferences";
     public static final String KEY_OVER_BODY_GARMENT_RANKERS = "overBodyGarmentRankers";
     public static final String KEY_UPPER_BODY_GARMENT_RANKERS = "upperBodyGarmentRankers";
     public static final String KEY_LOWER_BODY_GARMENT_RANKERS = "lowerBodyGarmentRankers";
@@ -59,6 +62,22 @@ public class Preferences extends ParseObject {
      */
     public void setWeatherUnit(String weatherUnit) {
         put(KEY_WEATHER_UNIT, weatherUnit);
+    }
+
+    /**
+     * @return whether advanced preferences should be shown
+     */
+    public Boolean getShowAdvancedPreferences() {
+        return getBoolean(KEY_SHOW_ADVANCED_PREFERENCES);
+    }
+
+    /**
+     * Sets whether advanced preferences should be shown to the user
+     *
+     * @param showAdvancedPreferences whether advanced preferences should be shown
+     */
+    public void setShowAdvancedPreferences(Boolean showAdvancedPreferences) {
+        put(KEY_SHOW_ADVANCED_PREFERENCES, showAdvancedPreferences);
     }
 
     /**

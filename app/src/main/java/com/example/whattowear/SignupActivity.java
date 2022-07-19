@@ -111,6 +111,7 @@ public class SignupActivity extends AppCompatActivity {
                     Preferences preferences = new Preferences();
                     preferences.setUser(user);
                     preferences.setWeatherUnit(Weather.DEFAULT_WEATHER_UNIT); // set default
+                    preferences.setShowAdvancedPreferences(Preferences.DEFAULT_SHOW_ADVANCED_PREFERENCES); // set default
                     preferences.setOverBodyGarmentRankers(OverBodyGarment.getOverBodyGarmentRankers());
                     preferences.setUpperBodyGarmentRankers(UpperBodyGarment.getUpperBodyGarmentRankers());
                     preferences.setLowerBodyGarmentRankers(LowerBodyGarment.getLowerBodyGarmentRankers());
