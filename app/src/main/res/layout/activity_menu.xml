@@ -364,7 +364,7 @@
                 android:layout_below="@+id/menu_weather_unit_textview"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="40dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="25dp"
                 android:text="Profile"
                 android:textColor="@color/white"/>
 
@@ -384,6 +384,12 @@
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="10sp"/>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignTop="@+id/menu_logout_button"
+                android:layout_marginTop="36dp"/>
 
         </RelativeLayout>
     </ScrollView>
