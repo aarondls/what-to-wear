@@ -71,4 +71,7 @@ dependencies {
 
     // For custom switches
     implementation 'com.github.angads25:toggle:1.1.0'
+
+    // For custom animations (not related to weather)
+    implementation "com.airbnb.android:lottie:5.0.2"
 }

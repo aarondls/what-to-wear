@@ -183,7 +183,7 @@ public class MenuActivity extends AppCompatActivity {
                             // Successfully logged out
                             Toast.makeText(MenuActivity.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
                             // Move to login screen
-                            Intent i = new Intent(MenuActivity.this, LoginActivity.class);
+                            Intent i = new Intent(MenuActivity.this, LoginUserActivity.class);
                             // clear task and make new one so user cannot go back to activities that require being logged in
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

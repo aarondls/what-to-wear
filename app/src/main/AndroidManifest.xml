@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.whattowear">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- For location -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- For precise location -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/> <!-- For location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/> <!-- For precise location -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
         android:name=".ParseApplication"
@@ -20,30 +20,33 @@
         android:theme="@style/Theme.WhatToWear"
         tools:targetApi="31">
         <activity
+            android:name=".LoginBackendActivity"
+            android:exported="false"/>
+        <activity
             android:name=".DetailedClothingActivity"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".PreferencesActivity"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".MenuActivity"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".DashboardActivity"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".SignupActivity"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".DetailedWeatherActivity"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
-            android:name=".LoginActivity"
+            android:name=".LoginUserActivity"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
     </application>
