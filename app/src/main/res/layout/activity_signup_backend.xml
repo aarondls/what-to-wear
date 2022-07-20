@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dark_gradient"
+    tools:context=".SignupBackendActivity">
+
+    <TextView
+        android:id="@+id/signup_backend_information_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/signup_backend_loading_animationview"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="100dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        tools:text="Loading user preferences"/>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/signup_backend_loading_animationview"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="0dp"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/loading_animation"/>
+
+</RelativeLayout>

@@ -50,7 +50,7 @@ public class LoginUserActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Move to signup screen
-                Intent i = new Intent(LoginUserActivity.this, SignupActivity.class);
+                Intent i = new Intent(LoginUserActivity.this, SignupUserActivity.class);
                 startActivity(i);
             }
         });

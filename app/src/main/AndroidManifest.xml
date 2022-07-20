@@ -20,6 +20,9 @@
         android:theme="@style/Theme.WhatToWear"
         tools:targetApi="31">
         <activity
+            android:name=".SignupBackendActivity"
+            android:exported="false"/>
+        <activity
             android:name=".LoginBackendActivity"
             android:exported="false"/>
         <activity
@@ -35,7 +38,7 @@
             android:name=".DashboardActivity"
             android:exported="false"/>
         <activity
-            android:name=".SignupActivity"
+            android:name=".SignupUserActivity"
             android:exported="false"/>
         <activity
             android:name=".DetailedWeatherActivity"
