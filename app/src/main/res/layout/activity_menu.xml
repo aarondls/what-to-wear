@@ -114,7 +114,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="45dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/selectable_style_background_rounded">
+                android:background="@drawable/selectable_style_gray_background_rounded">
 
                 <ImageView
                     android:id="@+id/menu_over_body_preferences_imageview"
@@ -149,7 +149,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="40dp"
-                android:background="@drawable/selectable_style_background_rounded">
+                android:background="@drawable/selectable_style_gray_background_rounded">
 
                 <TextView
                     android:id="@+id/menu_upper_body_preferences_textview"
@@ -184,7 +184,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="45dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/selectable_style_background_rounded">
+                android:background="@drawable/selectable_style_gray_background_rounded">
 
                 <TextView
                     android:id="@+id/menu_lower_body_preferences_textview"
@@ -219,7 +219,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="40dp"
-                android:background="@drawable/selectable_style_background_rounded">
+                android:background="@drawable/selectable_style_gray_background_rounded">
 
                 <TextView
                     android:id="@+id/menu_footwear_preferences_textview"
@@ -256,7 +256,7 @@
                 android:layout_marginStart="45dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="40dp"
-                android:background="@drawable/selectable_style_background_rounded">
+                android:background="@drawable/selectable_style_gray_background_rounded">
 
                 <TextView
                     android:id="@+id/menu_accessories_preferences_textview"

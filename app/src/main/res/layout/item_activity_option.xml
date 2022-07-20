@@ -23,6 +23,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/activity_icon_imageview"
+        android:textColor="@color/white"
         tools:layout_editor_absoluteX="66dp"
         tools:layout_editor_absoluteY="47dp"
         tools:text="Activity type"/>

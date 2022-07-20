@@ -22,6 +22,16 @@
         android:layout_marginBottom="0dp"
         android:elevation="-10dp"/>
 
+    <fragment
+        android:id="@+id/autocomplete_fragment"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="20dp"/>
+
     <Spinner
         android:id="@+id/activity_selector_spinner"
         android:layout_width="match_parent"
@@ -32,30 +42,32 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="40dp"
-        android:background="@drawable/activity_spinner_background"
+        android:background="@drawable/selectable_style_blue_background_rounded"
         android:clickable="true"
-        android:dropDownVerticalOffset="40dp"
-        android:longClickable="true"
-        android:popupBackground="@drawable/activity_spinner_background"/>
+        android:popupBackground="@drawable/selectable_style_blue_background_rounded"/>
 
     <RelativeLayout
         android:id="@+id/forecast_3hr_relativelayout"
-        android:layout_width="240dp"
-        android:layout_height="100dp"
-        android:layout_alignParentTop="true"
+        android:layout_width="215dp"
+        android:layout_height="120dp"
+        android:layout_alignTop="@+id/dashboard_current_temp_textview"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="270dp"
-        android:layout_marginEnd="18dp"
+        android:layout_marginTop="-15dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/selectable_style_blue_background_rounded"
         android:clickable="true">
 
         <TextView
             android:id="@+id/dashboard_1hr_time_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/dashboard_1hr_temp_textview"
             android:layout_alignTop="@+id/dashboard_3hr_time_textview"
-            android:layout_alignEnd="@+id/dashboard_1hr_weather_icon_imageview"
+            android:layout_alignEnd="@+id/dashboard_1hr_temp_textview"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="0dp"
-            android:layout_marginEnd="2dp"
+            android:layout_marginEnd="0dp"
+            android:textAlignment="center"
             android:textColor="@color/white"
             tools:text="10am"/>
 
@@ -66,7 +78,7 @@
             android:layout_below="@+id/dashboard_1hr_time_textview"
             android:layout_marginStart="164dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="38dp"
+            android:layout_marginEnd="30dp"
             android:layout_toStartOf="@+id/dashboard_2hr_weather_icon_imageview"
             tools:srcCompat="@tools:sample/avatars"/>
 
@@ -75,9 +87,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/dashboard_1hr_weather_icon_imageview"
+            android:layout_alignStart="@+id/dashboard_1hr_weather_icon_imageview"
             android:layout_alignEnd="@+id/dashboard_1hr_weather_icon_imageview"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="0dp"
+            android:textAlignment="center"
             android:textColor="@color/white"
             tools:text="23"/>
 
@@ -85,10 +100,13 @@
             android:id="@+id/dashboard_2hr_time_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/dashboard_2hr_weather_icon_imageview"
             android:layout_alignTop="@+id/dashboard_3hr_time_textview"
             android:layout_alignEnd="@+id/dashboard_2hr_weather_icon_imageview"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="0dp"
-            android:layout_marginEnd="1dp"
+            android:layout_marginEnd="0dp"
+            android:textAlignment="center"
             android:textColor="@color/white"
             tools:text="11am"/>
 
@@ -97,9 +115,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/dashboard_2hr_weather_icon_imageview"
+            android:layout_alignStart="@+id/dashboard_2hr_weather_icon_imageview"
             android:layout_alignEnd="@+id/dashboard_2hr_weather_icon_imageview"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="0dp"
+            android:textAlignment="center"
             android:textColor="@color/white"
             tools:text="24"/>
 
@@ -109,7 +130,7 @@
             android:layout_height="40dp"
             android:layout_below="@+id/dashboard_1hr_time_textview"
             android:layout_marginTop="9dp"
-            android:layout_marginEnd="36dp"
+            android:layout_marginEnd="30dp"
             android:layout_toStartOf="@+id/dashboard_3hr_weather_icon_imageview"
             tools:srcCompat="@tools:sample/avatars"/>
 
@@ -120,17 +141,20 @@
             android:layout_below="@+id/dashboard_1hr_time_textview"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="21dp"
+            android:layout_marginEnd="15dp"
             tools:srcCompat="@tools:sample/avatars"/>
 
         <TextView
             android:id="@+id/dashboard_3hr_time_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/dashboard_3hr_weather_icon_imageview"
             android:layout_alignEnd="@+id/dashboard_3hr_weather_icon_imageview"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="2dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="0dp"
+            android:textAlignment="center"
             android:textColor="@color/white"
             tools:text="12pm"/>
 
@@ -139,10 +163,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/dashboard_3hr_weather_icon_imageview"
+            android:layout_alignStart="@+id/dashboard_3hr_weather_icon_imageview"
             android:layout_alignEnd="@+id/dashboard_3hr_weather_icon_imageview"
-            android:layout_centerVertical="true"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="0dp"
+            android:textAlignment="center"
             android:textColor="@color/white"
             tools:text="25"/>
     </RelativeLayout>
@@ -151,20 +177,24 @@
         android:id="@+id/dashboard_to_menu_button"
         android:layout_width="43dp"
         android:layout_height="40dp"
-        android:layout_alignParentTop="true"
+        android:layout_alignTop="@+id/dashboard_location_textview"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="-10dp"
         android:layout_marginEnd="15dp"
+        android:backgroundTint="#00FFFFFF"
+        android:gravity="center"
         app:icon="@drawable/ic_baseline_menu_24"
-        app:iconGravity="top"/>
+        app:iconGravity="top"
+        app:iconSize="24dp"
+        app:iconTint="@color/white"/>
 
     <TextView
         android:id="@+id/dashboard_location_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_alignTop="@+id/autocomplete_fragment"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="17dp"
         android:layout_toEndOf="@+id/autocomplete_fragment"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
@@ -175,11 +205,11 @@
         android:id="@+id/dashboard_forecast_description_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_alignTop="@+id/dashboard_weather_icon_imageview"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="37dp"
-        android:layout_marginTop="127dp"
-        android:layout_marginEnd="29dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="20dp"
         android:layout_toEndOf="@+id/dashboard_weather_icon_imageview"
         android:textColor="@color/white"
         android:textSize="34sp"
@@ -191,8 +221,8 @@
         android:layout_height="150dp"
         android:layout_below="@+id/dashboard_location_textview"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="63dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="35dp"
         tools:srcCompat="@tools:sample/avatars"/>
 
     <TextView
@@ -201,22 +231,23 @@
         android:layout_height="88dp"
         android:layout_below="@+id/dashboard_weather_icon_imageview"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="43dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="50dp"
         android:textColor="@color/white"
-        android:textSize="60sp"
+        android:textSize="56sp"
         tools:text="22"/>
 
     <RelativeLayout
         android:id="@+id/clothing_overview_relativelayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="210dp"
         android:layout_below="@+id/activity_selector_spinner"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="30dp"
         android:layout_marginTop="50dp"
-        android:layout_marginEnd="30dp">
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/selectable_style_blue_background_rounded">
 
         <ImageView
             android:id="@+id/dashboard_lower_body_garment_imageview"
@@ -224,8 +255,8 @@
             android:layout_height="70dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="25dp"
             tools:srcCompat="@tools:sample/avatars"/>
 
         <ImageView
@@ -235,6 +266,8 @@
             android:layout_alignTop="@+id/dashboard_lower_body_garment_imageview"
             android:layout_marginStart="20dp"
             android:layout_marginTop="0dp"
+            android:layout_marginEnd="20dp"
+            android:layout_toStartOf="@+id/dashboard_over_body_garment_imageview"
             android:layout_toEndOf="@+id/dashboard_lower_body_garment_imageview"
             tools:srcCompat="@tools:sample/avatars"/>
 
@@ -243,10 +276,10 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_alignTop="@+id/dashboard_lower_body_garment_imageview"
-            android:layout_marginStart="20dp"
+            android:layout_alignParentEnd="true"
             android:layout_marginTop="0dp"
+            android:layout_marginEnd="25dp"
             android:layout_marginBottom="19dp"
-            android:layout_toEndOf="@+id/dashboard_upper_body_garment_imageview"
             tools:srcCompat="@tools:sample/avatars"/>
 
         <ImageView
@@ -257,7 +290,6 @@
             android:layout_alignStart="@+id/dashboard_lower_body_garment_imageview"
             android:layout_marginStart="0dp"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="35dp"
             tools:srcCompat="@tools:sample/avatars"/>
 
         <ImageView
@@ -267,18 +299,23 @@
             android:layout_alignTop="@+id/dashboard_footwear_imageview"
             android:layout_marginStart="20dp"
             android:layout_marginTop="0dp"
-            android:layout_toEndOf="@+id/dashboard_footwear_imageview"
+            android:layout_marginEnd="20dp"
+            android:layout_toStartOf="@+id/dashboard_over_body_garment_imageview"
+            android:layout_toEndOf="@+id/dashboard_lower_body_garment_imageview"
             tools:srcCompat="@tools:sample/avatars"/>
 
         <TextView
             android:id="@+id/dashboard_excess_accessories_textview"
-            android:layout_width="98dp"
-            android:layout_height="46dp"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
             android:layout_alignTop="@+id/dashboard_footwear_imageview"
-            android:layout_marginStart="20dp"
+            android:layout_alignEnd="@+id/dashboard_over_body_garment_imageview"
+            android:layout_alignBottom="@+id/dashboard_accessories_imageview"
             android:layout_marginTop="0dp"
-            android:layout_marginBottom="5dp"
-            android:layout_toEndOf="@+id/dashboard_accessories_imageview"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:gravity="center"
+            android:textAlignment="center"
             android:textColor="@color/white"
             tools:text="+2 more accessories"/>
     </RelativeLayout>
@@ -288,10 +325,13 @@
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="41dp"
         android:layout_height="37dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="19dp"
+        android:layout_alignTop="@+id/dashboard_to_menu_button"
+        android:layout_alignBottom="@+id/dashboard_to_menu_button"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
         android:layout_toStartOf="@+id/dashboard_to_menu_button"
+        android:gravity="center"
         app:icon="@drawable/ic_baseline_warning_24"
         app:iconGravity="textStart"
         app:iconPadding="0dp"
@@ -302,23 +342,15 @@
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="41dp"
         android:layout_height="37dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="19dp"
+        android:layout_alignTop="@+id/dashboard_to_menu_button"
+        android:layout_alignBottom="@+id/dashboard_to_menu_button"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
         android:layout_toStartOf="@+id/dashboard_to_menu_button"
         app:icon="@drawable/ic_baseline_my_location_24"
         app:iconGravity="textStart"
         app:iconPadding="0dp"
-        app:iconTint="#689EF6"/>
-
-    <fragment
-        android:id="@+id/autocomplete_fragment"
-        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="15dp"/>
+        app:iconTint="@color/white"/>
 
 </RelativeLayout>
