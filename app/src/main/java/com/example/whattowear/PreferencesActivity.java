@@ -28,12 +28,12 @@ public class PreferencesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferences);
 
+        // have layout be full screen to hide both the top and bottom bars
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
         menuButton = findViewById(R.id.preferences_to_menu_button);
         clothingTypeTextview = findViewById(R.id.preferences_type_textview);
         preferencesReyclerview = findViewById(R.id.preferences_recycleview);
-
-        // have layout be full screen to hide both the top and bottom bars
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override

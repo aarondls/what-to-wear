@@ -1,7 +1,6 @@
 package com.example.whattowear;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.content.res.AppCompatResources;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -57,6 +56,9 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
+        // have layout be full screen to hide both the top and bottom bars
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
         dashboardClickable = findViewById(R.id.menu_dashboard_option_relative_layout);
         overBodyGarmentPreferencesClickable = findViewById(R.id.menu_over_body_preferences_option_relative_layout);
         upperBodyGarmentPreferencesClickable = findViewById(R.id.menu_upper_body_preferences_option_relative_layout);
@@ -71,15 +73,6 @@ public class MenuActivity extends AppCompatActivity {
         dashboardCurrentTemperatureTextview = findViewById(R.id.menu_dashboard_current_temp_textview);
         dashboardForecastDescriptionTextview = findViewById(R.id.menu_dashboard_forecast_description_textview);
         dashboardWeatherIconImageview = findViewById(R.id.menu_dashboard_weather_icon_imageview);
-
-        // TODO: create diff gradient for morning/afternoon/night
-        // Put gradient as background
-        // for now, use morning
-        View dashboardView = findViewById(R.id.menu_relative_layout);
-        dashboardView.setBackground(AppCompatResources.getDrawable(this, R.drawable.dark_gradient));
-
-        // have layout be full screen to hide both the top and bottom bars
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         dashboardClickable.setOnClickListener(new View.OnClickListener() {
             @Override

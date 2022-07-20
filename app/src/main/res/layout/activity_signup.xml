@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/signup_relative_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/dark_gradient"
     tools:context=".SignupActivity">
 
     <Button
@@ -24,7 +25,8 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="104dp"
         android:layout_marginBottom="328dp"
-        android:text="Have an account?"/>
+        android:text="Have an account?"
+        android:textColor="@color/white"/>
 
     <Button
         android:id="@+id/go_to_login_button"
@@ -45,7 +47,9 @@
         android:layout_marginTop="48dp"
         android:ems="10"
         android:hint="Full Name"
-        android:inputType="textPersonName"/>
+        android:inputType="textPersonName"
+        android:textColor="@color/white"
+        android:textColorHint="@color/light_gray"/>
 
     <EditText
         android:id="@+id/signup_username_edittext"
@@ -56,7 +60,9 @@
         android:layout_marginTop="13dp"
         android:ems="10"
         android:hint="Username"
-        android:inputType="textPersonName"/>
+        android:inputType="textPersonName"
+        android:textColor="@color/white"
+        android:textColorHint="@color/light_gray"/>
 
     <EditText
         android:id="@+id/signup_password_edittext"
@@ -67,5 +73,7 @@
         android:layout_marginTop="18dp"
         android:ems="10"
         android:hint="Password"
-        android:inputType="textPassword"/>
+        android:inputType="textPassword"
+        android:textColor="@color/white"
+        android:textColorHint="@color/light_gray"/>
 </RelativeLayout>

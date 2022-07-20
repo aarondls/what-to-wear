@@ -31,6 +31,9 @@ public class DetailedWeatherActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_weather);
 
+        // have layout be full screen to hide both the top and bottom bars
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
         backToDashboardButton = findViewById(R.id.weather_back_to_dashboard_button);
 
         detailedWeatherController = new DetailedWeatherController(this);
@@ -44,15 +47,6 @@ public class DetailedWeatherActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-        // TODO: create diff gradient for morning/afternoon/night
-        // Put gradient as background
-        // for now, use morning
-        View dashboardView = findViewById(R.id.detailed_weather_relative_layout);
-        dashboardView.setBackground(AppCompatResources.getDrawable(this, R.drawable.dark_gradient));
-
-        // have layout be full screen to hide both the top and bottom bars
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         // initialize recycle view
         adapter = new WeatherAdapter(this);

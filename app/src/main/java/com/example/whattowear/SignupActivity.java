@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -41,6 +42,9 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+        // have layout be full screen to hide both the top and bottom bars
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
         signupNameEdittext = findViewById(R.id.signup_name_edittext);
         signupUsernameEdittext = findViewById(R.id.signup_username_edittext);
         signupPasswordEdittext = findViewById(R.id.signup_password_edittext);
@@ -58,7 +62,7 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Move to login screen
-                Intent i = new Intent(SignupActivity.this, LoginActivity.class);
+                Intent i = new Intent(SignupActivity.this, LoginUserActivity.class);
                 startActivity(i);
             }
         });
