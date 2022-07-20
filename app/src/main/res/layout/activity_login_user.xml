@@ -8,75 +8,117 @@
     android:background="@drawable/dark_gradient"
     tools:context=".LoginUserActivity">
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="100dp"
+        android:fontFamily="sans-serif-light"
+        android:text="What to Wear"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="28sp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/login_username_textfield"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="35dp"
+        android:hint="username"
+        app:boxCornerRadiusBottomEnd="20dp"
+        app:boxCornerRadiusBottomStart="20dp"
+        app:boxCornerRadiusTopEnd="20dp"
+        app:boxCornerRadiusTopStart="20dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/login_username_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textColor="@color/white"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/login_password_textfield"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/login_username_textfield"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="35dp"
+        android:hint="password"
+        app:boxCornerRadiusBottomEnd="20dp"
+        app:boxCornerRadiusBottomStart="20dp"
+        app:boxCornerRadiusTopEnd="20dp"
+        app:boxCornerRadiusTopStart="20dp"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/dark_gray">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/login_password_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textColor="@color/white"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <Button
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/password_edittext"
+        android:layout_below="@+id/login_password_textfield"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="136dp"
-        android:layout_marginTop="36dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="35dp"
+        android:backgroundTint="@color/dark_blue"
         android:text="Log in"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="189dp"/>
 
-    <Button
-        android:id="@+id/go_to_signup_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/login_button"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="84dp"
-        android:text="Sign up"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.757"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="416dp"/>
-
     <TextView
+        android:id="@+id/login_no_account_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/login_button"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="74dp"
+        android:layout_marginStart="75dp"
         android:layout_marginTop="80dp"
         android:text="Don't have an account?"
         android:textColor="@color/white"
         tools:layout_editor_absoluteX="84dp"
         tools:layout_editor_absoluteY="431dp"/>
 
-    <EditText
-        android:id="@+id/username_edittext"
+    <Button
+        android:id="@+id/go_to_signup_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="76dp"
-        android:layout_marginTop="59dp"
-        android:ems="10"
-        android:hint="username"
-        android:inputType="textPersonName"
+        android:layout_alignTop="@+id/login_no_account_textview"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="-15dp"
+        android:layout_toEndOf="@+id/login_no_account_textview"
+        android:backgroundTint="@color/light_gray"
+        android:text="Sign up"
         android:textColor="@color/white"
-        android:textColorHint="@color/light_gray"
-        tools:layout_editor_absoluteX="54dp"
-        tools:layout_editor_absoluteY="246dp"/>
-
-    <EditText
-        android:id="@+id/password_edittext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/username_edittext"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="76dp"
-        android:layout_marginTop="14dp"
-        android:ems="10"
-        android:hint="password"
-        android:inputType="textPassword"
-        android:textColor="@color/white"
-        android:textColorHint="@color/light_gray"
-        tools:layout_editor_absoluteX="55dp"
-        tools:layout_editor_absoluteY="297dp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="416dp"/>
 
 </RelativeLayout>

@@ -34,8 +34,8 @@ public class LoginUserActivity extends AppCompatActivity {
             startActivity(i);
         }
 
-        usernameEdittext = findViewById(R.id.username_edittext);
-        passwordEdittext = findViewById(R.id.password_edittext);
+        usernameEdittext = findViewById(R.id.login_username_edittext);
+        passwordEdittext = findViewById(R.id.login_password_edittext);
         loginButton = findViewById(R.id.login_button);
         goToSignupButton = findViewById(R.id.go_to_signup_button);
 
