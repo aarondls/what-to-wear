@@ -111,18 +111,12 @@ public class UpperBodyGarment {
     }
 
     /**
-     * Sets the upperBodyGarmentRankers and fetches any missing information from the Parse database, if needed
+     * Sets the upperBodyGarmentRankers, including the locally generated icon IDs
+     *
      * @param upperBodyGarmentRankers the upperBodyGarmentRankers to set
-     * @throws ParseException the non-null ParseException, if fetching the missing information fails
      */
-    public static void setUpperBodyGarmentRankers(List<ClothingRanker> upperBodyGarmentRankers) throws ParseException {
+    public static void setUpperBodyGarmentRankers(List<ClothingRanker> upperBodyGarmentRankers) {
         UpperBodyGarment.upperBodyGarmentRankers = upperBodyGarmentRankers;
-
-        try {
-            ClothingRanker.fetchAllIfNeeded(upperBodyGarmentRankers);
-        } catch (ParseException e) {
-            throw e;
-        }
 
         for (ClothingRanker clothingRanker : upperBodyGarmentRankers) {
             clothingRanker.setClothingTypeIconID(getUpperBodyGarmentImage(clothingRanker.getClothingTypeName()));

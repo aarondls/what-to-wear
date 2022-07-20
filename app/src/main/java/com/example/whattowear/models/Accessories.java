@@ -125,18 +125,12 @@ public class Accessories {
     }
 
     /**
-     * Sets the accessoriesRankers and fetches any missing information from the Parse database, if needed
+     * Sets the accessoriesRankers, including the locally generated icon IDs
+     *
      * @param accessoriesRankers the accessoriesRankers to set
-     * @throws ParseException the non-null ParseException, if fetching the missing information fails
      */
-    public static void setAccessoriesRankers(List<ClothingRanker> accessoriesRankers) throws ParseException {
+    public static void setAccessoriesRankers(List<ClothingRanker> accessoriesRankers) {
         Accessories.accessoriesRankers = accessoriesRankers;
-
-        try {
-            ClothingRanker.fetchAllIfNeeded(accessoriesRankers);
-        } catch (ParseException e) {
-            throw e;
-        }
 
         for (ClothingRanker clothingRanker : accessoriesRankers) {
             clothingRanker.setClothingTypeIconID(getAccessoriesImages(clothingRanker.getClothingTypeName()));

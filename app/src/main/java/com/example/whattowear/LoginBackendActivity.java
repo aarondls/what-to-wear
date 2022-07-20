@@ -18,11 +18,13 @@ import com.example.whattowear.models.LowerBodyGarment;
 import com.example.whattowear.models.OverBodyGarment;
 import com.example.whattowear.models.Preferences;
 import com.example.whattowear.models.UpperBodyGarment;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LoginBackendActivity extends AppCompatActivity {
@@ -30,6 +32,7 @@ public class LoginBackendActivity extends AppCompatActivity {
     public static final String USERNAME_KEY = "username";
     public static final String PASSWORD_KEY = "password";
 
+    private static final String NULL_CLOTHING_RANKERS_PROMPT = "Fetched clothing rankers are null";
     private static final String LOGGING_IN_PROMPT = "Logging in";
     private static final String LOG_IN_SUCCESS_PROMPT = "Successfully logged in";
     private static final String INITIALIZING_PREFERENCES_PROMPT = "Initializing preferences";
@@ -97,61 +100,84 @@ public class LoginBackendActivity extends AppCompatActivity {
         preferences.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject object, ParseException e) {
-                if (e != null) {
+                if (e == null) {
+                    // Let user know preferences was successfully initialized
+                    informationTextview.setText(INITIALIZED_PREFERENCES_SUCCESS_PROMPT);
+
+                    initializeClothingRankers((Preferences) object);
+                } else {
                     // Let user know something wrong happened
                     Toast.makeText(LoginBackendActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     // Go back to login screen to let user re-login
                     moveToLoginScreen();
-                    return;
                 }
+            }
+        });
+    }
 
-                // Let user know preferences was successfully initialized
-                informationTextview.setText(INITIALIZED_PREFERENCES_SUCCESS_PROMPT);
+    /**
+     * Initializes the clothing rankers given the user preferences
+     * Moves to the dashboard screen once successful
+     *
+     * @param preferences the preferences that the clothing rankers will be initialized from
+     */
+    private void initializeClothingRankers(Preferences preferences) {
+        List<ClothingRanker> overBodyGarmentRankers = preferences.getList(Preferences.KEY_OVER_BODY_GARMENT_RANKERS);
+        List<ClothingRanker> upperBodyGarmentRankers = preferences.getList(Preferences.KEY_UPPER_BODY_GARMENT_RANKERS);
+        List<ClothingRanker> lowerBodyGarmentRankers = preferences.getList(Preferences.KEY_LOWER_BODY_GARMENT_RANKERS);
+        List<ClothingRanker> footwearRankers = preferences.getList(Preferences.KEY_FOOTWEAR_RANKERS);
+        List<ClothingRanker> accessoriesRankers = preferences.getList(Preferences.KEY_ACCESSORIES_RANKERS);
 
-                Preferences newPreferences = (Preferences) object;
+        if (overBodyGarmentRankers == null || upperBodyGarmentRankers == null || lowerBodyGarmentRankers == null || footwearRankers == null || accessoriesRankers == null) {
+            // Let user know something wrong happened
+            Toast.makeText(LoginBackendActivity.this, NULL_CLOTHING_RANKERS_PROMPT, Toast.LENGTH_SHORT).show();
+            // Go back to login screen to let user re-login
+            moveToLoginScreen();
+            return;
+        }
 
-                // make sure all lists are not null by enclosing in try catch
-                try {
-                    // Let user know clothing rankers are being initialized
-                    informationTextview.setText(INITIALIZING_RANKERS_PROMPT);
+        // Collect all rankers to load them all together
+        List<ClothingRanker> allRankers = new ArrayList<>();
+        allRankers.addAll(overBodyGarmentRankers);
+        allRankers.addAll(upperBodyGarmentRankers);
+        allRankers.addAll(lowerBodyGarmentRankers);
+        allRankers.addAll(footwearRankers);
+        allRankers.addAll(accessoriesRankers);
 
-                    List<ClothingRanker> overBodyGarmentRankers = newPreferences.getList(Preferences.KEY_OVER_BODY_GARMENT_RANKERS);
-                    List<ClothingRanker> upperBodyGarmentRankers = newPreferences.getList(Preferences.KEY_UPPER_BODY_GARMENT_RANKERS);
-                    List<ClothingRanker> lowerBodyGarmentRankers = newPreferences.getList(Preferences.KEY_LOWER_BODY_GARMENT_RANKERS);
-                    List<ClothingRanker> footwearRankers = newPreferences.getList(Preferences.KEY_FOOTWEAR_RANKERS);
-                    List<ClothingRanker> accessoriesRankers = newPreferences.getList(Preferences.KEY_ACCESSORIES_RANKERS);
+        // Let user know clothing rankers are being initialized
+        informationTextview.setText(INITIALIZING_RANKERS_PROMPT);
 
-                    if (overBodyGarmentRankers == null || upperBodyGarmentRankers == null || lowerBodyGarmentRankers == null || footwearRankers == null || accessoriesRankers == null) {
-                        throw new NullPointerException(); // this will be caught below along with the parse errors
-                    }
+        ClothingRanker.fetchAllIfNeededInBackground(allRankers, new FindCallback<ClothingRanker>() {
+            @Override
+            public void done(List<ClothingRanker> objects, ParseException e) {
+                if (e == null) {
+                    // Let user know clothing rankers are successfully initialized
+                    informationTextview.setText(INITIALIZED_RANKERS_SUCCESS_PROMPT);
 
+                    // Set clothing rankers
                     OverBodyGarment.setOverBodyGarmentRankers(overBodyGarmentRankers);
                     UpperBodyGarment.setUpperBodyGarmentRankers(upperBodyGarmentRankers);
                     LowerBodyGarment.setLowerBodyGarmentRankers(lowerBodyGarmentRankers);
                     Footwear.setFootwearRankers(footwearRankers);
                     Accessories.setAccessoriesRankers(accessoriesRankers);
-                } catch (ParseException | NullPointerException ex) {
+
+                    // Fade out the loading animation and information text view
+                    loadingAnimation.animate().alpha(0f).setDuration(FADE_OUT_ANIMATION_TIME);
+                    informationTextview.animate().alpha(0f).setDuration(FADE_OUT_ANIMATION_TIME);
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            // move to dashboard screen after fadeout finishes
+                            moveToDashboard();
+                        }
+                    }, FADE_OUT_ANIMATION_TIME);
+                } else {
                     // Let user know of the error
-                    Toast.makeText(LoginBackendActivity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginBackendActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                     // Go back to login screen to let user re-login
                     moveToLoginScreen();
-                    return;
                 }
-
-                // Let user know clothing rankers are successfully initialized
-                informationTextview.setText(INITIALIZED_RANKERS_SUCCESS_PROMPT);
-
-                // Fade out the loading animation and information text view
-                loadingAnimation.animate().alpha(0f).setDuration(FADE_OUT_ANIMATION_TIME);
-                informationTextview.animate().alpha(0f).setDuration(FADE_OUT_ANIMATION_TIME);
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        // move to dashboard screen after fadeout finishes
-                        moveToDashboard();
-                    }
-                }, FADE_OUT_ANIMATION_TIME);
             }
         });
     }

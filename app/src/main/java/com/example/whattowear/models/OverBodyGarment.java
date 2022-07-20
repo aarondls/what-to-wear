@@ -131,18 +131,13 @@ public class OverBodyGarment {
     }
 
     /**
-     * Sets the overBodyGarmentRankers and fetches any missing information from the Parse database, if needed
+     * Sets the overBodyGarmentRankers, including the locally generated icon IDs
+     *
      * @param overBodyGarmentRankers the overBodyGarmentRankers to set
-     * @throws ParseException the non-null ParseException, if fetching the missing information fails
      */
-    public static void setOverBodyGarmentRankers(List<ClothingRanker> overBodyGarmentRankers) throws ParseException {
+    public static void setOverBodyGarmentRankers(List<ClothingRanker> overBodyGarmentRankers) {
         OverBodyGarment.overBodyGarmentRankers = overBodyGarmentRankers;
 
-        try {
-            ClothingRanker.fetchAllIfNeeded(overBodyGarmentRankers);
-        } catch (ParseException e) {
-            throw e;
-        }
 
         // this is generated locally at runtime, so cannot get from parse database
         for (ClothingRanker clothingRanker : overBodyGarmentRankers) {
