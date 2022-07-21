@@ -113,14 +113,24 @@ public class Accessories {
      * returns null.
      */
     public static Integer getAccessoriesImages(String clothingTypeName) {
-        if (clothingTypeName.equals(AccessoryType.UMBRELLA.name())) {
-            return R.drawable.clothing_icon_umbrella;
-        } else if (clothingTypeName.equals(AccessoryType.HAT.name())) {
-            return R.drawable.clothing_icon_hat;
-        } else if (clothingTypeName.equals(AccessoryType.SUNGLASSES.name())) {
-            return R.drawable.clothing_icon_sunglasses;
+        AccessoryType accessoryType;
+
+        try {
+            accessoryType = AccessoryType.valueOf(clothingTypeName);
+        } catch (IllegalArgumentException e) {
+            // unrecognized return null
+            return null;
         }
-        // unrecognized return null
+
+        switch (accessoryType) {
+            case UMBRELLA:
+                return R.drawable.clothing_icon_umbrella;
+            case HAT:
+                return R.drawable.clothing_icon_hat;
+            case SUNGLASSES:
+                return R.drawable.clothing_icon_sunglasses;
+        }
+        // The cases above cover all possibilities, so this cannot happen
         return null;
     }
 

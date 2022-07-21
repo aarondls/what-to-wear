@@ -113,18 +113,28 @@ public class LowerBodyGarment {
      * returns null.
      */
     public static Integer getLowerBodyGarmentImage(String clothingTypeName) {
-        if (clothingTypeName.equals(LowerBodyGarmentType.DRESS_PANTS.name())) {
-            return R.drawable.clothing_icon_dress_pants;
-        } else if (clothingTypeName.equals(LowerBodyGarmentType.JEANS.name())) {
-            return R.drawable.clothing_icon_jeans;
-        } else if (clothingTypeName.equals(LowerBodyGarmentType.SHORTS.name())) {
-            return R.drawable.clothing_icon_shorts;
-        } else if (clothingTypeName.equals(LowerBodyGarmentType.SKIRT.name())) {
-            return R.drawable.clothing_icon_skirt;
-        } else if (clothingTypeName.equals(LowerBodyGarmentType.SWEATS.name())) {
-            return R.drawable.clothing_icon_sweatpants;
+        LowerBodyGarmentType lowerBodyGarmentType;
+
+        try {
+            lowerBodyGarmentType = LowerBodyGarmentType.valueOf(clothingTypeName);
+        } catch (IllegalArgumentException e) {
+            // unrecognized return null
+            return null;
         }
-        // unrecognized return null
+
+        switch (lowerBodyGarmentType) {
+            case DRESS_PANTS:
+                return R.drawable.clothing_icon_dress_pants;
+            case JEANS:
+                return R.drawable.clothing_icon_jeans;
+            case SHORTS:
+                return R.drawable.clothing_icon_shorts;
+            case SKIRT:
+                return R.drawable.clothing_icon_skirt;
+            case SWEATS:
+                return R.drawable.clothing_icon_sweatpants;
+        }
+        // The cases above cover all possibilities, so this cannot happen
         return null;
     }
 

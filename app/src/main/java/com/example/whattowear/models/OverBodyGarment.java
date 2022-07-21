@@ -119,15 +119,26 @@ public class OverBodyGarment {
      * returns null.
      */
     public static Integer getOverBodyGarmentImage(String clothingTypeName) {
-        if (clothingTypeName.equals(OverBodyGarmentType.ATHLETIC_JACKET.name())) {
-            return R.drawable.clothing_icon_athletic_jacket;
-        } else if (clothingTypeName.equals(OverBodyGarmentType.RAIN_JACKET.name())) {
-            return R.drawable.clothing_icon_raincoat;
-        } else if (clothingTypeName.equals(OverBodyGarmentType.WINTER_COAT.name())) {
-            return R.drawable.clothing_icon_winter_coat;
+        OverBodyGarmentType overBodyGarmentType;
+
+        try {
+            overBodyGarmentType = OverBodyGarmentType.valueOf(clothingTypeName);
+        } catch (IllegalArgumentException e) {
+            // unrecognized return null
+            return null;
         }
-        // unrecognized (or none) return null
-        return null;
+
+        switch (overBodyGarmentType) {
+            case ATHLETIC_JACKET:
+                return R.drawable.clothing_icon_athletic_jacket;
+            case RAIN_JACKET:
+                return R.drawable.clothing_icon_raincoat;
+            case WINTER_COAT:
+                return R.drawable.clothing_icon_winter_coat;
+            default:
+                // unrecognized and NONE return null
+                return null;
+        }
     }
 
     /**

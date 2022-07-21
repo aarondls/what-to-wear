@@ -96,17 +96,26 @@ public class UpperBodyGarment {
      * returns null.
      */
     public static Integer getUpperBodyGarmentImage(String clothingTypeName) {
-        if (clothingTypeName.equals(UpperBodyGarmentType.T_SHIRT.name())) {
-            return R.drawable.clothing_icon_t_shirt;
-        } else if (clothingTypeName.equals(UpperBodyGarmentType.POLO_SHIRT.name())) {
-            return R.drawable.clothing_icon_polo_shirt;
-        } else if (clothingTypeName.equals(UpperBodyGarmentType.DRESS_SHIRT.name())) {
-            return R.drawable.clothing_icon_dress_shirt;
-        } else if (clothingTypeName.equals(UpperBodyGarmentType.BLOUSE.name())) {
-            return R.drawable.clothing_icon_blouse;
+        UpperBodyGarmentType upperBodyGarmentType;
+
+        try {
+            upperBodyGarmentType = UpperBodyGarmentType.valueOf(clothingTypeName);
+        } catch (IllegalArgumentException e) {
+            // unrecognized return null
+            return null;
         }
-        // unrecognized return null
-        // this is unreachable since if defined correctly, all of the enum types have been enumerated
+
+        switch (upperBodyGarmentType) {
+            case T_SHIRT:
+                return R.drawable.clothing_icon_t_shirt;
+            case POLO_SHIRT:
+                return R.drawable.clothing_icon_polo_shirt;
+            case DRESS_SHIRT:
+                return R.drawable.clothing_icon_dress_shirt;
+            case BLOUSE:
+                return R.drawable.clothing_icon_blouse;
+        }
+        // The cases above cover all possibilities, so this cannot happen
         return null;
     }
 

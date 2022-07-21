@@ -125,20 +125,30 @@ public class Footwear {
      * returns null.
      */
     public static Integer getFootwearImage(String clothingTypeName) {
-        if (clothingTypeName.equals(FootwearType.SNEAKERS.name())) {
-            return R.drawable.clothing_icon_sneakers;
-        } else if (clothingTypeName.equals(FootwearType.BOAT.name())) {
-            return R.drawable.clothing_icon_boat;
-        } else if (clothingTypeName.equals(FootwearType.LOAFER.name())) {
-            return R.drawable.clothing_icon_loafer;
-        } else if (clothingTypeName.equals(FootwearType.SANDALS.name())) {
-            return R.drawable.clothing_icon_sandals;
-        } else if (clothingTypeName.equals(FootwearType.BOOTS.name())) {
-            return R.drawable.clothing_icon_boots;
-        } else if (clothingTypeName.equals(FootwearType.HEELS.name())) {
-            return R.drawable.clothing_icon_heels;
+        FootwearType footwearType;
+
+        try {
+            footwearType = FootwearType.valueOf(clothingTypeName);
+        } catch (IllegalArgumentException e) {
+            // unrecognized return null
+            return null;
         }
-        // unrecognized return null
+
+        switch (footwearType) {
+            case SNEAKERS:
+                return R.drawable.clothing_icon_sneakers;
+            case BOAT:
+                return R.drawable.clothing_icon_boat;
+            case LOAFER:
+                return R.drawable.clothing_icon_loafer;
+            case SANDALS:
+                return R.drawable.clothing_icon_sandals;
+            case BOOTS:
+                return R.drawable.clothing_icon_boots;
+            case HEELS:
+                return R.drawable.clothing_icon_heels;
+        }
+        // The cases above cover all possibilities, so this cannot happen
         return null;
     }
 
