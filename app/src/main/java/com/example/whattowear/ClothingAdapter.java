@@ -35,14 +35,13 @@ public class ClothingAdapter extends RecyclerView.Adapter<ClothingAdapter.ViewHo
         clothingTypes = new ArrayList<>();
         clothingNames = new ArrayList<>();
         clothingIcons = new ArrayList<>();
-
-        OverBodyGarment overBodyGarment = Clothing.getOverBodyGarment();
-
+        
         // check if there is clothing data to display
         if (!Clothing.hasPreloadedDataToDisplay()) {
             return;
         }
 
+        OverBodyGarment overBodyGarment = Clothing.getOverBodyGarment();
         Integer overBodyGarmentImage = overBodyGarment.getOverBodyGarmentImage();
         if (overBodyGarmentImage != null) {
             // there is an overbody garment
