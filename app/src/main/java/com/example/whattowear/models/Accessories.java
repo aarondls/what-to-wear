@@ -144,11 +144,11 @@ public class Accessories {
      */
     public static List<ClothingRanker> initializeAccessoriesRankers(ParseUser user) {
         ClothingRanker umbrellaRanker = new ClothingRanker();
-        umbrellaRanker.initializeFactorsToDefault(AccessoryType.UMBRELLA.name(), R.drawable.clothing_icon_sunglasses, user);
+        umbrellaRanker.initializeFactorsToDefault(AccessoryType.UMBRELLA.name(), R.drawable.clothing_icon_umbrella, user);
         ClothingRanker hatRanker = new ClothingRanker();
         hatRanker.initializeFactorsToDefault(AccessoryType.HAT.name(), R.drawable.clothing_icon_hat, user);
         ClothingRanker sunglassesRanker = new ClothingRanker();
-        sunglassesRanker.initializeFactorsToDefault(AccessoryType.SUNGLASSES.name(), R.drawable.clothing_icon_umbrella, user);
+        sunglassesRanker.initializeFactorsToDefault(AccessoryType.SUNGLASSES.name(), R.drawable.clothing_icon_sunglasses, user);
 
         accessoriesRankers = new ArrayList<>();
         accessoriesRankers.add(umbrellaRanker);
