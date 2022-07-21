@@ -15,7 +15,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="40dp"
         android:text="What to Wear"
         android:textColor="@color/white"
         android:textSize="28sp"
@@ -30,7 +30,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="0dp">
 
         <RelativeLayout
@@ -41,7 +41,7 @@
             <RelativeLayout
                 android:id="@+id/menu_dashboard_option_relative_layout"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="130dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
@@ -65,10 +65,10 @@
                     android:id="@+id/menu_dashboard_weather_icon_imageview"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
-                    android:layout_below="@+id/menu_dashboard_location_textview"
+                    android:layout_below="@+id/menu_dashboard_forecast_description_textview"
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="40dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="6dp"
                     tools:srcCompat="@tools:sample/avatars"/>
 
                 <TextView
@@ -78,7 +78,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="10dp"
-                    android:layout_marginEnd="30dp"
+                    android:layout_marginEnd="20dp"
                     android:textColor="@color/white"
                     tools:text="22"/>
 
@@ -86,12 +86,77 @@
                     android:id="@+id/menu_dashboard_forecast_description_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/menu_dashboard_current_temp_textview"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginEnd="30dp"
+                    android:layout_below="@+id/menu_dashboard_location_textview"
+                    android:layout_alignStart="@+id/menu_dashboard_location_textview"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="5dp"
                     android:textColor="@color/white"
+                    android:textSize="10sp"
                     tools:text="mostly cloudy"/>
+
+                <TextView
+                    android:id="@+id/menu_dashboard_activity_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/menu_dashboard_current_temp_textview"
+                    android:layout_alignEnd="@+id/menu_dashboard_current_temp_textview"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="0dp"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    tools:text="work"/>
+
+                <ImageView
+                    android:id="@+id/menu_dashboard_over_body_garment_imageview"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignTop="@+id/menu_dashboard_footwear_imageview"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@+id/menu_dashboard_upper_body_garment_imageview"
+                    tools:srcCompat="@drawable/clothing_icon_athletic_jacket"/>
+
+                <ImageView
+                    android:id="@+id/menu_dashboard_lower_body_garment_imageview"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignTop="@+id/menu_dashboard_footwear_imageview"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@+id/menu_dashboard_footwear_imageview"
+                    tools:srcCompat="@drawable/clothing_icon_jeans"/>
+
+                <ImageView
+                    android:id="@+id/menu_dashboard_upper_body_garment_imageview"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignTop="@+id/menu_dashboard_footwear_imageview"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@+id/menu_dashboard_lower_body_garment_imageview"
+                    tools:srcCompat="@drawable/clothing_icon_t_shirt"/>
+
+                <ImageView
+                    android:id="@+id/menu_dashboard_footwear_imageview"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/menu_dashboard_activity_textview"
+                    android:layout_alignEnd="@+id/menu_dashboard_activity_textview"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="20dp"
+                    tools:srcCompat="@drawable/clothing_icon_sneakers"/>
+
+                <TextView
+                    android:id="@+id/menu_dashboard_accessories_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/menu_dashboard_footwear_imageview"
+                    android:layout_alignEnd="@+id/menu_dashboard_footwear_imageview"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="0dp"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    tools:text="+2 more accessories"/>
 
             </RelativeLayout>
 

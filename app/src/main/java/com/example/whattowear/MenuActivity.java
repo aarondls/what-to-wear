@@ -36,6 +36,9 @@ import com.parse.SaveCallback;
 public class MenuActivity extends AppCompatActivity {
     private static final String TAG = "MenuActivity";
     private static final String PLACEHOLDER_LOCATION = "No location";
+    private static final String PLUS_SIGN = "+";
+    private static final String MORE_ACCESSORIES_PHRASE = " more accessories";
+    private static final String PLACEHOLDER_ACCESSORIES_COUNT = "No clothing information.";
 
     private RelativeLayout dashboardClickable;
     private RelativeLayout overBodyGarmentPreferencesClickable;
@@ -43,13 +46,22 @@ public class MenuActivity extends AppCompatActivity {
     private RelativeLayout lowerBodyGarmentPreferencesClickable;
     private RelativeLayout footwearPreferencesClickable;
     private RelativeLayout accessoriesPreferencesClickable;
-    private Button logoutButton;
+
     private TextView dashboardLocationTextview;
     private TextView dashboardCurrentTemperatureTextview;
     private TextView dashboardForecastDescriptionTextview;
+    private TextView dashboardCurrentActivityTextview;
     private ImageView dashboardWeatherIconImageview;
+    private ImageView dashboardOverBodyGarmentIconImageview;
+    private ImageView dashboardUpperBodyGarmentIconImageview;
+    private ImageView dashboardLowerBodyGarmentIconImageview;
+    private ImageView dashboardFootwearIconImageview;
+    private TextView dashboardAccessoriesCountTextview;
+
     private LabeledSwitch advancedPreferencesSwitch;
     private LabeledSwitch weatherUnitsSwitch;
+
+    private Button logoutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +77,22 @@ public class MenuActivity extends AppCompatActivity {
         lowerBodyGarmentPreferencesClickable = findViewById(R.id.menu_lower_body_preferences_option_relative_layout);
         footwearPreferencesClickable = findViewById(R.id.menu_footwear_preferences_option_relative_layout);
         accessoriesPreferencesClickable = findViewById(R.id.menu_accessories_preferences_option_relative_layout);
-        advancedPreferencesSwitch = findViewById(R.id.menu_enable_advanced_preferences_switch);
-        weatherUnitsSwitch = findViewById(R.id.menu_weather_unit_switch);
-        logoutButton = findViewById(R.id.menu_logout_button);
 
         dashboardLocationTextview = findViewById(R.id.menu_dashboard_location_textview);
         dashboardCurrentTemperatureTextview = findViewById(R.id.menu_dashboard_current_temp_textview);
         dashboardForecastDescriptionTextview = findViewById(R.id.menu_dashboard_forecast_description_textview);
+        dashboardCurrentActivityTextview = findViewById(R.id.menu_dashboard_activity_textview);
         dashboardWeatherIconImageview = findViewById(R.id.menu_dashboard_weather_icon_imageview);
+        dashboardOverBodyGarmentIconImageview = findViewById(R.id.menu_dashboard_over_body_garment_imageview);
+        dashboardUpperBodyGarmentIconImageview = findViewById(R.id.menu_dashboard_upper_body_garment_imageview);
+        dashboardLowerBodyGarmentIconImageview = findViewById(R.id.menu_dashboard_lower_body_garment_imageview);
+        dashboardFootwearIconImageview = findViewById(R.id.menu_dashboard_footwear_imageview);
+        dashboardAccessoriesCountTextview = findViewById(R.id.menu_dashboard_accessories_textview);
+
+        advancedPreferencesSwitch = findViewById(R.id.menu_enable_advanced_preferences_switch);
+        weatherUnitsSwitch = findViewById(R.id.menu_weather_unit_switch);
+
+        logoutButton = findViewById(R.id.menu_logout_button);
 
         dashboardClickable.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,20 +218,35 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
+        loadDashboardOverviewWidget();
+    }
+
+    /**
+     * Loads the menu dashboard overview widget with the current weather and clothing information, if available
+     * If weather or clothing information is unavailable, then placeholder data is displayed
+     */
+    private void loadDashboardOverviewWidget() {
         // Only display data if it is valid
         if (Weather.hasPreloadedDataToDisplay()) {
             // fill with the weather data
-            loadDashboardOverviewWidget();
+            loadDashboardWeatherOverviewWidget();
         } else {
             // use placeholder
-            loadPlaceholderDashboardOverviewWidget();
+            loadPlaceholderDashboardWeatherOverviewWidget();
+        }
+        if (Clothing.hasPreloadedDataToDisplay()) {
+            // fill with clothing data
+            loadDashboardClothingOverviewWidget();
+        } else {
+            // use placeholder
+            loadPlaceholderDashboardClothingOverviewWidget();
         }
     }
 
     /**
-     * Loads the menu dashboard overview widget with the current weather information
+     * Loads the meny dashboard overview widget with weather data
      */
-    private void loadDashboardOverviewWidget() {
+    private void loadDashboardWeatherOverviewWidget() {
         dashboardLocationTextview.setText(Weather.getLastLocationName());
 
         Forecast currentForecast = Weather.getCurrentForecast();
@@ -222,11 +257,37 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     /**
-     * Loads the menu dashboard overview widget with placeholder data
+     * Loads the meny dashboard overview widget with clothing data
      */
-    private void loadPlaceholderDashboardOverviewWidget() {
-        // TODO: fix better placeholder
+    private void loadDashboardClothingOverviewWidget() {
+        dashboardCurrentActivityTextview.setText(Clothing.getSelectedActivityType().getDescription().toLowerCase());
+        if (Clothing.getOverBodyGarment().getOverBodyGarmentImage() != null) {
+            dashboardOverBodyGarmentIconImageview.setImageResource(Clothing.getOverBodyGarment().getOverBodyGarmentImage());
+        } else {
+            dashboardOverBodyGarmentIconImageview.setImageDrawable(null);
+        }
+        dashboardUpperBodyGarmentIconImageview.setImageResource(Clothing.getUpperBodyGarment().getUpperBodyGarmentImage());
+        dashboardLowerBodyGarmentIconImageview.setImageResource(Clothing.getLowerBodyGarment().getLowerBodyGarmentImage());
+        dashboardFootwearIconImageview.setImageResource(Clothing.getFootwear().getFootwearImage());
+        int accessoriesSize = Clothing.getAccessories().getAccessoriesImages().size();
+        if (accessoriesSize > 0) {
+            String accessoriesCountPhrase = PLUS_SIGN + accessoriesSize + MORE_ACCESSORIES_PHRASE;
+            dashboardAccessoriesCountTextview.setText(accessoriesCountPhrase);
+        }
+    }
+
+    /**
+     * Loads the menu dashboard overview widget with placeholder weather data
+     */
+    private void loadPlaceholderDashboardWeatherOverviewWidget() {
         dashboardLocationTextview.setText(PLACEHOLDER_LOCATION);
+    }
+
+    /**
+     * Loads the menu dashboard overview widget with placeholder clothing data
+     */
+    private void loadPlaceholderDashboardClothingOverviewWidget() {
+        dashboardAccessoriesCountTextview.setText(PLACEHOLDER_ACCESSORIES_COUNT);
     }
 
     /**
