@@ -216,7 +216,7 @@ public class SignupBackendActivity extends AppCompatActivity {
      */
     private void welcomeUser() {
         // Fade in welcome message
-        loadingAnimation.setVisibility(View.GONE);
+        loadingAnimation.setVisibility(View.INVISIBLE);
         informationTextview.setText(NEW_USER_WELCOME_PROMPT);
         informationTextview.animate().alpha(1f).setDuration(FADE_IN_ANIMATION_TIME);
 
