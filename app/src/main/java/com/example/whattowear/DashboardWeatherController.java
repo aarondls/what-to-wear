@@ -130,7 +130,6 @@ public class DashboardWeatherController {
         double latitude = Weather.getLastLocationLatitude();
         double longitude = Weather.getLastLocationLongitude();
 
-        // TODO: Exclude non needed data after detailed weather screen is built
         String apiUrl = OPENWEATHER_API_LINK
                 + OPENWEATHER_LAT + latitude
                 + OPENWEATHER_LON + longitude

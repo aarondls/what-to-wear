@@ -59,7 +59,6 @@ public class Weather {
 
     private static List<Forecast> hourlyForecast;
     private static Forecast currentForecast;
-    private static Conditions dayConditions;
     private static int dayConditionsID;
     private static int dayMinTemperatureFahrenheit;
     private static int dayMaxTemperatureFahrenheit;
@@ -86,9 +85,6 @@ public class Weather {
         dayMinTemperatureFahrenheit = dayTemperatureData.getInt(DAY_MIN_TEMP_ID);
         dayMaxTemperatureFahrenheit = dayTemperatureData.getInt(DAY_MAX_TEMP_ID);
         dayMaxUVIndex = (float) dayWeatherData.getDouble(DAY_MAX_UV_INDEX_ID);
-
-        // TODO: fill up currentForecast and dayConditions, when needed
-        // TODO: if not, delete them
     }
 
     /**
