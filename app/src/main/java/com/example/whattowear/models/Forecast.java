@@ -22,13 +22,8 @@ public class Forecast {
     private static final String FEELS_LIKE_ID = "feels_like";
     private static final String HUMIDITY_ID = "humidity";
     private static final String UV_INDEX_ID = "uvi";
-    private static final String CLOUDS_ID = "clouds";
-    private static final String WIND_SPEED_ID = "wind_speed";
     private static final String PROBABILITY_OF_PRECIPITATION_ID = "pop";
     private static final String WEATHER_ID = "weather";
-    private static final String HOUR_1_ID = "1h";
-    private static final String RAIN_ID = "rain";
-    private static final String SNOW_ID = "snow";
     private static final String AM_12 = "12am";
     private static final String AM = "am";
     private static final String PM = "pm";
@@ -36,17 +31,12 @@ public class Forecast {
     private static final int TWELVE_HOUR = 12;
 
 
-    // TODO: Remove fields that may not be used once clothing selection logic is completed
     private Date dt;
     private int fahrenheitTemp;
     private int feelsLike;
     private int humidity;
     private double uvIndex;
-    private int clouds;
-    private double windSpeed;
     private int probOfPrecipitation;
-    private int rainHourVol;
-    private int snowHourVol;
     private Conditions hourCondition;
 
     public static Forecast fromJson(JSONObject jsonObject) throws JSONException {
@@ -57,8 +47,6 @@ public class Forecast {
         forecast.feelsLike = jsonObject.getInt(FEELS_LIKE_ID);
         forecast.humidity = jsonObject.getInt(HUMIDITY_ID);
         forecast.uvIndex = jsonObject.getDouble(UV_INDEX_ID);
-        forecast.clouds = jsonObject.getInt(CLOUDS_ID);
-        forecast.windSpeed = jsonObject.getDouble(WIND_SPEED_ID);
 
         if (jsonObject.has(PROBABILITY_OF_PRECIPITATION_ID)) {
             forecast.probOfPrecipitation = jsonObject.getInt(PROBABILITY_OF_PRECIPITATION_ID);
@@ -67,18 +55,6 @@ public class Forecast {
         }
 
         forecast.hourCondition = Conditions.fromJson(jsonObject.getJSONArray(WEATHER_ID).getJSONObject(0));
-
-        if (jsonObject.has(RAIN_ID)) {
-            forecast.rainHourVol = jsonObject.getJSONObject(RAIN_ID).getInt(HOUR_1_ID);
-        } else {
-            forecast.rainHourVol = 0;
-        }
-
-        if (jsonObject.has(SNOW_ID)) {
-            forecast.snowHourVol = jsonObject.getJSONObject(SNOW_ID).getInt("1h");
-        } else {
-            forecast.snowHourVol = 0;
-        }
 
         return forecast;
     }
