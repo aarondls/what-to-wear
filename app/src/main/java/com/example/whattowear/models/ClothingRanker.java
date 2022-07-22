@@ -1,6 +1,5 @@
 package com.example.whattowear.models;
 
-import android.util.Log;
 import android.util.Pair;
 
 import com.parse.ParseClassName;

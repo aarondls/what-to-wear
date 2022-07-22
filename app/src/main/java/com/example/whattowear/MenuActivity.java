@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -154,7 +153,6 @@ public class MenuActivity extends AppCompatActivity {
                         if (e != null) {
                             // Let user know something wrong happened
                             Toast.makeText(MenuActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                            Log.e(TAG, e.getMessage());
                         }
                     }
                 });
@@ -183,7 +181,6 @@ public class MenuActivity extends AppCompatActivity {
                         if (e != null) {
                             // Let user know something wrong happened
                             Toast.makeText(MenuActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                            Log.e(TAG, e.getMessage());
                         }
                     }
                 });
@@ -211,7 +208,6 @@ public class MenuActivity extends AppCompatActivity {
                         } else {
                             // Let user know of error
                             Toast.makeText(MenuActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                            Log.e(TAG, e.getMessage());
                         }
                     }
                 });

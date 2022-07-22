@@ -1,11 +1,6 @@
 package com.example.whattowear;
 
 import android.app.Activity;
-import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,20 +8,13 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
-import com.example.whattowear.BuildConfig;
-import com.example.whattowear.ClothingInterface;
-import com.example.whattowear.R;
-import com.example.whattowear.models.Clothing;
 import com.example.whattowear.models.Forecast;
 import com.example.whattowear.models.Weather;
 
 import org.json.JSONException;
-import org.w3c.dom.Text;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import okhttp3.Headers;
 
@@ -103,7 +91,6 @@ public class DashboardWeatherController {
         activity.setNewLocationDataListener(new DashboardActivity.LocationDataListener() {
             @Override
             public void onNewLocationDataReady() {
-                Log.i(TAG, "Location data changed ready now");
                 onDataSetChanged();
             }
         });
@@ -140,13 +127,9 @@ public class DashboardWeatherController {
                 + "&units=" + REQUEST_WEATHER_DATA_UNIT
                 + "&appid=" + BuildConfig.OPENWEATHER_API_KEY;
 
-        Log.i(TAG, "Requesting weather data");
         openWeatherClient.get(apiUrl, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
-                // Log entire response
-                Log.i(TAG, json.jsonObject.toString());
-
                 // Get relevant data
                 try {
                     // load the weather data from the received json data
@@ -158,10 +141,7 @@ public class DashboardWeatherController {
                 } catch (JSONException e) {
                     // TODO: fix what happens when weather data is not found; perhaps change weather display to show a message that it isn't found
                     Toast.makeText(activity, "Unable to parse weather information.", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "Failed to convert JSON data into Weather object", e);
-                    e.printStackTrace();
                 }
-                Log.i(TAG, "finished updating all weather info");
 
                 updateDashboardDisplay();
             }
@@ -171,8 +151,6 @@ public class DashboardWeatherController {
                 // TODO: fix what happens when weather data is not found; perhaps change weather display to show a message that it isn't found
                 // for now, make a toast
                 Toast.makeText(activity, "Unable to fetch weather information.", Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "Failed to get weather data");
-                Log.e(TAG, response);
             }
         });
     }
@@ -183,7 +161,6 @@ public class DashboardWeatherController {
     private void updateDashboardDisplay() {
         // notify the listeners (clothing controller and weather animation controller)
         for (WeatherDataListener listener : listeners) {
-            Log.i(TAG, "calling listener");
             listener.onNewWeatherDataReady();
         }
 

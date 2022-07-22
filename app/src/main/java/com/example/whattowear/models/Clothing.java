@@ -1,7 +1,5 @@
 package com.example.whattowear.models;
 
-import android.util.Log;
-
 import com.example.whattowear.ClothingInterface;
 
 import java.util.List;
@@ -41,13 +39,9 @@ public class Clothing {
         }
 
         overBodyGarment = OverBodyGarment.getOptimalOverBodyGarment();
-        Log.i("Clothing", "Optimal over body garment: " + overBodyGarment.getOverBodyGarmentType());
         upperBodyGarment = UpperBodyGarment.getOptimalUpperBodyGarment();
-        Log.i("Clothing", "Optimal upper body garment: " + upperBodyGarment.getUpperBodyGarmentType());
         lowerBodyGarment = LowerBodyGarment.getOptimalLowerBodyGarment();
-        Log.i("Clothing", "Optimal lower body garment: " + lowerBodyGarment.getLowerBodyGarmentType());
         footwear = Footwear.getOptimalFootwear();
-        Log.i("Clothing", "Optimal footwear: " + footwear.getFootwearType());
         accessories = Accessories.getOptimalAccessories();
 
         loadedDataLocationName = Weather.getLoadedDataLocationName();

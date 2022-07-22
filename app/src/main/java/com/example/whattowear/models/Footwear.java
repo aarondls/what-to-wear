@@ -1,9 +1,6 @@
 package com.example.whattowear.models;
 
-import android.util.Log;
-
 import com.example.whattowear.R;
-import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -78,7 +75,6 @@ public class Footwear {
 
         footwear.footwearType = ClothingRanker.getOptimalClothingType(footwearRankers, FootwearType.values()).first;
 
-        Log.i(TAG, "Finished calculating footwear");
         return footwear;
     }
 

@@ -1,7 +1,6 @@
 package com.example.whattowear;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -77,7 +76,6 @@ public class DashboardClothingController {
         dashboardWeatherController.addNewWeatherDataListener(new DashboardWeatherController.WeatherDataListener() {
             @Override
             public void onNewWeatherDataReady() {
-                Log.i(TAG, "Weather data is ready from clothing controller");
                 onDataSetChanged();
             }
         });
@@ -93,7 +91,6 @@ public class DashboardClothingController {
             @Override
             public void onFinish() {
                 // load clothing images here
-                Log.i(TAG, "Finished calculating all clothing info");
                 Clothing.setLoadedDataLocationName(Weather.getLoadedDataLocationName());
                 updateDashboardDisplay();
             }

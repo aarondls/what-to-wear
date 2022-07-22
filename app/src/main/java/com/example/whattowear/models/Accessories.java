@@ -1,9 +1,6 @@
 package com.example.whattowear.models;
 
-import android.util.Log;
-
 import com.example.whattowear.R;
-import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -63,7 +60,6 @@ public class Accessories {
             }
         }
 
-        Log.i(TAG, "Finished calculating accessories");
         return accessories;
     }
 

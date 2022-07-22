@@ -1,7 +1,6 @@
 package com.example.whattowear;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -130,7 +129,6 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesAdapter.
                 activityImportanceSlider.addOnChangeListener(new Slider.OnChangeListener() {
                     @Override
                     public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
-                        Log.i(TAG, "Activity importance slider changed to " + value);
                         clothingRanker.setActivityImportance(Math.round(value));
                         saveClothingRankerToParseInBackground(clothingRanker);
                     }
@@ -176,12 +174,10 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesAdapter.
                         // TODO: change the temp factor of the associated clothing ranker
                         if (endpointValues.get(0) == value) {
                             // change is the first end point
-                            Log.i(TAG, "Temp lower range changed to " + value);
                             clothingRanker.setTemperatureLowerRange(Math.round(value));
                             saveClothingRankerToParseInBackground(clothingRanker);
                         } else {
                             // change is the last end point
-                            Log.i(TAG, "Temp upper range changed to " + value);
                             clothingRanker.setTemperatureUpperRange(Math.round(value));
                             saveClothingRankerToParseInBackground(clothingRanker);
                         }

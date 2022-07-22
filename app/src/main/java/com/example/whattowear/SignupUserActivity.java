@@ -4,27 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import com.example.whattowear.models.Accessories;
-import com.example.whattowear.models.ClothingRanker;
-import com.example.whattowear.models.Footwear;
-import com.example.whattowear.models.LowerBodyGarment;
-import com.example.whattowear.models.OverBodyGarment;
-import com.example.whattowear.models.Preferences;
-import com.example.whattowear.models.UpperBodyGarment;
-import com.example.whattowear.models.Weather;
-import com.parse.ParseException;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SignupUserActivity extends AppCompatActivity {
     public static final String TAG = "SignupActivity";

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.model.Place;
@@ -172,10 +171,8 @@ public class Weather {
                 // Worst case, try to use country name
                 locationName = address.get(0).getCountryName();
             }
-        } catch (IOException e) {
-            Log.e(TAG, "IOException", e);
-        } catch (NullPointerException e) {
-            Log.e(TAG, "NullPointerException", e);
+        } catch (IOException | NullPointerException e) {
+            // handle below
         }
 
         // TODO: Fix city being unknown

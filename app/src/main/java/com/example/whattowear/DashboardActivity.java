@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -208,8 +207,6 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
 
             @Override
             public void onError(@NonNull Status status) {
-                Log.i(TAG,status.toString());
-
                 // the error could be either hitting back or something more serious
                 // if it is serious, the status message is not null, so display as a toast
                 if (status.getStatusMessage() != null) {
@@ -252,7 +249,6 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
 
         if (Weather.getLastLocationName().isEmpty()) { // check if new location needs to be updated or not
             // need to update with new location
-            Log.i(TAG, "loc is empty");
             requestUserLocation();
         } else if (hasLocationPermissions()) { // prepare app depending on permissions
             handleLocationServicesAccepted();
@@ -264,7 +260,6 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.i(TAG, "onrestart");
 
         // restart the weather animation if it exists
         dashboardWeatherAnimationController.onDashboardActivityRestart();
@@ -272,7 +267,6 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
 
     @Override
     protected void onResume() {
-        Log.i(TAG, "onresume");
         super.onResume();
 
         autocompleteFragment.setText("");
@@ -306,7 +300,6 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
             getUserLocation();
             handleLocationServicesAccepted();
         } else if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-            Log.i(TAG, "permanently denied");
             // TODO: stretch goal to animate button bouncing to highlight whats wrong
             handleLocationServicesDenied();
         } else {
@@ -360,7 +353,6 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
     private void getUserLocation() {
         // first fetch last location
         if (hasLocationPermissions()) {
-            Log.i(TAG, "Location permissions granted");
             // needs permissions to get location
             // uses last location since it gets the location estimate quicker and reduces battery usage
             // the exact current location isn't that important as weather data is local to the general area
@@ -379,7 +371,6 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
                                 }
 
                             } else {
-                                Log.e(TAG, "No location found");
                                 Toast.makeText(DashboardActivity.this, "No location found. Check your GPS or manually enter in a location.", Toast.LENGTH_SHORT).show();
                             }
                         }

@@ -1,10 +1,8 @@
 package com.example.whattowear.models;
 
-import android.util.Log;
 import android.util.Pair;
 
 import com.example.whattowear.R;
-import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -71,8 +69,6 @@ public class OverBodyGarment {
             overBodyGarment.overBodyGarmentType = OverBodyGarmentType.NONE;
             overBodyGarment.rankingScore = NONE_TYPE_RANKING;
         }
-
-        Log.i(TAG, "Returning optimal: " + overBodyGarment.overBodyGarmentType);
 
         return overBodyGarment;
     }
