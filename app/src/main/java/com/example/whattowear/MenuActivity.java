@@ -38,6 +38,7 @@ public class MenuActivity extends AppCompatActivity {
     private static final String PLUS_SIGN = "+";
     private static final String MORE_ACCESSORIES_PHRASE = " more accessories";
     private static final String PLACEHOLDER_ACCESSORIES_COUNT = "No clothing information.";
+    private static final String SUCCESSFULLY_LOGGED_OUT_PROMPT = "Logged out successfully";
 
     private RelativeLayout dashboardClickable;
     private RelativeLayout overBodyGarmentPreferencesClickable;
@@ -198,7 +199,7 @@ public class MenuActivity extends AppCompatActivity {
                     public void done(ParseException e) {
                         if (e == null) {
                             // Successfully logged out
-                            Toast.makeText(MenuActivity.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MenuActivity.this, SUCCESSFULLY_LOGGED_OUT_PROMPT, Toast.LENGTH_SHORT).show();
                             // Move to login screen
                             Intent i = new Intent(MenuActivity.this, LoginUserActivity.class);
                             // clear task and make new one so user cannot go back to activities that require being logged in

@@ -11,6 +11,12 @@ public class Clothing {
         OVER_BODY_GARMENT, UPPER_BODY_GARMENT, LOWER_BODY_GARMENT, FOOTWEAR, ACCESSORIES
     }
 
+    private static final String OVER_BODY_GARMENT_NAME = "Over body garment";
+    private static final String UPPER_BODY_GARMENT_NAME = "Upper body garment";
+    private static final String LOWER_BODY_GARMENT_NAME = "Lower body garment";
+    private static final String FOOTWEAR_NAME = "Footwear";
+    private static final String ACCESSORIES_NAME = "Accessories";
+
     private static Clothing clothing = new Clothing();
 
     private static OverBodyGarment overBodyGarment;
@@ -134,15 +140,15 @@ public class Clothing {
     public static String getClothingNameFromType(ClothingType clothingType) {
         switch (clothingType) {
             case OVER_BODY_GARMENT:
-                return "Over body garment";
+                return OVER_BODY_GARMENT_NAME;
             case UPPER_BODY_GARMENT:
-                return "Upper body garment";
+                return UPPER_BODY_GARMENT_NAME;
             case LOWER_BODY_GARMENT:
-                return "Lower body garment";
+                return LOWER_BODY_GARMENT_NAME;
             case FOOTWEAR:
-                return "Footwear";
+                return FOOTWEAR_NAME;
             case ACCESSORIES:
-                return "Accessories";
+                return ACCESSORIES_NAME;
             default:
                 // if unrecognized type, return null
                 return null;

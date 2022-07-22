@@ -15,6 +15,11 @@ public class OverBodyGarment {
 
     private static final float NONE_TYPE_RANKING = 300;
 
+    private static final String ATHLETIC_JACKET_NAME = "Athletic jacket";
+    private static final String RAIN_JACKET_NAME = "Rain jacket";
+    private static final String WINTER_COAT_NAME = "Winter coat";
+    private static final String NONE_NAME = "None";
+
     private static final int ATHLETIC_JACKET_TEMPERATURE_LOWER_RANGE = 40;
     private static final int ATHLETIC_JACKET_TEMPERATURE_UPPER_RANGE = 60;
     private static final int ATHLETIC_JACKET_WORK_ACTIVITY_FACTOR = 0;
@@ -86,13 +91,13 @@ public class OverBodyGarment {
     public String getOverBodyGarmentTypeName() {
         switch (overBodyGarmentType) {
             case ATHLETIC_JACKET:
-                return "Athletic jacket";
+                return ATHLETIC_JACKET_NAME;
             case RAIN_JACKET:
-                return "Rain jacket";
+                return RAIN_JACKET_NAME;
             case WINTER_COAT:
-                return "Winter coat";
+                return WINTER_COAT_NAME;
             case NONE:
-                return "None";
+                return NONE_NAME;
         }
         // The cases above cover all possibilities, so this cannot happen
         return null;

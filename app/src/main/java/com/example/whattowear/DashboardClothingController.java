@@ -16,6 +16,10 @@ import java.util.List;
 
 public class DashboardClothingController {
     public static final String TAG = "DashboardClothingController";
+    private static final String PLUS_SYMBOL = "+";
+    private static final String ACCESSORIES_PHRASE = " accessories";
+    private static final String ACCESSORY_PHRASE = " accessory";
+    private static final String NO_CLOTHING_INFORMATION_TEXT = "No clothing information.";
 
     private Activity activity;
 
@@ -115,11 +119,11 @@ public class DashboardClothingController {
             accessoriesImageview.setImageResource(accessoriesImages.get(0));
 
             if (accessoriesImages.size() > 1) {
-                String excessAccessoryCount = "+" + String.valueOf(accessoriesImages.size()-1);
+                String excessAccessoryCount = PLUS_SYMBOL + String.valueOf(accessoriesImages.size()-1);
                 if (accessoriesImages.size() > 2) {
-                    excessAccessoryCount += " accessories";
+                    excessAccessoryCount += ACCESSORIES_PHRASE;
                 } else {
-                    excessAccessoryCount += " accessory";
+                    excessAccessoryCount += ACCESSORY_PHRASE;
                 }
                 excessAccessoriesTextview.setText(excessAccessoryCount);
             }
@@ -132,6 +136,6 @@ public class DashboardClothingController {
      * Displays placeholder clothing information to visually signal that there is no clothing data yet
      */
     public void displayPlaceholderOnDashboard() {
-        excessAccessoriesTextview.setText("No clothing information.");
+        excessAccessoriesTextview.setText(NO_CLOTHING_INFORMATION_TEXT);
     }
 }

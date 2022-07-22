@@ -10,6 +10,11 @@ import java.util.List;
 public class UpperBodyGarment {
     private static final String UPPER_BODY_GARMENT_NAME = "Upper body garment";
 
+    private static final String T_SHIRT_NAME = "T-shirt";
+    private static final String POLO_SHIRT_NAME = "Polo shirt";
+    private static final String DRESS_SHIRT_NAME = "Dress shirt";
+    private static final String BLOUSE_NAME = "Blouse";
+
     private static final int T_SHIRT_TEMPERATURE_IMPORTANCE = 3;
     private static final int T_SHIRT_WORK_ACTIVITY_FACTOR = 0;
     private static final int T_SHIRT_CASUAL_ACTIVITY_FACTOR = 9;
@@ -70,13 +75,13 @@ public class UpperBodyGarment {
     public String getUpperBodyGarmentTypeName() {
         switch (upperBodyGarmentType) {
             case T_SHIRT:
-                return "T-shirt";
+                return T_SHIRT_NAME;
             case POLO_SHIRT:
-                return "Polo shirt";
+                return POLO_SHIRT_NAME;
             case DRESS_SHIRT:
-                return "Dress shirt";
+                return DRESS_SHIRT_NAME;
             case BLOUSE:
-                return "Blouse";
+                return BLOUSE_NAME;
         }
         // The cases above cover all possibilities, so this cannot happen
         return null;

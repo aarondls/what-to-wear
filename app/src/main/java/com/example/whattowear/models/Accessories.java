@@ -11,7 +11,11 @@ public class Accessories {
 
     private static final String ACCESSORIES_NAME = "Accessories";
 
-    private static final float UV_ACCESSORY_THRESHOLD = 20;
+    private static final int RAIN_DRIZZLE_UMBRELLA_THRESHOLD = 5;
+    private static final int UV_ACCESSORY_THRESHOLD = 20;
+    private static final String UMBRELLA_NAME = "Umbrella";
+    private static final String HAT_NAME = "Hat";
+    private static final String SUNGLASSES_NAME = "Sunglasses";
 
     private List<AccessoryType> accessoriesTypes;
 
@@ -28,14 +32,6 @@ public class Accessories {
      * @return the calculated accessories
      */
     public static Accessories getOptimalAccessories()  {
-        // TODO: update type based on weather, activity, and preferences
-        // for testing, default to empty
-
-        // TODO: how to rank accessories?
-        // just preferences, and its own unique factor?
-        // maybe restrict accessories settings to just preferences
-        // set all other factors to 0 manually
-        // then get preferences factor only, and multiply with UV index factor, then set up a threshold it must be bigger than
         Accessories accessories = new Accessories();
 
         accessories.accessoriesTypes = new ArrayList<>();
@@ -44,9 +40,7 @@ public class Accessories {
         // umbrella works on rain/drizzle (but not thunderstorm, since that has high winds)
         int dayConditionsIDFirstDigit = Weather.getDayConditionsID()/100;
         if (dayConditionsIDFirstDigit == Conditions.DRIZZLE_CONDITIONS_ID_FIRST_DIGIT || dayConditionsIDFirstDigit == Conditions.RAIN_CONDITIONS_ID_FIRST_DIGIT) {
-            // TODO: interate preference factor better by multiplying with drizzle/rain strength
-            // TODO: move classification of conditions from animation to conditions class
-            if (accessoriesRankers.get(0).getPreferenceFactor() >= 5) {
+            if (accessoriesRankers.get(0).getPreferenceFactor() >= RAIN_DRIZZLE_UMBRELLA_THRESHOLD) {
                 accessories.accessoriesTypes.add(AccessoryType.UMBRELLA);
             }
         }
@@ -78,11 +72,11 @@ public class Accessories {
         for (AccessoryType accessory : accessoriesTypes) {
             switch (accessory) {
                 case UMBRELLA:
-                    accessoriesNames.add("Umbrella");
+                    accessoriesNames.add(UMBRELLA_NAME);
                 case HAT:
-                    accessoriesNames.add("Hat");
+                    accessoriesNames.add(HAT_NAME);
                 case SUNGLASSES:
-                    accessoriesNames.add("Sunglasses");
+                    accessoriesNames.add(SUNGLASSES_NAME);
             }
         }
         return accessoriesNames;

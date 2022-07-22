@@ -10,6 +10,12 @@ import java.util.List;
 public class LowerBodyGarment {
     private static final String LOWER_BODY_GARMENT_NAME = "Lower body garment";
 
+    private static final String DRESS_PANTS_NAME = "Dress pants";
+    private static final String JEANS_NAME = "Jeans";
+    private static final String SHORTS_NAME = "Shorts";
+    private static final String SKIRT_NAME = "Skirt";
+    private static final String SWEATS_NAME = "Sweats";
+
     private static final int DRESS_PANTS_TEMPERATURE_LOWER_RANGE = 0;
     private static final int DRESS_PANTS_TEMPERATURE_UPPER_RANGE = 60;
     private static final int DRESS_PANTS_ACTIVITY_IMPORTANCE = 9;
@@ -85,15 +91,15 @@ public class LowerBodyGarment {
     public String getLowerBodyGarmentTypeName() {
         switch (lowerBodyGarmentType) {
             case DRESS_PANTS:
-                return "Dress pants";
+                return DRESS_PANTS_NAME;
             case JEANS:
-                return "Jeans";
+                return JEANS_NAME;
             case SHORTS:
-                return "Shorts";
+                return SHORTS_NAME;
             case SKIRT:
-                return "Skirt";
+                return SKIRT_NAME;
             case SWEATS:
-                return "Sweats";
+                return SWEATS_NAME;
         }
         // The cases above cover all possibilities, so this cannot happen
         return null;

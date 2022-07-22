@@ -9,6 +9,10 @@ public class Conditions {
     public static final int RAIN_CONDITIONS_ID_FIRST_DIGIT = 5;
     public static final int SNOW_CONDITIONS_ID_FIRST_DIGIT = 6;
 
+    private static final String WEATHER_CONDITIONS_ID_NAME = "id";
+    private static final String WEATHER_CONDITIONS_SUMMARY_NAME = "main";
+    private static final String WEATHER_CONDITIONS_DESCRIPTION_NAME = "description";
+    private static final String WEATHER_CONDITIONS_ICON_NAME = "icon";
     private static final String IMG_URL_BEGIN = "https://openweathermap.org/img/wn/";
     private static final String IMG_URL_END = "@2x.png";
 
@@ -20,10 +24,10 @@ public class Conditions {
     public static Conditions fromJson(JSONObject jsonObject) throws JSONException {
         Conditions conditions = new Conditions();
 
-        conditions.weatherConditionsID = jsonObject.getInt("id");
-        conditions.conditionSummary = jsonObject.getString("main");
-        conditions.conditionDescription = jsonObject.getString("description");
-        conditions.conditionIconLink = IMG_URL_BEGIN + jsonObject.getString("icon") + IMG_URL_END;
+        conditions.weatherConditionsID = jsonObject.getInt(WEATHER_CONDITIONS_ID_NAME);
+        conditions.conditionSummary = jsonObject.getString(WEATHER_CONDITIONS_SUMMARY_NAME);
+        conditions.conditionDescription = jsonObject.getString(WEATHER_CONDITIONS_DESCRIPTION_NAME);
+        conditions.conditionIconLink = IMG_URL_BEGIN + jsonObject.getString(WEATHER_CONDITIONS_ICON_NAME) + IMG_URL_END;
 
         return conditions;
     }

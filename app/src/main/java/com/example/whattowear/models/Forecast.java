@@ -17,6 +17,25 @@ public class Forecast {
     private static final String FEELS_LIKE_SENTENCE = "But feels like: ";
     private static final String TWO_DECIMAL_PLACES_FORMAT = "%.2f";
 
+    private static final String DATE_TIME_ID = "dt";
+    private static final String TEMP_ID = "temp";
+    private static final String FEELS_LIKE_ID = "feels_like";
+    private static final String HUMIDITY_ID = "humidity";
+    private static final String UV_INDEX_ID = "uvi";
+    private static final String CLOUDS_ID = "clouds";
+    private static final String WIND_SPEED_ID = "wind_speed";
+    private static final String PROBABILITY_OF_PRECIPITATION_ID = "pop";
+    private static final String WEATHER_ID = "weather";
+    private static final String HOUR_1_ID = "1h";
+    private static final String RAIN_ID = "rain";
+    private static final String SNOW_ID = "snow";
+    private static final String AM_12 = "12am";
+    private static final String AM = "am";
+    private static final String PM = "pm";
+    private static final int ZERO_HOUR = 0;
+    private static final int TWELVE_HOUR = 12;
+
+
     // TODO: Remove fields that may not be used once clothing selection logic is completed
     private Date dt;
     private int fahrenheitTemp;
@@ -33,30 +52,30 @@ public class Forecast {
     public static Forecast fromJson(JSONObject jsonObject) throws JSONException {
         Forecast forecast = new Forecast();
 
-        forecast.dt = new Date(Long.parseLong(jsonObject.getString("dt")) * 1000);
-        forecast.fahrenheitTemp = jsonObject.getInt("temp");
-        forecast.feelsLike = jsonObject.getInt("feels_like");
-        forecast.humidity = jsonObject.getInt("humidity");
-        forecast.uvIndex = jsonObject.getDouble("uvi");
-        forecast.clouds = jsonObject.getInt("clouds");
-        forecast.windSpeed = jsonObject.getDouble("wind_speed");
+        forecast.dt = new Date(Long.parseLong(jsonObject.getString(DATE_TIME_ID)) * 1000);
+        forecast.fahrenheitTemp = jsonObject.getInt(TEMP_ID);
+        forecast.feelsLike = jsonObject.getInt(FEELS_LIKE_ID);
+        forecast.humidity = jsonObject.getInt(HUMIDITY_ID);
+        forecast.uvIndex = jsonObject.getDouble(UV_INDEX_ID);
+        forecast.clouds = jsonObject.getInt(CLOUDS_ID);
+        forecast.windSpeed = jsonObject.getDouble(WIND_SPEED_ID);
 
-        if (jsonObject.has("pop")) {
-            forecast.probOfPrecipitation = jsonObject.getInt("pop");
+        if (jsonObject.has(PROBABILITY_OF_PRECIPITATION_ID)) {
+            forecast.probOfPrecipitation = jsonObject.getInt(PROBABILITY_OF_PRECIPITATION_ID);
         } else {
             forecast.probOfPrecipitation = -1;
         }
 
-        forecast.hourCondition = Conditions.fromJson(jsonObject.getJSONArray("weather").getJSONObject(0));
+        forecast.hourCondition = Conditions.fromJson(jsonObject.getJSONArray(WEATHER_ID).getJSONObject(0));
 
-        if (jsonObject.has("rain")) {
-            forecast.rainHourVol = jsonObject.getJSONObject("rain").getInt("1h");
+        if (jsonObject.has(RAIN_ID)) {
+            forecast.rainHourVol = jsonObject.getJSONObject(RAIN_ID).getInt(HOUR_1_ID);
         } else {
             forecast.rainHourVol = 0;
         }
 
-        if (jsonObject.has("snow")) {
-            forecast.snowHourVol = jsonObject.getJSONObject("snow").getInt("1h");
+        if (jsonObject.has(SNOW_ID)) {
+            forecast.snowHourVol = jsonObject.getJSONObject(SNOW_ID).getInt("1h");
         } else {
             forecast.snowHourVol = 0;
         }
@@ -85,14 +104,14 @@ public class Forecast {
     public String getAMPMTime() {
         int hours = dt.getHours();
 
-        if (hours == 0) {
-            return "12AM";
-        } else if (hours == 12) {
-            return hours + "PM";
-        } else if (hours < 12) {
-            return hours + "AM";
+        if (hours == ZERO_HOUR) {
+            return AM_12;
+        } else if (hours == TWELVE_HOUR) {
+            return hours + PM;
+        } else if (hours < TWELVE_HOUR) {
+            return hours + AM;
         } else {
-            return hours-12 + "PM";
+            return hours-TWELVE_HOUR + PM;
         }
     }
 

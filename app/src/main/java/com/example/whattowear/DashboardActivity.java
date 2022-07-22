@@ -50,6 +50,12 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
     public static final String TAG = "DashboardActivity";
 
     public static final int PERMISSIONS_REQUEST_CODE = 1;
+    private static final String LOCATION_SERVICES_RATIONALE = "This application requires location services to auto detect your location.";
+    private static final String LOCATION_SERVICES_PERMANENTLY_DENIED_PROMPT = "Location services is permanently denied and app functionality is reduced.";
+    private static final String CHANGE_SETTINGS_PROMPT = "Change settings";
+    private static final String LOCATION_SERVICES_ACCEPTED_PROMPT = "Location services permission granted!";
+    private static final String LOCATION_SERVICES_DENIED_PROMPT = "Location services permission denied!";
+    private static final String NO_LOCATION_PROMPT = "No location found. Check your GPS or manually enter in a location.";
 
     private static float minVerticalSwipeDistance; // Minimum vertical swipe distance for the swipe up gesture
     private float y1, y2; // used to store where the swipe started/ended
@@ -154,8 +160,8 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
             @Override
             public void onClick(View v) {
                 // Display warning snackbar, and allow user to change if they wish by redirecting to settings app
-                Snackbar.make(v, "Location services is permanently denied and app functionality is reduced.", Snackbar.LENGTH_LONG)
-                        .setAction("Change settings", new View.OnClickListener() {
+                Snackbar.make(v, LOCATION_SERVICES_PERMANENTLY_DENIED_PROMPT, Snackbar.LENGTH_LONG)
+                        .setAction(CHANGE_SETTINGS_PROMPT, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 // directing user to enable the permission in app settings.
@@ -305,7 +311,7 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
         } else {
             EasyPermissions.requestPermissions(
                     this,
-                    "This application requires location services to auto detect your location.",
+                    LOCATION_SERVICES_RATIONALE,
                     PERMISSIONS_REQUEST_CODE,
                     Manifest.permission.ACCESS_FINE_LOCATION);
         }
@@ -313,7 +319,7 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
 
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
-        Toast.makeText(this, "Location services permission granted!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, LOCATION_SERVICES_ACCEPTED_PROMPT, Toast.LENGTH_SHORT).show();
 
         // immediately get current location
         getUserLocation();
@@ -323,7 +329,7 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
 
     @Override
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
-        Toast.makeText(this, "Location services permission denied!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, LOCATION_SERVICES_DENIED_PROMPT, Toast.LENGTH_SHORT).show();
 
         handleLocationServicesDenied();
     }
@@ -371,7 +377,7 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
                                 }
 
                             } else {
-                                Toast.makeText(DashboardActivity.this, "No location found. Check your GPS or manually enter in a location.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(DashboardActivity.this, NO_LOCATION_PROMPT, Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

@@ -11,6 +11,13 @@ public class Footwear {
 
     private static final String FOOTWEAR_NAME = "Footwear";
 
+    private static final String SNEAKERS_NAME = "Sneakers";
+    private static final String BOAT_NAME = "Boat";
+    private static final String LOAFER_NAME = "Loafer";
+    private static final String SANDALS_NAME = "Sandals";
+    private static final String BOOTS_NAME = "Boots";
+    private static final String HEELS_NAME = "Heels";
+
     private static final int SNEAKERS_TEMPERATURE_LOWER_RANGE = 50;
     private static final int SNEAKERS_TEMPERATURE_UPPER_RANGE = 100;
     private static final int SNEAKERS_ACTIVITY_IMPORTANCE = 9;
@@ -91,17 +98,17 @@ public class Footwear {
     public String getFootwearTypeName() {
         switch (footwearType) {
             case SNEAKERS:
-                return "Sneakers";
+                return SNEAKERS_NAME;
             case BOAT:
-                return "Boat";
+                return BOAT_NAME;
             case LOAFER:
-                return "Loafer";
+                return LOAFER_NAME;
             case SANDALS:
-                return "Sandals";
+                return SANDALS_NAME;
             case BOOTS:
-                return "Boots";
+                return BOOTS_NAME;
             case HEELS:
-                return "Heels";
+                return HEELS_NAME;
         }
         // The cases above cover all possibilities, so this cannot happen
         return null;

@@ -21,6 +21,16 @@ import okhttp3.Headers;
 public class DashboardWeatherController {
     public static final String TAG = "DashboardWeatherController";
     public static final String DEG_SIGN = "\u00B0";
+    private static final int FORECAST_3_HOUR_COUNT = 3;
+    private static final String OPENWEATHER_API_LINK = "https://api.openweathermap.org/data/3.0/onecall?";
+    private static final String OPENWEATHER_LAT = "lat=";
+    private static final String OPENWEATHER_LON = "&lon=";
+    private static final String OPENWEATHER_UNITS = "&units=";
+    private static final String OPENWEATHER_APPID = "&appid=";
+    private static final String CANNOT_PARSE_WEATHER_INFO_PROMPT = "Unable to parse weather information.";
+    private static final String CANNOT_FETCH_WEATHER_INFO_PROMPT = "Unable to fetch weather information.";
+    private static final String NO_LOCATION_PROMPT = "No location";
+    private static final String TEMPERATURE_PLACEHOLDER = "--";
 
     /**
      * Used to let clothing controller know when new weather data is available
@@ -60,9 +70,9 @@ public class DashboardWeatherController {
         currentTemperatureTextview = activity.findViewById(R.id.dashboard_current_temp_textview);
         weatherIconImageview = activity.findViewById(R.id.dashboard_weather_icon_imageview);
 
-        forecastHoursTimeTextviews = new ArrayList<>(3);
-        forecastHoursWeatherIconImageviews = new ArrayList<>(3);
-        forecastHoursTempTextviews = new ArrayList<>(3);
+        forecastHoursTimeTextviews = new ArrayList<>(FORECAST_3_HOUR_COUNT);
+        forecastHoursWeatherIconImageviews = new ArrayList<>(FORECAST_3_HOUR_COUNT);
+        forecastHoursTempTextviews = new ArrayList<>(FORECAST_3_HOUR_COUNT);
 
         forecastHoursTimeTextviews.add(activity.findViewById(R.id.dashboard_1hr_time_textview));
         forecastHoursWeatherIconImageviews.add(activity.findViewById(R.id.dashboard_1hr_weather_icon_imageview));
@@ -121,11 +131,11 @@ public class DashboardWeatherController {
         double longitude = Weather.getLastLocationLongitude();
 
         // TODO: Exclude non needed data after detailed weather screen is built
-        String apiUrl = "https://api.openweathermap.org/data/3.0/onecall?"
-                + "lat=" + latitude
-                + "&lon=" + longitude
-                + "&units=" + REQUEST_WEATHER_DATA_UNIT
-                + "&appid=" + BuildConfig.OPENWEATHER_API_KEY;
+        String apiUrl = OPENWEATHER_API_LINK
+                + OPENWEATHER_LAT + latitude
+                + OPENWEATHER_LON + longitude
+                + OPENWEATHER_UNITS + REQUEST_WEATHER_DATA_UNIT
+                + OPENWEATHER_APPID + BuildConfig.OPENWEATHER_API_KEY;
 
         openWeatherClient.get(apiUrl, new JsonHttpResponseHandler() {
             @Override
@@ -140,7 +150,7 @@ public class DashboardWeatherController {
                     Weather.setLoadedDataLocationName(Weather.getLastLocationName());
                 } catch (JSONException e) {
                     // TODO: fix what happens when weather data is not found; perhaps change weather display to show a message that it isn't found
-                    Toast.makeText(activity, "Unable to parse weather information.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, CANNOT_PARSE_WEATHER_INFO_PROMPT, Toast.LENGTH_SHORT).show();
                 }
 
                 updateDashboardDisplay();
@@ -150,7 +160,7 @@ public class DashboardWeatherController {
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                 // TODO: fix what happens when weather data is not found; perhaps change weather display to show a message that it isn't found
                 // for now, make a toast
-                Toast.makeText(activity, "Unable to fetch weather information.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, CANNOT_FETCH_WEATHER_INFO_PROMPT, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -191,10 +201,10 @@ public class DashboardWeatherController {
      * Displays placeholder weather information to visually signal that there is no weather data yet
      */
     private void displayPlaceholderOnDashboard() {
-        locationTextview.setHint("No location");
+        locationTextview.setHint(NO_LOCATION_PROMPT);
 
         forecastDescriptionTextview.setText("");
-        currentTemperatureTextview.setText("--" + DEG_SIGN);
+        currentTemperatureTextview.setText(TEMPERATURE_PLACEHOLDER + DEG_SIGN);
 
         clear3HrForecastDisplay();
     }

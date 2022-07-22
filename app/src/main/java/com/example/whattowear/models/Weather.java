@@ -28,6 +28,19 @@ public class Weather {
         FAHRENHEIT, CELSIUS
     }
 
+    private static final String HOURLY_FORECAST_ID = "hourly";
+    private static final String CURRENT_FORECAST_ID = "current";
+    private static final String DAILY_FULL_WEATHER_DATA_ID = "daily";
+    private static final String DAY_WEATHER_ID = "weather";
+    private static final String DAY_WEATHER_ID_ID = "id";
+    private static final String DAY_TEMPERATURE_ID = "temp";
+    private static final String DAY_MIN_TEMP_ID = "min";
+    private static final String DAY_MAX_TEMP_ID = "max";
+    private static final String DAY_MAX_UV_INDEX_ID = "uvi";
+
+    private static final String LAT_PHRASE = "Lat: ";
+    private static final String LONG_PHRASE = " Long: ";
+
     private static final String LOW_TEMP_CHAR = "L ";
     private static final String HIGH_TEMP_CHAR = "H ";
     private static final String DEG_SIGN = "\u00B0";
@@ -63,16 +76,16 @@ public class Weather {
 
     public static void loadFromJson(JSONObject jsonObject) throws JSONException {
         hourlyForecast.clear();
-        hourlyForecast.addAll(Forecast.fromJsonArray(jsonObject.getJSONArray("hourly")));
+        hourlyForecast.addAll(Forecast.fromJsonArray(jsonObject.getJSONArray(HOURLY_FORECAST_ID)));
 
-        currentForecast = Forecast.fromJson(jsonObject.getJSONObject("current"));
+        currentForecast = Forecast.fromJson(jsonObject.getJSONObject(CURRENT_FORECAST_ID));
 
-        JSONObject dayWeatherData = jsonObject.getJSONArray("daily").getJSONObject(0);
-        dayConditionsID = dayWeatherData.getJSONArray("weather").getJSONObject(0).getInt("id");
-        JSONObject dayTemperatureData = dayWeatherData.getJSONObject("temp");
-        dayMinTemperatureFahrenheit = dayTemperatureData.getInt("min");
-        dayMaxTemperatureFahrenheit = dayTemperatureData.getInt("max");
-        dayMaxUVIndex = (float) dayWeatherData.getDouble("uvi");
+        JSONObject dayWeatherData = jsonObject.getJSONArray(DAILY_FULL_WEATHER_DATA_ID).getJSONObject(0);
+        dayConditionsID = dayWeatherData.getJSONArray(DAY_WEATHER_ID).getJSONObject(0).getInt(DAY_WEATHER_ID_ID);
+        JSONObject dayTemperatureData = dayWeatherData.getJSONObject(DAY_TEMPERATURE_ID);
+        dayMinTemperatureFahrenheit = dayTemperatureData.getInt(DAY_MIN_TEMP_ID);
+        dayMaxTemperatureFahrenheit = dayTemperatureData.getInt(DAY_MAX_TEMP_ID);
+        dayMaxUVIndex = (float) dayWeatherData.getDouble(DAY_MAX_UV_INDEX_ID);
 
         // TODO: fill up currentForecast and dayConditions, when needed
         // TODO: if not, delete them
@@ -178,7 +191,7 @@ public class Weather {
         // TODO: Fix city being unknown
         // if city still blank, worst case, it is set to long lat coordinates
         if (locationName.isEmpty()) {
-            locationName = "Lat: " + latitude + "Long: " + longitude;
+            locationName = LAT_PHRASE + latitude + LONG_PHRASE + longitude;
         }
 
         return locationName;
