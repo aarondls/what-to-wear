@@ -6,7 +6,6 @@ import static com.example.whattowear.weatheranimation.WeatherAnimationParameters
 import static com.example.whattowear.weatheranimation.WeatherAnimationParameters.THUNDERSTORM_DELAY_MIN;
 import static com.example.whattowear.weatheranimation.WeatherAnimationParameters.THUNDERSTORM_XVELOCITY;
 
-import android.util.Log;
 import android.view.ViewGroup;
 
 import com.example.whattowear.DashboardWeatherController;
@@ -72,7 +71,6 @@ public class DashboardWeatherAnimationController {
      * Starts new weather animation on the dashboard based on new weather data
      */
     private void startNewWeatherAnimation() {
-        Log.i(TAG, "Making new weather animation");
         viewGroup.post(new Runnable() {
             @Override
             public void run() {
@@ -88,7 +86,6 @@ public class DashboardWeatherAnimationController {
      * Starts weather animation on the dashboard based on existing weather animation data
      */
     private void startExistingWeatherAnimation() {
-        Log.i(TAG, "Loading preloaded weather animation");
         viewGroup.post(new Runnable() {
             @Override
             public void run() {
@@ -107,7 +104,6 @@ public class DashboardWeatherAnimationController {
     private void clearVisibleWeatherAnimation() {
         // cancel existing animations, if there are one
         if (!confettiManagers.isEmpty()) {
-            Log.i(TAG, "Cancelling other animations");
             for (ConfettiManager confettiManager : confettiManagers) {
                 confettiManager.setEmissionDuration(0);
             }
@@ -165,7 +161,6 @@ public class DashboardWeatherAnimationController {
                 if (!viewGroup.isShown()) {
                     return;
                 }
-                Log.i(TAG, "delay kicking in with emission rate " + emissionRate);
                 // switch between the default and alternate conditons emission rate
                 if (emissionRate == conditionsEmissionRate) {
                     for (ConfettiManager confettiManager : confettiManagers) {
@@ -200,7 +195,7 @@ public class DashboardWeatherAnimationController {
                 if (!viewGroup.isShown()) {
                     return;
                 }
-                Log.i(TAG, "delay kicking in with x velocity " + xVelocity);
+
                 for (ConfettiManager confettiManager : confettiManagers) {
                     confettiManager.setVelocityX(xVelocity, 0.1f*xVelocity);
                 }
