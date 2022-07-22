@@ -47,8 +47,6 @@ public class PreferencesActivity extends AppCompatActivity {
         ClothingType clothingType = (ClothingType) getIntent().getSerializableExtra(PREFERENCES_TYPE_KEY);
         clothingTypeTextview.setText(Clothing.getClothingNameFromType(clothingType));
 
-        // TODO: store and get whether preferences advanced settings was checked from parse
-
         // set up recycler view with adapter
         // pass in correct clothing type
         // pass in whether advanced settings need to be displayed

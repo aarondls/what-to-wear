@@ -68,9 +68,6 @@ public class LowerBodyGarment {
      * @return the calculated optimal lower body garment
      */
     public static LowerBodyGarment getOptimalLowerBodyGarment() {
-        // TODO: update type based on weather, activity, and preferences
-        // for testing, default to shorts
-
         LowerBodyGarment lowerBodyGarment = new LowerBodyGarment();
 
         lowerBodyGarment.lowerBodyGarmentType = ClothingRanker.getOptimalClothingType(lowerBodyGarmentRankers, LowerBodyGarmentType.values()).first;

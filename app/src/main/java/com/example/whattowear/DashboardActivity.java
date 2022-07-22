@@ -135,9 +135,6 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
         locationServicesDeniedWarningButton = findViewById(R.id.location_services_denied_warning_button);
         locationServicesDeniedWarningButton.setVisibility(View.GONE);
 
-        // TODO: create diff gradient for morning/afternoon/night
-        // Put gradient as background
-        // for now, use morning
         View dashboardView = findViewById(R.id.dashboard_relativelayout);
         dashboardView.setBackground(AppCompatResources.getDrawable(this, R.drawable.morning_gradient));
 
@@ -306,7 +303,6 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
             getUserLocation();
             handleLocationServicesAccepted();
         } else if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-            // TODO: stretch goal to animate button bouncing to highlight whats wrong
             handleLocationServicesDenied();
         } else {
             EasyPermissions.requestPermissions(

@@ -75,9 +75,6 @@ public class Footwear {
      * @return the calculated optimal footwear
      */
     public static Footwear getOptimalFootwear() {
-        // TODO: update footwear type based on weather, activity, and preferences
-        // for testing, default to sneakers
-
         Footwear footwear = new Footwear();
 
         footwear.footwearType = ClothingRanker.getOptimalClothingType(footwearRankers, FootwearType.values()).first;

@@ -149,7 +149,6 @@ public class DashboardWeatherController {
                     // on success, set loaded data location name
                     Weather.setLoadedDataLocationName(Weather.getLastLocationName());
                 } catch (JSONException e) {
-                    // TODO: fix what happens when weather data is not found; perhaps change weather display to show a message that it isn't found
                     Toast.makeText(activity, CANNOT_PARSE_WEATHER_INFO_PROMPT, Toast.LENGTH_SHORT).show();
                 }
 
@@ -158,8 +157,6 @@ public class DashboardWeatherController {
 
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                // TODO: fix what happens when weather data is not found; perhaps change weather display to show a message that it isn't found
-                // for now, make a toast
                 Toast.makeText(activity, CANNOT_FETCH_WEATHER_INFO_PROMPT, Toast.LENGTH_SHORT).show();
             }
         });
@@ -180,8 +177,6 @@ public class DashboardWeatherController {
         // should set anything to be displayed after new weather data comes in here
         forecastDescriptionTextview.setText(Weather.getCurrentForecast().getHourCondition().getConditionDescription());
         currentTemperatureTextview.setText(Weather.getCurrentForecast().getFormattedTemp());
-
-        // TODO: can convert all image icons below into using local images based on condition ID, when graphics are available
 
         // Clear the existing forecast display
         clear3HrForecastDisplay();

@@ -47,8 +47,6 @@ public class DashboardWeatherAnimationController {
                 // recalculate weather animation
                 startNewWeatherAnimation();
             }
-        } else {
-            // TODO: maybe show placeholder when no data to look nice
         }
 
         dashboardWeatherController.addNewWeatherDataListener(new DashboardWeatherController.WeatherDataListener() {
@@ -148,7 +146,6 @@ public class DashboardWeatherAnimationController {
 
                 showerDynamicAnimation(alternateConditionsEmissionRate);
             } else if (conditionsModifier == WeatherAnimation.ConditionsModifier.THUNDERSTORM) {
-                // TODO: can increase y deviation, if animation looks better with it
                 thunderstormDynamicAnimation(0);
             }
         }

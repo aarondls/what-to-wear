@@ -166,7 +166,6 @@ public class ClothingRanker extends ParseObject {
 
         // Now calculate current temperature factor given all variables and the current temperature
         float dayMeanTemperature = Weather.getDayMeanFahrenheitTemperature();
-        // TODO: instead of day mean temp use next xx hours mean
         float temperatureFactor = -f*(dayMeanTemperature-temperatureLowerRange)*(dayMeanTemperature-temperatureUpperRange);
 
         return temperatureFactor;

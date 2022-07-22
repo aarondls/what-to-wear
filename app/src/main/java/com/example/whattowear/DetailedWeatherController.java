@@ -68,7 +68,6 @@ public class DetailedWeatherController {
     }
 
     private void displayPlaceholder() {
-        // TODO: use better placeholders
         forecastDescriptionTextview.setText(PLACEHOLDER_DESCRIPTION);
         uvIndexTextview.setText(PLACEHOLDER_VALUE);
         humidityTextview.setText(PLACEHOLDER_VALUE);

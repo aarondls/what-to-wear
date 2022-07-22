@@ -44,8 +44,6 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        // TODO: Calculate size from weather_data
-        // TODO: Change to size of needed hourly forecast + other types displayed
         return Weather.getHourlyForecast().size();
     }
 
@@ -70,11 +68,9 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
             hourlyTempTextview.setText(hourly_forecast.getFormattedTemp());
             hourlyTimeTextview.setText(hourly_forecast.getAMPMTime());
 
-            // TODO: can convert into using local images based on condition ID
             Glide.with(context).load(hourly_forecast.getHourCondition().getConditionIconLink()).into(hourlyWeatherImageview);
 
             hourlyFeelsLikeTextview.setText(hourly_forecast.getFormattedFeelsLikeTemp());
-            // TODO: load all other data here
         }
 
 

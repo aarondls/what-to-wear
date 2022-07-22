@@ -24,7 +24,6 @@ public class WeatherAnimation {
         DRIZZLE, RAIN, SLEET, SNOW
     }
 
-    // TODO: handle dynamic modifiers
     public static enum ConditionsModifier {
         THUNDERSTORM, SHOWER
     }

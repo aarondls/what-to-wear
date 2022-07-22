@@ -171,7 +171,6 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesAdapter.
                     public void onValueChange(@NonNull RangeSlider slider, float value, boolean fromUser) {
                         // check which change
                         List<Float> endpointValues = slider.getValues();
-                        // TODO: change the temp factor of the associated clothing ranker
                         if (endpointValues.get(0) == value) {
                             // change is the first end point
                             clothingRanker.setTemperatureLowerRange(Math.round(value));
@@ -211,7 +210,6 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesAdapter.
             clothingRanker.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
-                    // TODO: as a stretch goal, perhaps add icon that preferences were updated when successful
                     if (e != null) {
                         Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG);
                     }

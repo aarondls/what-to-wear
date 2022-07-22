@@ -43,7 +43,7 @@ public class OverBodyGarment {
     private static final int WINTER_COAT_CONDITIONS_SNOW_FACTOR = 10;
 
     private OverBodyGarmentType overBodyGarmentType;
-    private float rankingScore; // TODO: store ranking score for each clothing class, so this can be displayed in detailed clothing screen (or some kind of metric)
+    private float rankingScore;
 
     private static enum OverBodyGarmentType {
         ATHLETIC_JACKET, RAIN_JACKET, WINTER_COAT, NONE
@@ -58,9 +58,6 @@ public class OverBodyGarment {
      * @return the calculated optimal over body garment
      */
     public static OverBodyGarment getOptimalOverBodyGarment() {
-        // TODO: update type based on weather, activity, and preferences
-        // for testing, default to none
-
         OverBodyGarment overBodyGarment = new OverBodyGarment();
 
         Pair<OverBodyGarmentType, Float> optimalResult = ClothingRanker.getOptimalClothingType(overBodyGarmentRankers, OverBodyGarmentType.values());
@@ -163,7 +160,6 @@ public class OverBodyGarment {
      * @return the list of initialized clothing rankers for over body garments with default factors
      */
     public static List<ClothingRanker> initializeOverBodyGarmentRankers(ParseUser user) {
-        // TODO: fix icons
         ClothingRanker athleticJacketRanker  = new ClothingRanker();
         athleticJacketRanker.initializeFactorsToDefault(OverBodyGarmentType.ATHLETIC_JACKET.name(), R.drawable.clothing_icon_athletic_jacket, user);
         ClothingRanker rainJacketRanker  = new ClothingRanker();

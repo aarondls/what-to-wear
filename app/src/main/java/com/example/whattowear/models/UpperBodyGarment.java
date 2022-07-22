@@ -52,9 +52,6 @@ public class UpperBodyGarment {
      * @return the calculated optimal upper body garment
      */
     public static UpperBodyGarment getOptimalUpperBodyGarment() {
-        // TODO: update type based on weather, activity, and preferences
-        // for testing, default to T_SHIRT
-
         UpperBodyGarment upperBodyGarment = new UpperBodyGarment();
 
         upperBodyGarment.upperBodyGarmentType = ClothingRanker.getOptimalClothingType(upperBodyGarmentRankers, UpperBodyGarmentType.values()).first;

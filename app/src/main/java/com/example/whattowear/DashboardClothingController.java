@@ -90,7 +90,6 @@ public class DashboardClothingController {
      * and updates the clothing display as necessary
      */
     public void onDataSetChanged() {
-        // TODO: can calculate clothing information here
         Clothing.calculateOptimalClothing(new ClothingInterface() {
             @Override
             public void onFinish() {

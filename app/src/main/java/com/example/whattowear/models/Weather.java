@@ -188,7 +188,6 @@ public class Weather {
             // handle below
         }
 
-        // TODO: Fix city being unknown
         // if city still blank, worst case, it is set to long lat coordinates
         if (locationName.isEmpty()) {
             locationName = LAT_PHRASE + latitude + LONG_PHRASE + longitude;

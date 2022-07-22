@@ -41,8 +41,6 @@ public class ActivityType {
             activitiesArrayList.add(new ActivityType(activityType, null));
         }
 
-        // TODO: add more activities as needed here
-
         return activitiesArrayList;
     }
 
