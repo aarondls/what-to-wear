@@ -139,7 +139,7 @@ public class DashboardActivity extends AppCompatActivity implements EasyPermissi
         dashboardView.setBackground(AppCompatResources.getDrawable(this, R.drawable.morning_gradient));
 
         // have layout be full screen to hide both the top and bottom bars
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        FullscreenLayout.hideTopBottomBars(getWindow());
 
         // Change places search icon to white drawable icon
         ImageView searchIcon = (ImageView)((LinearLayout)autocompleteFragment.getView()).getChildAt(0);

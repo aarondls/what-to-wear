@@ -26,7 +26,7 @@ public class DetailedClothingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detailed_clothing);
 
         // have layout be full screen to hide both the top and bottom bars
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        FullscreenLayout.hideTopBottomBars(getWindow());
 
         backToDashboardButton = findViewById(R.id.clothing_back_to_dashboard_button);
         clothingRecyclerview = findViewById(R.id.clothing_info_recycleview);

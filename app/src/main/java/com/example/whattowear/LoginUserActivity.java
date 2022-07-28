@@ -25,7 +25,7 @@ public class LoginUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login_user);
 
         // have layout be full screen to hide both the top and bottom bars
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        FullscreenLayout.hideTopBottomBars(getWindow());
 
         // Automatically move to LoginBackendActivity to initialize preferences if logged in
         if (ParseUser.getCurrentUser() != null) {

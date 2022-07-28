@@ -69,7 +69,7 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         // have layout be full screen to hide both the top and bottom bars
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        FullscreenLayout.hideTopBottomBars(getWindow());
 
         dashboardClickable = findViewById(R.id.menu_dashboard_option_relative_layout);
         overBodyGarmentPreferencesClickable = findViewById(R.id.menu_over_body_preferences_option_relative_layout);

@@ -29,7 +29,7 @@ public class PreferencesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_preferences);
 
         // have layout be full screen to hide both the top and bottom bars
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        FullscreenLayout.hideTopBottomBars(getWindow());
 
         menuButton = findViewById(R.id.preferences_to_menu_button);
         clothingTypeTextview = findViewById(R.id.preferences_type_textview);

@@ -24,7 +24,7 @@ public class SignupUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup_user);
 
         // have layout be full screen to hide both the top and bottom bars
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        FullscreenLayout.hideTopBottomBars(getWindow());
 
         signupNameEdittext = findViewById(R.id.signup_name_edittext);
         signupUsernameEdittext = findViewById(R.id.signup_username_edittext);

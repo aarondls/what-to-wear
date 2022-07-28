@@ -50,7 +50,7 @@ public class LoginBackendActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login_backend);
 
         // have layout be full screen to hide both the top and bottom bars
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        FullscreenLayout.hideTopBottomBars(getWindow());
 
         informationTextview = findViewById(R.id.login_backend_information_textview);
         loadingAnimation = findViewById(R.id.login_backend_loading_animationview);

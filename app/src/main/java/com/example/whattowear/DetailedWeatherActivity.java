@@ -31,7 +31,7 @@ public class DetailedWeatherActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detailed_weather);
 
         // have layout be full screen to hide both the top and bottom bars
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        FullscreenLayout.hideTopBottomBars(getWindow());
 
         backToDashboardButton = findViewById(R.id.weather_back_to_dashboard_button);
 
