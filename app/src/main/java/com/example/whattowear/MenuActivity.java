@@ -241,7 +241,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     /**
-     * Loads the meny dashboard overview widget with weather data
+     * Loads the menu dashboard overview widget with weather data
      */
     private void loadDashboardWeatherOverviewWidget() {
         dashboardLocationTextview.setText(Weather.getLastLocationName());
@@ -254,7 +254,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     /**
-     * Loads the meny dashboard overview widget with clothing data
+     * Loads the menu dashboard overview widget with clothing data
      */
     private void loadDashboardClothingOverviewWidget() {
         dashboardCurrentActivityTextview.setText(Clothing.getSelectedActivityType().getDescription().toLowerCase());
